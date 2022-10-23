@@ -1,7 +1,7 @@
 package com.example.funnypuny.domain
 
 data class HabbitItem(
-    val id: Int = UNDEFINED_ID,
+    var id: Int = UNDEFINED_ID,
     val name: String,
     val enabled: Boolean
 ){
