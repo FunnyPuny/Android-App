@@ -27,21 +27,43 @@
     </androidx.appcompat.widget.Toolbar-->
 
     <TextView
+        android:id="@+id/month_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/month_recycler_view"
         android:textSize="24sp"
         android:text="October, 25"
         android:textColor="@color/primary"
         android:textStyle="normal"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="16dp"
         android:lineSpacingExtra="-1sp"
         android:gravity="top"
         android:fontFamily="@font/sf_pro_display_bold"
-        android:lineHeight="28sp"/>
+        android:lineHeight="28sp"
+        android:padding="16sp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/month_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/month_text_view"
+        android:background="@color/grey_light"
+        app:layout_constraintBottom_toTopOf="@id/habbit_item_recycler_view" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="24dp"
+        android:id="@+id/habbit_item_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/month_recycler_view"
+        android:background="@color/grey_light"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_main"
@@ -54,20 +76,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/home_navigation_menu"/>
-
-
-    <ImageView
-        android:id="@+id/iv_add"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:padding="15dp"
-        android:src="@drawable/ic_add_box_selected"
-        android:background="@drawable/bg_center_nav_option"
-        app:layout_constraintStart_toStartOf="parent"
-        android:contentDescription="@string/bottom_sheet_behavior"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+    
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
