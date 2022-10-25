@@ -9,9 +9,11 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c0f2153-30aa-4606-bbf7-51c937a7e38f" name="Changes" comment="Create Use Cases">
+    <list default="true" id="0c0f2153-30aa-4606-bbf7-51c937a7e38f" name="Changes" comment="Create HabbitListRepositoryImpl">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/funnypuny/domain/HabbitItem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/funnypuny/domain/HabbitItem.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,10 +29,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="resourceFile" />
         <option value="valueResourceFile" />
         <option value="Kotlin Data Class" />
         <option value="Kotlin Class" />
+        <option value="resourceFile" />
       </list>
     </option>
   </component>
@@ -58,10 +60,14 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/drawable" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/src/main/res/drawable" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/res/font-v26" />
     </key>
   </component>
   <component name="RunManager">
@@ -188,7 +194,14 @@
       <option name="project" value="LOCAL" />
       <updated>1666513351320</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Create HabbitListRepositoryImpl">
+      <created>1666515187112</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1666515187112</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -207,6 +220,7 @@
     <MESSAGE value="Add icon" />
     <MESSAGE value="Create NavigationBar and ToolBar" />
     <MESSAGE value="Create Use Cases" />
-    <option name="LAST_COMMIT_MESSAGE" value="Create Use Cases" />
+    <MESSAGE value="Create HabbitListRepositoryImpl" />
+    <option name="LAST_COMMIT_MESSAGE" value="Create HabbitListRepositoryImpl" />
   </component>
 </project>

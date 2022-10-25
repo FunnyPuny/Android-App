@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/background_color">
+    android:background="@color/white">
 
-    <androidx.appcompat.widget.Toolbar
+    <!--androidx.appcompat.widget.Toolbar
         android:id="@+id/font"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +24,24 @@
             android:fontFamily="@font/montserrat"
             android:textStyle="bold"/>
 
-    </androidx.appcompat.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="24sp"
+        android:text="October, 25"
+        android:textColor="@color/primary"
+        android:textStyle="normal"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
+        android:lineSpacingExtra="-1sp"
+        android:gravity="top"
+        android:fontFamily="@font/sf_pro_display_bold"
+        android:lineHeight="28sp"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_main"
