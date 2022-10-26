@@ -31,7 +31,7 @@
         <entry key="app/src/main/res/font-v26/sp_pro_display.xml" value="0.3390625" />
         <entry key="app/src/main/res/font/montserrat.xml" value="0.34010416666666665" />
         <entry key="app/src/main/res/font/sp_pro_display.xml" value="0.3390625" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.125" />
         <entry key="app/src/main/res/layout/item_habbit_disabled.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/item_habbit_enabled.xml" value="0.2543822146216332" />
         <entry key="app/src/main/res/menu/home_navigation_menu.xml" value="0.1" />

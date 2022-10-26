@@ -5,8 +5,10 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="16dp"
     android:layout_marginStart="16dp"
-    android:layout_marginBottom="16dp"
-    android:layout_marginEnd="16dp">
+    android:layout_marginBottom="5dp"
+    android:layout_marginEnd="16dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +17,7 @@
         android:background="@color/primary_light">
 
         <TextView
-            android:id="@+id/pilates"
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -28,6 +30,7 @@
             android:paddingBottom="20dp"/>
 
         <ImageView
+            android:id="@+id/iv_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_check_box"

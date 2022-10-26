@@ -6,12 +6,14 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var viewModel: MainViewModel
+    private lateinit var adapter: HabbitListAdapter
 
     private lateinit var bottom_navigation: BottomNavigationView
 
@@ -19,9 +21,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setupRecyclerView()
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.habbitList.observe(this){
-             Log.d("MainActivityTest", it.toString())
+             adapter.list = it
         }
 
         bottom_navigation = findViewById(R.id.bottom_navigation_main)
@@ -36,5 +39,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }*/
     }
 
+    private fun setupRecyclerView() {
+        val rvHabbitList = findViewById<RecyclerView>(R.id.rv_habbit_list)
+        adapter = HabbitListAdapter()
+        rvHabbitList.adapter = adapter
+    }
 
 }
