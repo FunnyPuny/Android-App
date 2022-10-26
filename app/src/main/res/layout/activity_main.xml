@@ -30,20 +30,20 @@
         android:id="@+id/month_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/month_recycler_view"
-        android:textSize="24sp"
+        android:layout_alignParentTop="true"
+        android:fontFamily="@font/roboto_bold"
+        android:gravity="top"
+        android:lineHeight="28sp"
+        android:lineSpacingExtra="-1sp"
+        android:padding="16sp"
         android:text="October, 25"
         android:textColor="@color/primary"
+        android:textSize="24sp"
         android:textStyle="normal"
-        android:layout_alignParentTop="true"
-        android:lineSpacingExtra="-1sp"
-        android:gravity="top"
-        android:fontFamily="@font/sf_pro_display_bold"
-        android:lineHeight="28sp"
-        android:padding="16sp"/>
+        app:layout_constraintBottom_toTopOf="@+id/month_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/month_recycler_view"
@@ -56,14 +56,15 @@
         app:layout_constraintBottom_toTopOf="@id/habbit_item_recycler_view" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:id="@+id/habbit_item_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/month_recycler_view"
-        android:background="@color/grey_light"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_habbit_enabled"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_main"
