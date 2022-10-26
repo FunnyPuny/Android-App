@@ -1,5 +1,7 @@
 package com.example.funnypuny.domain
 
+import androidx.lifecycle.LiveData
+
 interface HabbitListRepository {
 
     fun addHabbitItem(habbitItem: HabbitItem)
@@ -10,6 +12,6 @@ interface HabbitListRepository {
 
     fun getHabbitItem(habbitItemId: Int): HabbitItem
 
-    fun getHabbitList(): List<HabbitItem>
+    fun getHabbitList(): LiveData<List<HabbitItem>>
 
 }

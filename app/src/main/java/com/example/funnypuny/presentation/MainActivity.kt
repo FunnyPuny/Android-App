@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         viewModel.habbitList.observe(this){
              Log.d("MainActivityTest", it.toString())
         }
-        viewModel.getHabbitList()
 
         bottom_navigation = findViewById(R.id.bottom_navigation_main)
         bottom_navigation.itemIconTintList = null

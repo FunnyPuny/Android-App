@@ -1,11 +1,14 @@
 package com.example.funnypuny.data
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.funnypuny.domain.HabbitItem
 import com.example.funnypuny.domain.HabbitListRepository
 import java.lang.RuntimeException
 
 object HabbitListRepositoryImpl: HabbitListRepository {
 
+    private val habbitListLD = MutableLiveData<List<HabbitItem>>()
     //храним все в переменной, в которой будем хранить коллекцию эллементов
     private val habbitList = mutableListOf<HabbitItem>()
 
@@ -26,6 +29,7 @@ object HabbitListRepositoryImpl: HabbitListRepository {
             habbitItem.id = autoIncrementId++
         }
         habbitList.add(habbitItem)
+        updateList()
     }
 
     override fun editHabbitItem(habbitItem: HabbitItem) {
@@ -41,6 +45,7 @@ object HabbitListRepositoryImpl: HabbitListRepository {
 
     override fun deleteHabbitItem(habbitItem: HabbitItem) {
         habbitList.remove(habbitItem)
+        updateList()
     }
 
     override fun getHabbitItem(habbitItemId: Int): HabbitItem {
@@ -51,10 +56,15 @@ object HabbitListRepositoryImpl: HabbitListRepository {
         } ?: throw RuntimeException("Element with id $habbitItemId not found")
     }
 
-    override fun getHabbitList(): List<HabbitItem> {
+    override fun getHabbitList(): LiveData<List<HabbitItem>> {
         // лучше возвращать копию листа
         // если в getShopList() добавлять какие-то элементы или удалять их,
         // то на исходную коллекцию это никак не повлияет
-        return habbitList.toList()
+        return habbitListLD
+    }
+
+    //обновление лайвдвты
+    private fun updateList(){
+        habbitListLD.value = habbitList.toList()
     }
 }
