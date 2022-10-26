@@ -1,25 +1,32 @@
-package com.example.funnypuny
+package com.example.funnypuny.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import com.example.funnypuny.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
+    private lateinit var viewModel: MainViewModel
+
     private lateinit var bottom_navigation: BottomNavigationView
-    private lateinit var imageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        bottom_navigation = findViewById(R.id.bottom_navigation_main)
-        //imageView = findViewById(R.id.iv_add)
 
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        viewModel.habbitList.observe(this){
+             Log.d("MainActivityTest", it.toString())
+        }
+        viewModel.getHabbitList()
+
+        bottom_navigation = findViewById(R.id.bottom_navigation_main)
         bottom_navigation.itemIconTintList = null
-        //imageView.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
