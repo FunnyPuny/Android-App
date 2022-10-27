@@ -37,7 +37,7 @@ object HabbitListRepositoryImpl: HabbitListRepository {
         // но в кач-ве параметра прилетает уже новый объект с измененными полями
         // т.е мы не можем удалить его из коллекции - элемент найден не будет
 
-        // поэтому надо сначала найти старый элемент по его id - удалить и добаыить новый
+        // поэтому надо сначала найти старый элемент по его id - удалить и добавить новый
         val oldElement = getHabbitItem(habbitItem.id)
         habbitList.remove(oldElement)
         addHabbitItem(habbitItem)
