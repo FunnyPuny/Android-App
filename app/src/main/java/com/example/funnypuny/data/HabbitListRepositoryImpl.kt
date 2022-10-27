@@ -16,7 +16,7 @@ object HabbitListRepositoryImpl: HabbitListRepository {
     private var autoIncrementId = 0
 
     init {
-        for (i in 0 until 10){
+        for (i in 0 until 4){
             val item = HabbitItem(i,"Name: $i",true)
             addHabbitItem(item)
         }

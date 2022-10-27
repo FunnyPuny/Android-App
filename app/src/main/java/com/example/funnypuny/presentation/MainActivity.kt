@@ -8,12 +8,13 @@ import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.R
+import com.example.funnypuny.domain.HabbitItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var adapter: HabbitListAdapter
+    private lateinit var habbitListAdapter: HabbitListAdapter
 
     private lateinit var bottom_navigation: BottomNavigationView
 
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setupRecyclerView()
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.habbitList.observe(this){
-             adapter.list = it
+             habbitListAdapter.list = it
         }
 
         bottom_navigation = findViewById(R.id.bottom_navigation_main)
@@ -41,8 +42,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setupRecyclerView() {
         val rvHabbitList = findViewById<RecyclerView>(R.id.rv_habbit_list)
-        adapter = HabbitListAdapter()
-        rvHabbitList.adapter = adapter
+        with(rvHabbitList) {
+            habbitListAdapter = HabbitListAdapter()
+            adapter = habbitListAdapter
+            recycledViewPool.setMaxRecycledViews(
+                HabbitListAdapter.VIEW_TYPE_ENABLED,
+                HabbitListAdapter.MAX_POOL_SIZE
+            )
+            recycledViewPool.setMaxRecycledViews(
+                HabbitListAdapter.VIEW_TYPE_DISABLED,
+                HabbitListAdapter.MAX_POOL_SIZE
+            )
+        }
+
+        habbitListAdapter.onHabbitItemClickListener = object : HabbitListAdapter.OnHabbitItemClickListener {
+            override fun onHabbitItemClick(habbitItem: HabbitItem) {
+                 viewModel.changeEnabledState(habbitItem)
+            }
+        }
     }
 
 }
