@@ -1,5 +1,6 @@
 package com.example.funnypuny.presentation
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,16 +13,15 @@ import java.lang.RuntimeException
 class HabbitListAdapter: RecyclerView.Adapter<HabbitListAdapter.HabbitItemViewHolder>() {
     
     var list = listOf<HabbitItem>()
+        @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-    var onHabbitItemClickListener: OnHabbitItemClickListener? = null
+    var onHabbitItemClickListener: ((HabbitItem) -> Unit)? = null
+    var onHabbitItemLongClickListener: ((HabbitItem)-> Unit)? = null
 
-    class HabbitItemViewHolder(val view: View):RecyclerView.ViewHolder(view) {
-        val tvName = view.findViewById<TextView>(R.id.tv_name)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabbitItemViewHolder {
         val layout = when (viewType) {
@@ -39,10 +39,15 @@ class HabbitListAdapter: RecyclerView.Adapter<HabbitListAdapter.HabbitItemViewHo
 
     override fun onBindViewHolder(holder: HabbitItemViewHolder, position: Int) {
         val habbitItem = list[position]
-        holder.tvName.text = habbitItem.name
         holder.view.setOnClickListener {
-            onHabbitItemClickListener?.onHabbitItemClick(habbitItem)
+            onHabbitItemClickListener?.invoke(habbitItem)
+            true
         }
+        holder.view.setOnLongClickListener {
+            onHabbitItemLongClickListener?.invoke(habbitItem)
+            true
+        }
+        holder.tvName.text = habbitItem.name
     }
 
     override fun getItemCount(): Int {
@@ -56,6 +61,10 @@ class HabbitListAdapter: RecyclerView.Adapter<HabbitListAdapter.HabbitItemViewHo
         } else {
             VIEW_TYPE_DISABLED
         }
+    }
+
+    class HabbitItemViewHolder(val view: View):RecyclerView.ViewHolder(view) {
+        val tvName = view.findViewById<TextView>(R.id.tv_name)
     }
 
     interface OnHabbitItemClickListener {

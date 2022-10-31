@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.R
 import com.example.funnypuny.domain.HabbitItem
@@ -55,10 +56,42 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             )
         }
 
-        habbitListAdapter.onHabbitItemClickListener = object : HabbitListAdapter.OnHabbitItemClickListener {
-            override fun onHabbitItemClick(habbitItem: HabbitItem) {
-                 viewModel.changeEnabledState(habbitItem)
+        setupClickListener()
+        setupLongClickListener()
+        setupSwipeListener(rvHabbitList)
+    }
+
+    private fun setupSwipeListener(rvHabbitList: RecyclerView) {
+        val callback = object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
             }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val item = habbitListAdapter.list[viewHolder.adapterPosition]
+                viewModel.deleteHabbitItem(item)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(rvHabbitList)
+    }
+
+    private fun setupLongClickListener() {
+        habbitListAdapter.onHabbitItemLongClickListener = {
+            viewModel.deleteHabbitItem(it)
+        }
+    }
+
+    private fun setupClickListener() {
+        habbitListAdapter.onHabbitItemClickListener = {
+            viewModel.changeEnabledState(it)
         }
     }
 
