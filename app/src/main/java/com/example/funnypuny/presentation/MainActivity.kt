@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setupRecyclerView()
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.habbitList.observe(this){
-             habitListAdapter.list = it
+             habitListAdapter.submitList(it)
         }
 
         bottom_navigation = findViewById(R.id.bottom_navigation_main)
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val item = habitListAdapter.list[viewHolder.adapterPosition]
+                val item = habitListAdapter.currentList [viewHolder.adapterPosition]
                 viewModel.deleteHabitItem(item)
             }
         }

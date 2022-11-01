@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListAdapter
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -11,16 +12,8 @@ import com.example.funnypuny.R
 import com.example.funnypuny.domain.HabitItem
 import java.lang.RuntimeException
 
-class HabitListAdapter: RecyclerView.Adapter<HabitListAdapter.HabitItemViewHolder>() {
-    
-    var list = listOf<HabitItem>()
-        @SuppressLint("NotifyDataSetChanged")
-        set(value) {
-            val callback = HabitListDiffCallback(list,value)
-            val diffResult = DiffUtil.calculateDiff(callback)
-            diffResult.dispatchUpdatesTo(this )
-            field = value
-        }
+class HabitListAdapter: androidx.recyclerview.widget.ListAdapter<HabitItem,HabitListAdapter.HabitItemViewHolder>(HabitItemDiffCallback()) {
+
 
     var onHabitItemClickListener: ((HabitItem) -> Unit)? = null
     var onHabitItemLongClickListener: ((HabitItem)-> Unit)? = null
@@ -37,7 +30,7 @@ class HabitListAdapter: RecyclerView.Adapter<HabitListAdapter.HabitItemViewHolde
     }
 
     override fun onBindViewHolder(holder: HabitItemViewHolder, position: Int) {
-        val habitItem = list[position]
+        val habitItem = getItem(position)
         holder.view.setOnClickListener {
             onHabitItemClickListener?.invoke(habitItem)
             true
@@ -49,12 +42,9 @@ class HabitListAdapter: RecyclerView.Adapter<HabitListAdapter.HabitItemViewHolde
         holder.tvName.text = habitItem.name
     }
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
 
     override fun getItemViewType(position: Int): Int {
-        val item = list[position]
+        val item = getItem(position )
         return if (item.enabled) {
             VIEW_TYPE_ENABLED
         } else {
