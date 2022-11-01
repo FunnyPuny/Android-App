@@ -1,18 +1,12 @@
 package com.example.funnypuny.presentation
-
-import android.annotation.SuppressLint
+ 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ListAdapter
-import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.R
 import com.example.funnypuny.domain.HabitItem
 import java.lang.RuntimeException
 
-class HabitListAdapter: androidx.recyclerview.widget.ListAdapter<HabitItem,HabitListAdapter.HabitItemViewHolder>(HabitItemDiffCallback()) {
+class HabitListAdapter: androidx.recyclerview.widget.ListAdapter<HabitItem, HabitItemViewHolder>(HabitItemDiffCallback()) {
 
 
     var onHabitItemClickListener: ((HabitItem) -> Unit)? = null
@@ -50,10 +44,6 @@ class HabitListAdapter: androidx.recyclerview.widget.ListAdapter<HabitItem,Habit
         } else {
             VIEW_TYPE_DISABLED
         }
-    }
-
-    class HabitItemViewHolder(val view: View):RecyclerView.ViewHolder(view) {
-        val tvName = view.findViewById<TextView>(R.id.tv_name)
     }
 
     interface OnHabitItemClickListener {
