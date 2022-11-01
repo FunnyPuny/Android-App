@@ -2,20 +2,17 @@ package com.example.funnypuny.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.R
-import com.example.funnypuny.domain.HabbitItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var habbitListAdapter: HabbitListAdapter
+    private lateinit var habitListAdapter: HabitListAdapter
 
     private lateinit var bottom_navigation: BottomNavigationView
 
@@ -26,7 +23,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setupRecyclerView()
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.habbitList.observe(this){
-             habbitListAdapter.list = it
+             habitListAdapter.submitList(it)
         }
 
         bottom_navigation = findViewById(R.id.bottom_navigation_main)
@@ -44,15 +41,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun setupRecyclerView() {
         val rvHabbitList = findViewById<RecyclerView>(R.id.rv_habbit_list)
         with(rvHabbitList) {
-            habbitListAdapter = HabbitListAdapter()
-            adapter = habbitListAdapter
+            habitListAdapter = HabitListAdapter()
+            adapter = habitListAdapter
             recycledViewPool.setMaxRecycledViews(
-                HabbitListAdapter.VIEW_TYPE_ENABLED,
-                HabbitListAdapter.MAX_POOL_SIZE
+                HabitListAdapter.VIEW_TYPE_ENABLED,
+                HabitListAdapter.MAX_POOL_SIZE
             )
             recycledViewPool.setMaxRecycledViews(
-                HabbitListAdapter.VIEW_TYPE_DISABLED,
-                HabbitListAdapter.MAX_POOL_SIZE
+                HabitListAdapter.VIEW_TYPE_DISABLED,
+                HabitListAdapter.MAX_POOL_SIZE
             )
         }
 
@@ -75,8 +72,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val item = habbitListAdapter.list[viewHolder.adapterPosition]
-                viewModel.deleteHabbitItem(item)
+                val item = habitListAdapter.currentList [viewHolder.adapterPosition]
+                viewModel.deleteHabitItem(item)
             }
         }
         val itemTouchHelper = ItemTouchHelper(callback)
@@ -84,13 +81,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupLongClickListener() {
-        habbitListAdapter.onHabbitItemLongClickListener = {
-            viewModel.deleteHabbitItem(it)
+        habitListAdapter.onHabitItemLongClickListener = {
+            viewModel.deleteHabitItem(it)
         }
     }
 
     private fun setupClickListener() {
-        habbitListAdapter.onHabbitItemClickListener = {
+        habitListAdapter.onHabitItemClickListener = {
             viewModel.changeEnabledState(it)
         }
     }

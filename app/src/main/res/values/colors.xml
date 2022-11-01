@@ -11,9 +11,9 @@
 
     <color name="grey">#C9CCD2</color>
     <color name="primary">#FF79C9</color>
-    <color name="primary_light">#F7DCEC</color>
+    <color name="primary_light">#FFDEF2</color>
     <color name="black">#272937</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="grey_light">#E0E0E0</color>
+    <color name="grey_light">#EFEFEF</color>
     <color name="grey_dark">#808080</color>
 </resources>
