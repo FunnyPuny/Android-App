@@ -1,6 +1,6 @@
 package com.example.funnypuny.domain
 
-data class HabbitItem(
+data class HabitItem(
     var id: Int = UNDEFINED_ID,
     val name: String,
     val enabled: Boolean

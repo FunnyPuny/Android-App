@@ -34,6 +34,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.125" />
         <entry key="app/src/main/res/layout/item_habbit_disabled.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/item_habbit_enabled.xml" value="0.2543822146216332" />
+        <entry key="app/src/main/res/layout/item_habit_disabled.xml" value="0.2543822146216332" />
         <entry key="app/src/main/res/menu/home_navigation_menu.xml" value="0.1" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1775" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1775" />

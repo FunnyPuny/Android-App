@@ -5,49 +5,48 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.R
-import com.example.funnypuny.domain.HabbitItem
+import com.example.funnypuny.domain.HabitItem
 import java.lang.RuntimeException
 
-class HabbitListAdapter: RecyclerView.Adapter<HabbitListAdapter.HabbitItemViewHolder>() {
+class HabitListAdapter: RecyclerView.Adapter<HabitListAdapter.HabitItemViewHolder>() {
     
-    var list = listOf<HabbitItem>()
+    var list = listOf<HabitItem>()
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
+            val callback = HabitListDiffCallback(list,value)
+            val diffResult = DiffUtil.calculateDiff(callback)
+            diffResult.dispatchUpdatesTo(this )
             field = value
-            notifyDataSetChanged()
         }
 
-    var onHabbitItemClickListener: ((HabbitItem) -> Unit)? = null
-    var onHabbitItemLongClickListener: ((HabbitItem)-> Unit)? = null
+    var onHabitItemClickListener: ((HabitItem) -> Unit)? = null
+    var onHabitItemLongClickListener: ((HabitItem)-> Unit)? = null
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabbitItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitItemViewHolder {
         val layout = when (viewType) {
-            VIEW_TYPE_DISABLED -> R.layout.item_habbit_disabled
-            VIEW_TYPE_ENABLED -> R.layout.item_habbit_enabled
-            else -> throw RuntimeException("Unknow view type: $viewType")
+            VIEW_TYPE_DISABLED -> R.layout.item_habit_disabled
+            VIEW_TYPE_ENABLED -> R.layout.item_habit_enabled
+            else -> throw RuntimeException("Unknown view type: $viewType")
         }
-        val view = LayoutInflater.from(parent.context).inflate(
-            layout,
-            parent,
-            false
-        )
-        return HabbitItemViewHolder(view)
+        val view = LayoutInflater.from(parent.context).inflate(layout, parent,false)
+        return HabitItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: HabbitItemViewHolder, position: Int) {
-        val habbitItem = list[position]
+    override fun onBindViewHolder(holder: HabitItemViewHolder, position: Int) {
+        val habitItem = list[position]
         holder.view.setOnClickListener {
-            onHabbitItemClickListener?.invoke(habbitItem)
+            onHabitItemClickListener?.invoke(habitItem)
             true
         }
         holder.view.setOnLongClickListener {
-            onHabbitItemLongClickListener?.invoke(habbitItem)
+            onHabitItemLongClickListener?.invoke(habitItem)
             true
         }
-        holder.tvName.text = habbitItem.name
+        holder.tvName.text = habitItem.name
     }
 
     override fun getItemCount(): Int {
@@ -63,13 +62,13 @@ class HabbitListAdapter: RecyclerView.Adapter<HabbitListAdapter.HabbitItemViewHo
         }
     }
 
-    class HabbitItemViewHolder(val view: View):RecyclerView.ViewHolder(view) {
+    class HabitItemViewHolder(val view: View):RecyclerView.ViewHolder(view) {
         val tvName = view.findViewById<TextView>(R.id.tv_name)
     }
 
-    interface OnHabbitItemClickListener {
+    interface OnHabitItemClickListener {
 
-        fun onHabbitItemClick (habbitItem: HabbitItem ) {
+        fun onHabitItemClick (habitItem: HabitItem ) {
 
         }
     }

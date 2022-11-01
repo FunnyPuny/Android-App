@@ -1,20 +1,18 @@
 package com.example.funnypuny.presentation
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.funnypuny.data.HabbitListRepositoryImpl
+import com.example.funnypuny.data.HabitListRepositoryImpl
 import com.example.funnypuny.domain.*
-import kotlinx.coroutines.flow.merge
 
 class MainViewModel: ViewModel() {
 
     //для всех юзкейсов в качестве параметра конструткора надо передать репозитрой
     // в котором они работают
-    private val repository = HabbitListRepositoryImpl
+    private val repository = HabitListRepositoryImpl
 
-    private val getHabbitListUseCase = GetHabbitListUseCase(repository)
-    private val deleteHabbitItemUseCase = DeleteHabbitItemUseCase(repository)
-    private val editHabbitItemUseCase = EditHabbitItemUseCase(repository)
+    private val getHabitListUseCase = GetHabitListUseCase(repository)
+    private val deleteHabitItemUseCase = DeleteHabitItemUseCase(repository)
+    private val editHabitItemUseCase = EditHabitItemUseCase(repository)
 
     //отображение списка элементов
     // Взаимодействие activity и viewModel должно происходить через LiveData<List<ShopItem>>.
@@ -23,18 +21,18 @@ class MainViewModel: ViewModel() {
     // экран будет ничтожен, вызовется метод onDestroy(), activity пересоздастся и
     // снова подпишется на объект LiveData<List<ShopItem>>.
 
-    val habbitList = getHabbitListUseCase.getHabbbitList()
+    val habbitList = getHabitListUseCase.getHabitList()
 
 
-    fun deleteHabbitItem(habbitItem: HabbitItem) {
-        deleteHabbitItemUseCase.deleteHabbitItem(habbitItem)
+    fun deleteHabitItem(habitItem: HabitItem) {
+        deleteHabitItemUseCase.deleteHabitItem(habitItem)
     }
 
-    fun changeEnabledState(habbitItem: HabbitItem) {
+    fun changeEnabledState(habitItem: HabitItem) {
         //создаем копию объекта, у которого все поля будут такие же,
         //но состояние enabled будет противоположное
-        val newItem = habbitItem.copy(enabled = !habbitItem.enabled)
-        editHabbitItemUseCase.editHabbitItem(newItem)
+        val newItem = habitItem.copy(enabled = !habitItem.enabled)
+        editHabitItemUseCase.editHabitItem(newItem)
     }
 
 }
