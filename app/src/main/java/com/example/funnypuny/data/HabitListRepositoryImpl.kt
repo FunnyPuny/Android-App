@@ -48,12 +48,12 @@ object HabitListRepositoryImpl: HabitListRepository {
         updateList()
     }
 
-    override fun getHabitItem(habbitItemId: Int): HabitItem {
+    override fun getHabitItem(habitItemId: Int): HabitItem {
         // ищем элемент по id и возвращаем его
         // если вдруг элемент не найден, приложение упадет с исключением
         return habitList.find {
-            it.id == habbitItemId
-        } ?: throw RuntimeException("Element with id $habbitItemId not found")
+            it.id == habitItemId
+        } ?: throw RuntimeException("Element with id $habitItemId not found")
     }
 
     override fun getHabitList(): LiveData<List<HabitItem>> {

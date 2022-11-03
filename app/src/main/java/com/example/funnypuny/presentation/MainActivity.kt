@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         setupClickListener()
-        setupLongClickListener()
+        //setupLongClickListener()
         setupSwipeListener(rvHabbitList)
     }
 
@@ -67,13 +67,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         return habitItemContainer == null
     }
 
-    private fun launchFragment(fragment: Fragment) {
+    /*private fun launchFragment(fragment: Fragment) {
         supportFragmentManager.popBackStack()
         supportFragmentManager.beginTransaction()
             .replace(R.id.habit_item_container, fragment)
             .addToBackStack(null)
             .commit()
-    }
+    }*/
 
     private fun setupSwipeListener(rvHabbitList: RecyclerView) {
         val callback = object : ItemTouchHelper.SimpleCallback(
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         itemTouchHelper.attachToRecyclerView(rvHabbitList)
     }
 
-    private fun setupLongClickListener() {
+    /*private fun setupLongClickListener() {
         habitListAdapter.onHabitItemClickListener = {
             if (isOnePaneMode()) {
                 Log.d("MainActivity", it.toString())
@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 launchFragment(HabitItemFragment.newInstanceEditItem(it.id))
             }
         }
-    }
+    }*/
 
     private fun setupClickListener() {
         habitListAdapter.onHabitItemClickListener = {
