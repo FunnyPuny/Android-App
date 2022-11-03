@@ -2,7 +2,11 @@ package com.example.funnypuny.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainer
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +17,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var habitListAdapter: HabitListAdapter
+    private var habitItemContainer: FragmentContainerView? = null
 
     private lateinit var bottom_navigation: BottomNavigationView
 
@@ -58,6 +63,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setupSwipeListener(rvHabbitList)
     }
 
+    private fun isOnePaneMode(): Boolean {
+        return habitItemContainer == null
+    }
+
+    private fun launchFragment(fragment: Fragment) {
+        supportFragmentManager.popBackStack()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.habit_item_container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
     private fun setupSwipeListener(rvHabbitList: RecyclerView) {
         val callback = object : ItemTouchHelper.SimpleCallback(
             0,
@@ -81,8 +98,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupLongClickListener() {
-        habitListAdapter.onHabitItemLongClickListener = {
-            viewModel.deleteHabitItem(it)
+        habitListAdapter.onHabitItemClickListener = {
+            if (isOnePaneMode()) {
+                Log.d("MainActivity", it.toString())
+                val intent = HabitItemActivity.newIntentEditItem(this, it.id)
+                startActivity(intent)
+            } else {
+                launchFragment(HabitItemFragment.newInstanceEditItem(it.id))
+            }
         }
     }
 

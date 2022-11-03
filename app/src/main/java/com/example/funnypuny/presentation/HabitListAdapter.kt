@@ -20,19 +20,22 @@ class HabitListAdapter: androidx.recyclerview.widget.ListAdapter<HabitItem, Habi
             else -> throw RuntimeException("Unknown view type: $viewType")
         }
         val view = LayoutInflater.from(parent.context).inflate(layout, parent,false)
-        return HabitItemViewHolder(view)
+        val viewHolder = HabitItemViewHolder(view)
+
+        viewHolder.view.setOnLongClickListener {
+            onHabitItemLongClickListener?.invoke(getItem(viewHolder.adapterPosition))
+            true
+        }
+
+        viewHolder.view.setOnClickListener {
+            onHabitItemClickListener?.invoke(getItem(viewHolder.adapterPosition))
+        }
+
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: HabitItemViewHolder, position: Int) {
         val habitItem = getItem(position)
-        holder.view.setOnClickListener {
-            onHabitItemClickListener?.invoke(habitItem)
-            true
-        }
-        holder.view.setOnLongClickListener {
-            onHabitItemLongClickListener?.invoke(habitItem)
-            true
-        }
         holder.tvName.text = habitItem.name
     }
 
