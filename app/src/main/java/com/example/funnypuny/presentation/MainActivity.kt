@@ -33,6 +33,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         bottom_navigation = findViewById(R.id.bottom_navigation_main)
         bottom_navigation.itemIconTintList = null
+
+        bottom_navigation.setOnClickListener {
+            val intent = HabitItemActivity.newIntentAddItem(this)
+            startActivity(intent)
+        }
     }
 
     override fun onClick(view: View?) {
@@ -59,7 +64,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         setupClickListener()
-        //setupLongClickListener()
+        setupLongClickListener()
         setupSwipeListener(rvHabbitList)
     }
 
@@ -97,17 +102,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         itemTouchHelper.attachToRecyclerView(rvHabbitList)
     }
 
-    /*private fun setupLongClickListener() {
-        habitListAdapter.onHabitItemClickListener = {
-            if (isOnePaneMode()) {
-                Log.d("MainActivity", it.toString())
-                val intent = HabitItemActivity.newIntentEditItem(this, it.id)
-                startActivity(intent)
-            } else {
-                launchFragment(HabitItemFragment.newInstanceEditItem(it.id))
-            }
+    private fun setupLongClickListener() {
+        habitListAdapter.onHabitItemLongClickListener = {
+            Log.d("MainActivity", it.toString())
+            val intent = HabitItemActivity.newIntentEditItem(this, it.id)
+            startActivity(intent)
         }
-    }*/
+    }
 
     private fun setupClickListener() {
         habitListAdapter.onHabitItemClickListener = {

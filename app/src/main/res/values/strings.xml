@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">FunnyPuny</string>
     <string name="home">Home</string>
+    <string name="add_shop_item_content_description">Add new habit item</string>
+    <string name="name_hint">Name:</string>
+    <string name="save_btn">Save</string>
+    <string name="error_input_name">Invalid name</string>
 </resources>

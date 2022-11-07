@@ -17,7 +17,7 @@ object HabitListRepositoryImpl: HabitListRepository {
 
     init {
         for (i in 0 until 5){
-            val item = HabitItem(i,"Name: $i",true)
+            val item = HabitItem("Name: $i",true,i)
             addHabitItem(item)
         }
     }

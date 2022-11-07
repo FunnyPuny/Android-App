@@ -22,9 +22,9 @@ class HabitItemViewModel: ViewModel() {
     val errorInputCount: LiveData<Boolean>
         get() = _errorInputCount
 
-    private val _shopItem = MutableLiveData<HabitItem>()
+    private val _habitItem = MutableLiveData<HabitItem>()
     val shopItem: LiveData<HabitItem>
-        get() = _shopItem
+        get() = _habitItem
 
     private val _shouldCloseScreen = MutableLiveData<Unit>()
     val shouldCloseScreen: LiveData<Unit>
@@ -44,14 +44,25 @@ class HabitItemViewModel: ViewModel() {
         }
     }
 
-    fun editHabitItem(habitItem: HabitItem  ) {
-        editHabitItemUseCase.editHabitItem(habitItem)
+    fun editHabitItem(inputName: String?) {
+        val name = parseName(inputName)
+        val fieldsValid = validateInput(name)
+        if (fieldsValid) {
+            _habitItem.value?.let {
+                val item = it.copy(name = name)
+                editHabitItemUseCase.editHabitItem(item)
+                finishWork()
+            }
+        }
     }
 
+    //обрезаем пробелы
     private fun parseName(inputName: String?): String {
         return inputName?.trim() ?: ""
     }
 
+    //преобразовываем в число
+    //ошибка при вводе НЕчисла, выводим 0
     private fun parseCount(inputCount: String?): Int {
         return try {
             inputCount?.trim()?.toInt() ?: 0
