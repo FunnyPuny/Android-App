@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,35 +17,87 @@ import com.example.funnypuny.R
 import com.example.funnypuny.domain.HabitItem
 import com.google.android.material.textfield.TextInputLayout
 
-class HabitItemFragment(
-    private val screenMode: String = MODE_UNKNOWN,
-    private val habitItemId: Int = HabitItem.UNDEFINED_ID
-) : Fragment() {
+class HabitItemFragment: Fragment() {
+
+    private lateinit var onHabitItemEditingFinishedListener: OnHabitItemEditingFinishedListener
 
     private lateinit var viewModel: HabitItemViewModel
 
     private lateinit var tilName: TextInputLayout
-    private lateinit var tilCount: TextInputLayout
     private lateinit var etName: EditText
-    private lateinit var etCount: EditText
     private lateinit var buttonSave: Button
+
+    private var screenMode = MODE_UNKNOWN
+    private var habitItemId = HabitItem.UNDEFINED_ID
+
+    override fun onAttach(context: Context) {
+        Log.d("ShopItemFragment", "onAttach")
+        super.onAttach(context)
+        if (context is OnHabitItemEditingFinishedListener) {
+            onHabitItemEditingFinishedListener = context
+        } else {
+            throw RuntimeException("Activity must implement OnHabitItemEditingFinishedListener")
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("HabitItemFragment", "onCreate")
+        super.onCreate(savedInstanceState)
+        parseParams()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("ShopItemFragment", "onCreateView")
         return inflater.inflate(R.layout.fragment_habit_item, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("HabitItemFragment", "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
-        //parseParams()
         viewModel = ViewModelProvider(this)[HabitItemViewModel::class.java]
         initViews(view)
         addTextChangeListeners()
         launchRightMode()
         observeViewModel()
+    }
+
+    override fun onStart() {
+        Log.d("HabitItemFragment", "onStart")
+        super.onStart()
+    }
+
+    override fun onResume() {
+        Log.d("HabitItemFragment", "onResume")
+        super.onResume()
+    }
+
+    override fun onPause() {
+        Log.d("HabitItemFragment", "onPause")
+        super.onPause()
+    }
+
+    override fun onStop() {
+        Log.d("HabitItemFragment", "onStop")
+        super.onStop()
+    }
+
+    override fun onDestroyView() {
+        Log.d("HabitItemFragment", "onDestroyView")
+        super.onDestroyView()
+    }
+
+    override fun onDestroy() {
+        Log.d("HabitItemFragment", "onDestroy")
+        super.onDestroy()
+    }
+
+    override fun onDetach() {
+        Log.d("HabitItemFragment", "onDetach")
+        super.onDetach()
     }
 
     private fun observeViewModel() {
@@ -57,14 +110,14 @@ class HabitItemFragment(
             tilName.error = message
         }
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
-            activity?.onBackPressed()
+            onHabitItemEditingFinishedListener.onHabitItemEditingFinished()
         }
     }
 
     private fun launchRightMode() {
         when (screenMode) {
             MODE_EDIT -> launchEditMode()
-            MODE_ADD  -> launchAddMode()
+            MODE_ADD -> launchAddMode()
         }
     }
 
@@ -84,7 +137,7 @@ class HabitItemFragment(
 
     private fun launchEditMode() {
         viewModel.getHabitItem(habitItemId)
-        viewModel.shopItem.observe(viewLifecycleOwner) {
+        viewModel.habitItem.observe(viewLifecycleOwner) {
             etName.setText(it.name)
         }
         buttonSave.setOnClickListener {
@@ -98,40 +151,58 @@ class HabitItemFragment(
         }
     }
 
-    /*private fun parseParams() {
-        if (screenMode != MODE_EDIT && screenMode != MODE_ADD) {
-            throw RuntimeException("Param screen mode is absent")
+    private fun parseParams() {
+        val args = arguments ?: throw RuntimeException("Required arguments is absent")
+        if (!args.containsKey(KEY_SCREEN_MODE)) {
+            throw RuntimeException("Attribute screen mode is absent")
         }
-        if (screenMode == MODE_EDIT && habitItemId == HabitItem.UNDEFINED_ID) {
+        val mode = args.getString(KEY_SCREEN_MODE)
+        if (mode != MODE_ADD && mode != MODE_EDIT) {
+            throw RuntimeException("Unknown screen mode $screenMode")
+        }
+        screenMode = mode
+        if (screenMode == MODE_EDIT && !args.containsKey(KEY_SHOP_ITEM_ID)) {
             throw RuntimeException("Param shop item id is absent")
         }
-    }*/
+        habitItemId = args.getInt(KEY_SHOP_ITEM_ID)
+    }
 
     private fun initViews(view: View) {
-        tilName = view.findViewById(R.id.til_name)
-        etName = view.findViewById(R.id.et_name)
-        buttonSave = view.findViewById(R.id.save_button)
+        with(view) {
+            tilName = findViewById(R.id.til_name)
+            etName = findViewById(R.id.et_name)
+            buttonSave = findViewById(R.id.save_button)
+        }
+    }
+
+    interface OnHabitItemEditingFinishedListener {
+
+        fun onHabitItemEditingFinished()
     }
 
     companion object {
 
-        private const val EXTRA_SCREEN_MODE = "extra_mode"
-        private const val EXTRA_SHOP_ITEM_ID = "extra_shop_item_id"
+        private const val KEY_SCREEN_MODE = "screen_mode"
+        private const val KEY_SHOP_ITEM_ID = "shop_item_id"
         private const val MODE_EDIT = "mode_edit"
         private const val MODE_ADD = "mode_add"
         private const val MODE_UNKNOWN = ""
 
-        fun newIntentAddItem(context: Context): Intent {
-            val intent = Intent(context, HabitItemActivity::class.java)
-            intent.putExtra(EXTRA_SCREEN_MODE, MODE_ADD)
-            return intent
+        fun newInstanceAddItem(): HabitItemFragment {
+            return HabitItemFragment().apply {
+                arguments = Bundle().apply {
+                    putString(KEY_SCREEN_MODE, MODE_ADD)
+                }
+            }
         }
 
-        fun newIntentEditItem(context: Context, shopItemId: Int): Intent {
-            val intent = Intent(context, HabitItemActivity::class.java)
-            intent.putExtra(EXTRA_SCREEN_MODE, MODE_EDIT)
-            intent.putExtra(EXTRA_SHOP_ITEM_ID, shopItemId)
-            return intent
+        fun newInstanceEditItem(shopItemId: Int): HabitItemFragment {
+            return HabitItemFragment().apply {
+                arguments = Bundle().apply {
+                    putString(KEY_SCREEN_MODE, MODE_EDIT)
+                    putInt(KEY_SHOP_ITEM_ID, shopItemId)
+                }
+            }
         }
     }
 }

@@ -23,7 +23,7 @@ class HabitItemViewModel: ViewModel() {
         get() = _errorInputCount
 
     private val _habitItem = MutableLiveData<HabitItem>()
-    val shopItem: LiveData<HabitItem>
+    val habitItem: LiveData<HabitItem>
         get() = _habitItem
 
     private val _shouldCloseScreen = MutableLiveData<Unit>()

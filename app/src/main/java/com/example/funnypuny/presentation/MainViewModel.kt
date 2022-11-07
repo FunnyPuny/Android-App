@@ -21,14 +21,14 @@ class MainViewModel: ViewModel() {
     // экран будет ничтожен, вызовется метод onDestroy(), activity пересоздастся и
     // снова подпишется на объект LiveData<List<ShopItem>>.
 
-    val habbitList = getHabitListUseCase.getHabitList()
+    val habitList = getHabitListUseCase.getHabitList()
 
 
     fun deleteHabitItem(habitItem: HabitItem) {
         deleteHabitItemUseCase.deleteHabitItem(habitItem)
     }
 
-    fun changeEnabledState(habitItem: HabitItem) {
+    fun changeEnableState(habitItem: HabitItem) {
         //создаем копию объекта, у которого все поля будут такие же,
         //но состояние enabled будет противоположное
         val newItem = habitItem.copy(enabled = !habitItem.enabled)
