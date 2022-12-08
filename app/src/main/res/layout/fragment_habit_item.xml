@@ -34,10 +34,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_name"
@@ -54,7 +51,6 @@
             android:background="@drawable/ic_edit_text_corner"
             tools:targetApi="p" />
 
-    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/tv_reminder_note"
@@ -71,10 +67,6 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_reminder_note"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/et_reminder_note"
@@ -92,7 +84,6 @@
         android:background="@drawable/ic_edit_text_corner"
         tools:targetApi="p" />
 
-    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/tv_frequency"

@@ -1,7 +1,5 @@
 package com.example.funnypuny.presentation
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -23,14 +21,13 @@ class HabitItemFragment: Fragment() {
 
     private lateinit var viewModel: HabitItemViewModel
 
-    private lateinit var tilName: TextInputLayout
     private lateinit var etName: EditText
     private lateinit var buttonSave: Button
 
     private var screenMode = MODE_UNKNOWN
     private var habitItemId = HabitItem.UNDEFINED_ID
 
-    override fun onAttach(context: Context) {
+    /*override fun onAttach(context: Context) {
         Log.d("ShopItemFragment", "onAttach")
         super.onAttach(context)
         if (context is OnHabitItemEditingFinishedListener) {
@@ -38,12 +35,12 @@ class HabitItemFragment: Fragment() {
         } else {
             throw RuntimeException("Activity must implement OnHabitItemEditingFinishedListener")
         }
-    }
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("HabitItemFragment", "onCreate")
         super.onCreate(savedInstanceState)
-        parseParams()
+        //parseParams()
     }
 
     override fun onCreateView(
@@ -107,7 +104,7 @@ class HabitItemFragment: Fragment() {
             } else {
                 null
             }
-            tilName.error = message
+            etName.error = message
         }
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
             onHabitItemEditingFinishedListener.onHabitItemEditingFinished()
@@ -151,7 +148,7 @@ class HabitItemFragment: Fragment() {
         }
     }
 
-    private fun parseParams() {
+    /*private fun parseParams() {
         val args = arguments ?: throw RuntimeException("Required arguments is absent")
         if (!args.containsKey(KEY_SCREEN_MODE)) {
             throw RuntimeException("Attribute screen mode is absent")
@@ -165,11 +162,10 @@ class HabitItemFragment: Fragment() {
             throw RuntimeException("Param shop item id is absent")
         }
         habitItemId = args.getInt(KEY_SHOP_ITEM_ID)
-    }
+    }*/
 
     private fun initViews(view: View) {
         with(view) {
-            tilName = findViewById(R.id.til_name)
             etName = findViewById(R.id.et_name)
             buttonSave = findViewById(R.id.save_button)
         }
@@ -183,7 +179,7 @@ class HabitItemFragment: Fragment() {
     companion object {
 
         private const val KEY_SCREEN_MODE = "screen_mode"
-        private const val KEY_SHOP_ITEM_ID = "shop_item_id"
+        private const val KEY_HABIT_ITEM_ID = "habit_item_id"
         private const val MODE_EDIT = "mode_edit"
         private const val MODE_ADD = "mode_add"
         private const val MODE_UNKNOWN = ""
@@ -196,11 +192,11 @@ class HabitItemFragment: Fragment() {
             }
         }
 
-        fun newInstanceEditItem(shopItemId: Int): HabitItemFragment {
+        fun newInstanceEditItem(habitItemId: Int): HabitItemFragment {
             return HabitItemFragment().apply {
                 arguments = Bundle().apply {
                     putString(KEY_SCREEN_MODE, MODE_EDIT)
-                    putInt(KEY_SHOP_ITEM_ID, shopItemId)
+                    putInt(KEY_HABIT_ITEM_ID, habitItemId)
                 }
             }
         }

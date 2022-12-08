@@ -7,26 +7,26 @@ import android.os.Bundle
 import com.example.funnypuny.R
 import com.example.funnypuny.domain.HabitItem
 
-class HabitItemActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFinishedListener {
-
+class HabitItemActivity : AppCompatActivity()/*, HabitItemFragment.OnHabitItemEditingFinishedListener*/ {
+/*
     private var screenMode = MODE_UNKNOWN
-    private var shopItemId = HabitItem.UNDEFINED_ID
+    private var habitItemId = HabitItem.UNDEFINED_ID*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_habit_item)
+        setContentView(R.layout.activity_habit_item)/*
         parseIntent()
-        launchRightMode()
+        launchRightMode()*/
     }
 
-    private fun launchRightMode() {
+    /*private fun launchRightMode() {
         val fragment = when (screenMode) {
-            MODE_EDIT -> HabitItemFragment.newInstanceEditItem(shopItemId)
+            MODE_EDIT -> HabitItemFragment.newInstanceEditItem(habitItemId)
             MODE_ADD -> HabitItemFragment.newInstanceAddItem()
             else -> throw RuntimeException("Unknown screen mode $screenMode")
         }
         supportFragmentManager.beginTransaction()
-            .replace(R.id.shop_item_container, fragment)
+            .replace(R.id.habit_item_container, fragment)
             .commit()
     }
 
@@ -43,13 +43,13 @@ class HabitItemActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEdit
             if (!intent.hasExtra(EXTRA_SHOP_ITEM_ID)) {
                 throw RuntimeException("Param shop item id is absent")
             }
-            shopItemId = intent.getIntExtra(EXTRA_SHOP_ITEM_ID, HabitItem.UNDEFINED_ID)
+            habitItemId = intent.getIntExtra(EXTRA_SHOP_ITEM_ID, HabitItem.UNDEFINED_ID)
         }
     }
 
     override fun onHabitItemEditingFinished() {
         finish()
-    }
+    }*/
 
     companion object {
 
@@ -65,10 +65,10 @@ class HabitItemActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEdit
             return intent
         }
 
-        fun newIntentEditItem(context: Context, shopItemId: Int): Intent {
+        fun newIntentEditItem(context: Context, habitItemId: Int): Intent {
             val intent = Intent(context, HabitItemActivity::class.java)
             intent.putExtra(EXTRA_SCREEN_MODE, MODE_EDIT)
-            intent.putExtra(EXTRA_SHOP_ITEM_ID, shopItemId)
+            intent.putExtra(EXTRA_SHOP_ITEM_ID, habitItemId)
             return intent
         }
     }

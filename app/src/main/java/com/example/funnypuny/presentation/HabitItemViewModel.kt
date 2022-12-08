@@ -18,9 +18,6 @@ class HabitItemViewModel: ViewModel() {
     val errorInputName: LiveData<Boolean>
         get() = _errorInputName
 
-    private val _errorInputCount = MutableLiveData<Boolean>()
-    val errorInputCount: LiveData<Boolean>
-        get() = _errorInputCount
 
     private val _habitItem = MutableLiveData<HabitItem>()
     val habitItem: LiveData<HabitItem>
@@ -31,15 +28,16 @@ class HabitItemViewModel: ViewModel() {
         get() = _shouldCloseScreen
 
     fun getHabitItem(habitItemId: Int) {
-        val item = getHabitItemUseCase.getHabitItem(habitItemId )
+        val item = getHabitItemUseCase.getHabitItem(habitItemId)
+        _habitItem.value = item
     }
 
     fun addHabitItem(inputName: String?) {
         val name = parseName(inputName)
         val fieldsValid = validateInput(name)
         if (fieldsValid) {
-            val shopItem = HabitItem(name,true)
-            addHabitItemUseCase.addHabitItem(shopItem)
+            val habitItem = HabitItem(name,true)
+            addHabitItemUseCase.addHabitItem(habitItem)
             finishWork()
         }
     }
@@ -63,13 +61,13 @@ class HabitItemViewModel: ViewModel() {
 
     //преобразовываем в число
     //ошибка при вводе НЕчисла, выводим 0
-    private fun parseCount(inputCount: String?): Int {
+    /*private fun parseCount(inputCount: String?): Int {
         return try {
             inputCount?.trim()?.toInt() ?: 0
         } catch (e: Exception) {
             0
         }
-    }
+    }*/
 
     private fun validateInput(name: String): Boolean {
         var result = true
@@ -84,9 +82,6 @@ class HabitItemViewModel: ViewModel() {
         _errorInputName.value = false
     }
 
-    fun resetErrorInputCount() {
-        _errorInputCount.value = false
-    }
 
     private fun finishWork() {
         _shouldCloseScreen.value = Unit

@@ -2,11 +2,12 @@ package com.example.funnypuny.presentation
  
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import com.example.funnypuny.R
 import com.example.funnypuny.domain.HabitItem
 import java.lang.RuntimeException
 
-class HabitListAdapter: androidx.recyclerview.widget.ListAdapter<HabitItem, HabitItemViewHolder>(HabitItemDiffCallback()) {
+class HabitListAdapter: ListAdapter<HabitItem, HabitItemViewHolder>(HabitItemDiffCallback()) {
 
 
     var onHabitItemClickListener: ((HabitItem) -> Unit)? = null
