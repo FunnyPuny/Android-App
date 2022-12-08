@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFinishedListener {
+class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFinishedListener{
 
     private lateinit var viewModel: MainViewModel
     private lateinit var habitListAdapter: HabitListAdapter
@@ -28,22 +28,13 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
 
         habitItemContainer = findViewById(R.id.habit_item_container)
         setupRecyclerView()
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.habitList.observe(this) {
             habitListAdapter.submitList(it)
         }
 
         bottom_navigation = findViewById(R.id.bottom_navigation_main)
         bottom_navigation.itemIconTintList = null
-
-        /*bottom_navigation.setOnClickListener {
-            if (isOnePaneMode()) {
-                val intent = HabitItemActivity.newIntentAddItem(this)
-                startActivity(intent)
-            } else {
-                launchFragment(HabitItemFragment.newInstanceAddItem())
-            }
-        }*/
 
         val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -72,7 +63,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
     }
 
     override fun onHabitItemEditingFinished() {
-        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this@MainActivity, "Success", Toast.LENGTH_LONG).show()
         supportFragmentManager.popBackStack()
     }
 
@@ -89,7 +80,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
     }
 
     private fun setupRecyclerView() {
-        val rvShopList = findViewById<RecyclerView>(R.id.rv_habbit_list)
+        val rvShopList = findViewById<RecyclerView>(R.id.rv_habit_list)
         with(rvShopList) {
             habitListAdapter = HabitListAdapter()
             adapter = habitListAdapter

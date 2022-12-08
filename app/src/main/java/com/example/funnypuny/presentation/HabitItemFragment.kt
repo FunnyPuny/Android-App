@@ -1,5 +1,6 @@
 package com.example.funnypuny.presentation
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.funnypuny.R
 import com.example.funnypuny.domain.HabitItem
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputLayout
 
 class HabitItemFragment: Fragment() {
@@ -27,15 +29,15 @@ class HabitItemFragment: Fragment() {
     private var screenMode = MODE_UNKNOWN
     private var habitItemId: Int = HabitItem.UNDEFINED_ID
 
-    /*override fun onAttach(context: Context) {
-        Log.d("ShopItemFragment", "onAttach")
+    override fun onAttach(context: Context) {
+        Log.d("HabitItemFragment", "onAttach")
         super.onAttach(context)
         if (context is OnHabitItemEditingFinishedListener) {
             onHabitItemEditingFinishedListener = context
         } else {
             throw RuntimeException("Activity must implement OnHabitItemEditingFinishedListener")
         }
-    }*/
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("HabitItemFragment", "onCreate")
@@ -107,8 +109,8 @@ class HabitItemFragment: Fragment() {
             etName.error = message
         }
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
-            //onHabitItemEditingFinishedListener.onHabitItemEditingFinished()
-            activity?.onBackPressed()
+            onHabitItemEditingFinishedListener.onHabitItemEditingFinished()
+            //activity?.onBackPressed()
         }
     }
 

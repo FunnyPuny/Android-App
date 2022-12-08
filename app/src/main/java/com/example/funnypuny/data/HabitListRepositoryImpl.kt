@@ -15,12 +15,12 @@ object HabitListRepositoryImpl: HabitListRepository {
     //переменная которая будет хранить id элементов
     private var autoIncrementId = 0
 
-    init {
+    /*init {
         for (i in 0 until 5){
             val item = HabitItem("Name: $i",true,i)
             addHabitItem(item)
         }
-    }
+    }*/
 
     override fun addHabitItem(habitItem: HabitItem) {
         //при редоктировании элемента надо сохранить его id

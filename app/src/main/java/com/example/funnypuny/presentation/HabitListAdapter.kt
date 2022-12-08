@@ -31,7 +31,6 @@ class HabitListAdapter: ListAdapter<HabitItem, HabitItemViewHolder>(HabitItemDif
         viewHolder.view.setOnClickListener {
             onHabitItemClickListener?.invoke(getItem(viewHolder.adapterPosition))
         }
-
         return viewHolder
     }
 
