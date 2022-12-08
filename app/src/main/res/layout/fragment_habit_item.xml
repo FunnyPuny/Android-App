@@ -49,7 +49,8 @@
             android:layout_marginEnd="16dp"
             android:inputType="textCapWords"
             android:background="@drawable/ic_edit_text_corner"
-            tools:targetApi="p" />
+            tools:targetApi="p"
+            android:paddingStart="16dp"/>
 
 
     <TextView
@@ -82,7 +83,8 @@
         android:layout_marginEnd="16dp"
         android:inputType="textCapWords"
         android:background="@drawable/ic_edit_text_corner"
-        tools:targetApi="p" />
+        tools:targetApi="p"
+        android:paddingStart="16dp"/>
 
 
     <TextView

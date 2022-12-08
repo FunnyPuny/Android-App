@@ -7,19 +7,19 @@ import android.os.Bundle
 import com.example.funnypuny.R
 import com.example.funnypuny.domain.HabitItem
 
-class HabitItemActivity : AppCompatActivity()/*, HabitItemFragment.OnHabitItemEditingFinishedListener*/ {
-/*
+class HabitItemActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFinishedListener {
+
     private var screenMode = MODE_UNKNOWN
-    private var habitItemId = HabitItem.UNDEFINED_ID*/
+    private var habitItemId = HabitItem.UNDEFINED_ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_habit_item)/*
+        setContentView(R.layout.activity_habit_item)
         parseIntent()
-        launchRightMode()*/
+        launchRightMode()
     }
 
-    /*private fun launchRightMode() {
+    private fun launchRightMode() {
         val fragment = when (screenMode) {
             MODE_EDIT -> HabitItemFragment.newInstanceEditItem(habitItemId)
             MODE_ADD -> HabitItemFragment.newInstanceAddItem()
@@ -49,7 +49,7 @@ class HabitItemActivity : AppCompatActivity()/*, HabitItemFragment.OnHabitItemEd
 
     override fun onHabitItemEditingFinished() {
         finish()
-    }*/
+    }
 
     companion object {
 

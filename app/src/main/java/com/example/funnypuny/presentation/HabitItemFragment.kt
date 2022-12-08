@@ -25,7 +25,7 @@ class HabitItemFragment: Fragment() {
     private lateinit var buttonSave: Button
 
     private var screenMode = MODE_UNKNOWN
-    private var habitItemId = HabitItem.UNDEFINED_ID
+    private var habitItemId: Int = HabitItem.UNDEFINED_ID
 
     /*override fun onAttach(context: Context) {
         Log.d("ShopItemFragment", "onAttach")
@@ -40,7 +40,7 @@ class HabitItemFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("HabitItemFragment", "onCreate")
         super.onCreate(savedInstanceState)
-        //parseParams()
+        parseParams()
     }
 
     override fun onCreateView(
@@ -107,7 +107,8 @@ class HabitItemFragment: Fragment() {
             etName.error = message
         }
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
-            onHabitItemEditingFinishedListener.onHabitItemEditingFinished()
+            //onHabitItemEditingFinishedListener.onHabitItemEditingFinished()
+            activity?.onBackPressed()
         }
     }
 
@@ -148,21 +149,23 @@ class HabitItemFragment: Fragment() {
         }
     }
 
-    /*private fun parseParams() {
-        val args = arguments ?: throw RuntimeException("Required arguments is absent")
-        if (!args.containsKey(KEY_SCREEN_MODE)) {
-            throw RuntimeException("Attribute screen mode is absent")
+    private fun parseParams() {
+        val args = requireArguments()
+        if (!args.containsKey(SCREEN_MODE)) {
+            throw RuntimeException("Param screen mode is absent")
         }
-        val mode = args.getString(KEY_SCREEN_MODE)
-        if (mode != MODE_ADD && mode != MODE_EDIT) {
-            throw RuntimeException("Unknown screen mode $screenMode")
+        val mode = args.getString(SCREEN_MODE)
+        if (mode != MODE_EDIT && mode != MODE_ADD) {
+            throw RuntimeException("Unknown screen mode $mode")
         }
         screenMode = mode
-        if (screenMode == MODE_EDIT && !args.containsKey(KEY_SHOP_ITEM_ID)) {
-            throw RuntimeException("Param shop item id is absent")
+        if (screenMode == MODE_EDIT) {
+            if (!args.containsKey(HABIT_ITEM_ID)) {
+                throw RuntimeException("Param shop item id is absent")
+            }
+            habitItemId = args.getInt(HABIT_ITEM_ID, HabitItem.UNDEFINED_ID)
         }
-        habitItemId = args.getInt(KEY_SHOP_ITEM_ID)
-    }*/
+    }
 
     private fun initViews(view: View) {
         with(view) {
@@ -178,8 +181,8 @@ class HabitItemFragment: Fragment() {
 
     companion object {
 
-        private const val KEY_SCREEN_MODE = "screen_mode"
-        private const val KEY_HABIT_ITEM_ID = "habit_item_id"
+        private const val SCREEN_MODE = "screen_mode"
+        private const val HABIT_ITEM_ID = "habit_item_id"
         private const val MODE_EDIT = "mode_edit"
         private const val MODE_ADD = "mode_add"
         private const val MODE_UNKNOWN = ""
@@ -187,7 +190,7 @@ class HabitItemFragment: Fragment() {
         fun newInstanceAddItem(): HabitItemFragment {
             return HabitItemFragment().apply {
                 arguments = Bundle().apply {
-                    putString(KEY_SCREEN_MODE, MODE_ADD)
+                    putString(SCREEN_MODE, MODE_ADD)
                 }
             }
         }
@@ -195,8 +198,8 @@ class HabitItemFragment: Fragment() {
         fun newInstanceEditItem(habitItemId: Int): HabitItemFragment {
             return HabitItemFragment().apply {
                 arguments = Bundle().apply {
-                    putString(KEY_SCREEN_MODE, MODE_EDIT)
-                    putInt(KEY_HABIT_ITEM_ID, habitItemId)
+                    putString(SCREEN_MODE, MODE_EDIT)
+                    putInt(HABIT_ITEM_ID, habitItemId)
                 }
             }
         }

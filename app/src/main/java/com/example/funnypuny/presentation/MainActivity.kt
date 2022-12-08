@@ -36,14 +36,39 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         bottom_navigation = findViewById(R.id.bottom_navigation_main)
         bottom_navigation.itemIconTintList = null
 
-        bottom_navigation.setOnClickListener {
+        /*bottom_navigation.setOnClickListener {
             if (isOnePaneMode()) {
                 val intent = HabitItemActivity.newIntentAddItem(this)
                 startActivity(intent)
             } else {
                 launchFragment(HabitItemFragment.newInstanceAddItem())
             }
+        }*/
+
+        val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_add_box -> {
+                    if (isOnePaneMode()) {
+                        val intent = HabitItemActivity.newIntentAddItem(this)
+                        startActivity(intent)
+                    } else {
+                        launchFragment(HabitItemFragment.newInstanceAddItem())
+                    }
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.nav_home -> {
+                    // put your code here
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.nav_profile -> {
+                    // put your code here
+                    return@OnNavigationItemSelectedListener true
+                }
+            }
+            false
         }
+
+        bottom_navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
     override fun onHabitItemEditingFinished() {
