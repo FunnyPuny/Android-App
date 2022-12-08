@@ -13,21 +13,22 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.funnypuny.R
+import com.example.funnypuny.databinding.FragmentHabitItemBinding
 import com.example.funnypuny.domain.HabitItem
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputLayout
 
 class HabitItemFragment: Fragment() {
 
+    private var _binding: FragmentHabitItemBinding? = null
+    private val binding: FragmentHabitItemBinding
+        get() = _binding ?: throw RuntimeException("FragmentHabitItemBinding == null")
+
     private lateinit var onHabitItemEditingFinishedListener: OnHabitItemEditingFinishedListener
-
     private lateinit var viewModel: HabitItemViewModel
-
-    private lateinit var etName: EditText
-    private lateinit var buttonSave: Button
-
     private var screenMode = MODE_UNKNOWN
     private var habitItemId: Int = HabitItem.UNDEFINED_ID
+
 
     override fun onAttach(context: Context) {
         Log.d("HabitItemFragment", "onAttach")
@@ -49,16 +50,17 @@ class HabitItemFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         Log.d("ShopItemFragment", "onCreateView")
-        return inflater.inflate(R.layout.fragment_habit_item, container, false)
+        _binding = FragmentHabitItemBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("HabitItemFragment", "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[HabitItemViewModel::class.java]
-        initViews(view)
+        //initViews(view)
         addTextChangeListeners()
         launchRightMode()
         observeViewModel()
@@ -87,6 +89,7 @@ class HabitItemFragment: Fragment() {
     override fun onDestroyView() {
         Log.d("HabitItemFragment", "onDestroyView")
         super.onDestroyView()
+        _binding = null
     }
 
     override fun onDestroy() {
@@ -106,7 +109,7 @@ class HabitItemFragment: Fragment() {
             } else {
                 null
             }
-            etName.error = message
+            binding.etName.error = message
         }
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
             onHabitItemEditingFinishedListener.onHabitItemEditingFinished()
@@ -122,7 +125,7 @@ class HabitItemFragment: Fragment() {
     }
 
     private fun addTextChangeListeners() {
-        etName.addTextChangedListener(object : TextWatcher {
+        binding.etName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -138,16 +141,16 @@ class HabitItemFragment: Fragment() {
     private fun launchEditMode() {
         viewModel.getHabitItem(habitItemId)
         viewModel.habitItem.observe(viewLifecycleOwner) {
-            etName.setText(it.name)
+            binding.etName.setText(it.name)
         }
-        buttonSave.setOnClickListener {
-            viewModel.editHabitItem(etName.text?.toString())
+        binding.saveButton.setOnClickListener {
+            viewModel.editHabitItem(binding.etName.text?.toString())
         }
     }
 
     private fun launchAddMode() {
-        buttonSave.setOnClickListener {
-            viewModel.addHabitItem(etName.text?.toString())
+        binding.saveButton.setOnClickListener {
+            viewModel.addHabitItem(binding.etName.text?.toString())
         }
     }
 
@@ -169,12 +172,12 @@ class HabitItemFragment: Fragment() {
         }
     }
 
-    private fun initViews(view: View) {
+    /*private fun initViews(view: View) {
         with(view) {
             etName = findViewById(R.id.et_name)
             buttonSave = findViewById(R.id.save_button)
         }
-    }
+    }*/
 
     interface OnHabitItemEditingFinishedListener {
 

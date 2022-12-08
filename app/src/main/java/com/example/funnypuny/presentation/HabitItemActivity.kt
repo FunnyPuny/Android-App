@@ -5,16 +5,22 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.funnypuny.R
+import com.example.funnypuny.databinding.ActivityHabitItemBinding
 import com.example.funnypuny.domain.HabitItem
 
 class HabitItemActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFinishedListener {
+
+    private var _binding: ActivityHabitItemBinding? = null
+    private val binding: ActivityHabitItemBinding
+        get() = _binding ?: throw RuntimeException("ActivityHabitItemBinding == null")
 
     private var screenMode = MODE_UNKNOWN
     private var habitItemId = HabitItem.UNDEFINED_ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_habit_item)
+        _binding = ActivityHabitItemBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         parseIntent()
         launchRightMode()
     }

@@ -12,29 +12,34 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.R
+import com.example.funnypuny.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFinishedListener{
+class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFinishedListener {
+
+    private var _binding: ActivityMainBinding? = null
+    private val binding: ActivityMainBinding
+        get() = _binding ?: throw RuntimeException("ActivityMainBinding == null")
 
     private lateinit var viewModel: MainViewModel
     private lateinit var habitListAdapter: HabitListAdapter
     private var habitItemContainer: FragmentContainerView? = null
 
-    private lateinit var bottom_navigation: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        habitItemContainer = findViewById(R.id.habit_item_container)
+        habitItemContainer = binding.habitItemContainer
         setupRecyclerView()
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.habitList.observe(this) {
             habitListAdapter.submitList(it)
         }
 
-        bottom_navigation = findViewById(R.id.bottom_navigation_main)
-        bottom_navigation.itemIconTintList = null
+
+        binding.bottomNavigationMain.itemIconTintList = null
 
         val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -59,7 +64,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             false
         }
 
-        bottom_navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        binding.bottomNavigationMain.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
     override fun onHabitItemEditingFinished() {
@@ -80,7 +85,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
     }
 
     private fun setupRecyclerView() {
-        val rvShopList = findViewById<RecyclerView>(R.id.rv_habit_list)
+        val rvShopList = binding.rvHabitList
         with(rvShopList) {
             habitListAdapter = HabitListAdapter()
             adapter = habitListAdapter
