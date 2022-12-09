@@ -17,21 +17,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFinishedListener {
 
-    private var _binding: ActivityMainBinding? = null
-    private val binding: ActivityMainBinding
-        get() = _binding ?: throw RuntimeException("ActivityMainBinding == null")
+    private lateinit var binding: ActivityMainBinding
 
     private lateinit var viewModel: MainViewModel
     private lateinit var habitListAdapter: HabitListAdapter
-    private var habitItemContainer: FragmentContainerView? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        habitItemContainer = binding.habitItemContainer
         setupRecyclerView()
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.habitList.observe(this) {
@@ -73,7 +69,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
     }
 
     private fun isOnePaneMode(): Boolean {
-        return habitItemContainer == null
+        return binding.habitItemContainer == null
     }
 
     private fun launchFragment(fragment: Fragment) {

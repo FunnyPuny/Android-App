@@ -60,6 +60,8 @@ class HabitItemFragment: Fragment() {
         Log.d("HabitItemFragment", "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[HabitItemViewModel::class.java]
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         //initViews(view)
         addTextChangeListeners()
         launchRightMode()
@@ -103,14 +105,6 @@ class HabitItemFragment: Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.errorInputName.observe(viewLifecycleOwner) {
-            val message = if (it) {
-                getString(R.string.error_input_name)
-            } else {
-                null
-            }
-            binding.etName.error = message
-        }
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
             onHabitItemEditingFinishedListener.onHabitItemEditingFinished()
             //activity?.onBackPressed()
@@ -140,9 +134,6 @@ class HabitItemFragment: Fragment() {
 
     private fun launchEditMode() {
         viewModel.getHabitItem(habitItemId)
-        viewModel.habitItem.observe(viewLifecycleOwner) {
-            binding.etName.setText(it.name)
-        }
         binding.saveButton.setOnClickListener {
             viewModel.editHabitItem(binding.etName.text?.toString())
         }
