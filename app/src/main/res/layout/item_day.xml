@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    android:background="@drawable/ic_white_ellipse"
+    android:id="@+id/calendar_linear_layout">
+
+    <TextView
+        android:id="@+id/txt_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="S"
+        android:fontFamily="@font/roboto"
+        android:textColor="@color/grey_dark"
+        android:paddingBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/txt_date"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/ic_ellipse_enable"
+        android:text="22"
+        android:textColor="@color/grey_dark"
+        android:gravity="center"/>
+
+
+</LinearLayout>

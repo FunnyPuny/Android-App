@@ -2,6 +2,7 @@ package com.example.funnypuny.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.funnypuny.domain.FrequencyItem
 import com.example.funnypuny.domain.HabitItem
 import com.example.funnypuny.domain.HabitListRepository
 import java.lang.RuntimeException
@@ -11,6 +12,9 @@ object HabitListRepositoryImpl: HabitListRepository {
     private val habitListLD = MutableLiveData<List<HabitItem>>()
     //храним все в переменной, в которой будем хранить коллекцию эллементов
     private val habitList = mutableListOf<HabitItem>()
+
+    private val dayListLD = MutableLiveData<List<FrequencyItem>>()
+    private val dayList = mutableListOf<FrequencyItem>()
 
     //переменная которая будет хранить id элементов
     private var autoIncrementId = 0
@@ -63,8 +67,13 @@ object HabitListRepositoryImpl: HabitListRepository {
         return habitListLD
     }
 
+    override fun getDayList(): LiveData<List<FrequencyItem>> {
+        return dayListLD
+    }
+
     //обновление лайвдвты
     private fun updateList(){
         habitListLD.value = habitList.toList()
+        dayListLD.value = dayList.toList()
     }
 }
