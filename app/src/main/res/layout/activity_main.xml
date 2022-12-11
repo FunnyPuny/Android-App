@@ -27,14 +27,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.harrywhewell.scrolldatepicker.DayScrollDatePicker
             android:id="@+id/month_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="88dp"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/month_text_view"
-            android:background="@color/grey_light"
             app:layout_constraintBottom_toTopOf="@id/rv_habit_list" />
 
         <androidx.recyclerview.widget.RecyclerView

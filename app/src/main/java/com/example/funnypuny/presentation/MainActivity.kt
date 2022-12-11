@@ -1,19 +1,19 @@
 package com.example.funnypuny.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainer
-import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.harrywhewell.scrolldatepicker.DayScrollDatePicker
+import com.harrywhewell.scrolldatepicker.OnDateSelectedListener
+
 
 class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFinishedListener {
 
@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
 
     private lateinit var viewModel: MainViewModel
     private lateinit var habitListAdapter: HabitListAdapter
+
+    private lateinit var monthRecyclerView: DayScrollDatePicker
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +63,14 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         }
 
         binding.bottomNavigationMain.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        monthRecyclerView = findViewById(R.id.month_recycler_view)
+        monthRecyclerView.getSelectedDate(OnDateSelectedListener { date ->
+            if (date != null) {
+                // do something with selected date
+                binding.monthTextView.text = date.toString()
+            }
+        })
+
     }
 
     override fun onHabitItemEditingFinished() {
