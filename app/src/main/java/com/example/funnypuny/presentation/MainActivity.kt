@@ -90,13 +90,6 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         }
 
         binding.bottomNavigationMain.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        /*monthRecyclerView = findViewById(R.id.month_recycler_view)
-        monthRecyclerView.getSelectedDate(OnDateSelectedListener { date ->
-            if (date != null) {
-                // do something with selected date
-                binding.monthTextView.text = date.toString()
-            }
-        })*/
 
         /**
          * Adding SnapHelper here, but it is not needed. I add it just to looks better.
@@ -230,13 +223,6 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             .commit()
     }
 
-    /*private fun setupHorizontalRecycler() {
-        val rvDays = binding.monthRecyclerView
-        with(rvDays) {
-            horizontalCalendarAdapter = HorizontalCalendarAdapter()
-            adapter = horizontalCalendarAdapter
-        }
-    }*/
 
     private fun setupRecyclerView() {
         val rvShopList = binding.rvHabitList

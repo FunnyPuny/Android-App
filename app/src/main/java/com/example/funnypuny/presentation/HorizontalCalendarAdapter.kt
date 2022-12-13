@@ -12,40 +12,11 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.R
-import com.example.funnypuny.databinding.ItemDayBinding
-import com.example.funnypuny.domain.FrequencyItem
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-/*
-class HorizontalCalendarAdapter(): RecyclerView.Adapter<HorizontalCalendarAdapter.HorizontalCalendarViewHolder>() {
-    lateinit var dayList: List<FrequencyItem>
-    class HorizontalCalendarViewHolder(private val itemBinding: ItemDayBinding): RecyclerView.ViewHolder(itemBinding.root) {
-        fun bind(frequencyItem: FrequencyItem) {
-            itemBinding.tvDay.text = frequencyItem.days
-            itemBinding.tvNumberOfTheDay.text = frequencyItem.numOfDay.toString()
-        }
-    }
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): HorizontalCalendarViewHolder {
-        val itemBinding = ItemDayBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        return HorizontalCalendarViewHolder(itemBinding)
-    }
-
-    override fun onBindViewHolder(holder: HorizontalCalendarViewHolder, position: Int) {
-        val frequencyItem: FrequencyItem = dayList[position]
-        holder.bind(frequencyItem)
-    }
-
-    override fun getItemCount(): Int {
-        return dayList.size
-    }
-}*/
 
 class HorizontalCalendarAdapter(private val context: Context,
                                 private val data: ArrayList<Date>,
@@ -163,8 +134,9 @@ class HorizontalCalendarAdapter(private val context: Context,
      * This make the item disabled.
      */
     private fun makeItemDisabled(holder: ViewHolder) {
-        holder.txtDay!!.setTextColor(ContextCompat.getColor(context, R.color.primary))
+        holder.txtDay!!.setTextColor(ContextCompat.getColor(context, R.color.grey))
         holder.txtDayInWeek!!.setTextColor(ContextCompat.getColor(context, R.color.grey_dark))
+        holder.txtDay!!.background = ContextCompat.getDrawable(context, R.drawable.ic_ellipse_disable)
         holder.linearLayout!!.setBackgroundColor(Color.WHITE)
         holder.linearLayout!!.isEnabled = false
     }
@@ -174,6 +146,7 @@ class HorizontalCalendarAdapter(private val context: Context,
      */
     private fun makeItemSelected(holder: ViewHolder) {
         holder.txtDay!!.setTextColor(Color.parseColor("#272937"))
+        holder.txtDay!!.background = ContextCompat.getDrawable(context, R.drawable.ic_ellipse_enable)
         holder.txtDayInWeek!!.setTextColor(Color.parseColor("#272937"))
         holder.linearLayout!!.background = ContextCompat.getDrawable(context, R.drawable.ic_white_ellipse)
         holder.linearLayout!!.isEnabled = false
@@ -183,7 +156,8 @@ class HorizontalCalendarAdapter(private val context: Context,
      * This make the item default.
      */
     private fun makeItemDefault(holder: ViewHolder) {
-        holder.txtDay!!.setTextColor(Color.BLACK)
+        holder.txtDay!!.setTextColor(ContextCompat.getColor(context, R.color.grey_dark))
+        holder.txtDay!!.background = ContextCompat.getDrawable(context, R.drawable.ic_ellipse_disable)
         holder.txtDayInWeek!!.setTextColor(Color.BLACK)
         holder.linearLayout!!.setBackgroundColor(Color.WHITE)
         holder.linearLayout!!.isEnabled = true
