@@ -8,15 +8,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.funnypuny.R
 import com.example.funnypuny.databinding.FragmentHabitItemBinding
-import com.example.funnypuny.domain.HabitItem
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.textfield.TextInputLayout
+import com.example.funnypuny.domain.entity.Habit
+import com.example.funnypuny.presentation.viewmodel.HabitItemViewModel
 
 class HabitItemFragment: Fragment() {
 
@@ -27,7 +23,7 @@ class HabitItemFragment: Fragment() {
     private lateinit var onHabitItemEditingFinishedListener: OnHabitItemEditingFinishedListener
     private lateinit var viewModel: HabitItemViewModel
     private var screenMode = MODE_UNKNOWN
-    private var habitItemId: Int = HabitItem.UNDEFINED_ID
+    private var habitId: Int = Habit.UNDEFINED_ID
 
 
     override fun onAttach(context: Context) {
@@ -133,7 +129,7 @@ class HabitItemFragment: Fragment() {
     }
 
     private fun launchEditMode() {
-        viewModel.getHabitItem(habitItemId)
+        viewModel.getHabitItem(habitId)
         binding.saveButton.setOnClickListener {
             viewModel.editHabitItem(binding.etName.text?.toString())
         }
@@ -159,7 +155,7 @@ class HabitItemFragment: Fragment() {
             if (!args.containsKey(HABIT_ITEM_ID)) {
                 throw RuntimeException("Param shop item id is absent")
             }
-            habitItemId = args.getInt(HABIT_ITEM_ID, HabitItem.UNDEFINED_ID)
+            habitId = args.getInt(HABIT_ITEM_ID, Habit.UNDEFINED_ID)
         }
     }
 

@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.ActivityMainBinding
+import com.example.funnypuny.presentation.adapter.HabitListAdapter
+import com.example.funnypuny.presentation.adapter.HorizontalCalendarAdapter
+import com.example.funnypuny.presentation.viewmodel.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.harrywhewell.scrolldatepicker.DayScrollDatePicker
-import com.harrywhewell.scrolldatepicker.OnDateSelectedListener
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList

@@ -1,8 +1,12 @@
-package com.example.funnypuny.presentation
+package com.example.funnypuny.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.funnypuny.data.HabitListRepositoryImpl
-import com.example.funnypuny.domain.*
+import com.example.funnypuny.domain.entity.Habit
+import com.example.funnypuny.domain.usecases.DeleteHabitItemUseCase
+import com.example.funnypuny.domain.usecases.EditHabitItemUseCase
+import com.example.funnypuny.domain.usecases.GetDayListUseCase
+import com.example.funnypuny.domain.usecases.GetHabitListUseCase
 
 class MainViewModel: ViewModel() {
 
@@ -26,14 +30,14 @@ class MainViewModel: ViewModel() {
     val dayList = getDayListUseCase.getDayList()
 
 
-    fun deleteHabitItem(habitItem: HabitItem) {
-        deleteHabitItemUseCase.deleteHabitItem(habitItem)
+    fun deleteHabitItem(habit: Habit) {
+        deleteHabitItemUseCase.deleteHabitItem(habit)
     }
 
-    fun changeEnableState(habitItem: HabitItem) {
+    fun changeEnableState(habit: Habit) {
         //создаем копию объекта, у которого все поля будут такие же,
         //но состояние enabled будет противоположное
-        val newItem = habitItem.copy(enabled = !habitItem.enabled)
+        val newItem = habit.copy(enabled = !habit.enabled)
         editHabitItemUseCase.editHabitItem(newItem)
     }
 

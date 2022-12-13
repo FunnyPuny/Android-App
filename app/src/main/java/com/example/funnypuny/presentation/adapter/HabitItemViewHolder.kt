@@ -1,4 +1,4 @@
-package com.example.funnypuny.presentation
+package com.example.funnypuny.presentation.adapter
 
 import android.view.View
 import android.widget.TextView

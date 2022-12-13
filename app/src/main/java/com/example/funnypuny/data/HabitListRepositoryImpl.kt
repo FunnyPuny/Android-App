@@ -2,16 +2,16 @@ package com.example.funnypuny.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.funnypuny.domain.FrequencyItem
-import com.example.funnypuny.domain.HabitItem
-import com.example.funnypuny.domain.HabitListRepository
+import com.example.funnypuny.domain.entity.FrequencyItem
+import com.example.funnypuny.domain.entity.Habit
+import com.example.funnypuny.domain.repository.HabitListRepository
 import java.lang.RuntimeException
 
 object HabitListRepositoryImpl: HabitListRepository {
 
-    private val habitListLD = MutableLiveData<List<HabitItem>>()
+    private val habitListLD = MutableLiveData<List<Habit>>()
     //храним все в переменной, в которой будем хранить коллекцию эллементов
-    private val habitList = mutableListOf<HabitItem>()
+    private val habitList = mutableListOf<Habit>()
 
     private val dayListLD = MutableLiveData<List<FrequencyItem>>()
     private val dayList = mutableListOf<FrequencyItem>()
@@ -26,33 +26,33 @@ object HabitListRepositoryImpl: HabitListRepository {
         }
     }*/
 
-    override fun addHabitItem(habitItem: HabitItem) {
+    override fun addHabitItem(habit: Habit) {
         //при редоктировании элемента надо сохранить его id
         //если id данного элемента неопределен, то в этом случае мы его установим
-        if (habitItem.id == HabitItem.UNDEFINED_ID){
-            habitItem.id = autoIncrementId++
+        if (habit.id == Habit.UNDEFINED_ID){
+            habit.id = autoIncrementId++
         }
-        habitList.add(habitItem)
+        habitList.add(habit)
         updateList()
     }
 
-    override fun editHabitItem(habitItem: HabitItem) {
+    override fun editHabitItem(habit: Habit) {
         // нужно удалить старый объект и положить новый
         // но в кач-ве параметра прилетает уже новый объект с измененными полями
         // т.е мы не можем удалить его из коллекции - элемент найден не будет
 
         // поэтому надо сначала найти старый элемент по его id - удалить и добавить новый
-        val oldElement = getHabitItem(habitItem.id)
+        val oldElement = getHabitItem(habit.id)
         habitList.remove(oldElement)
-        addHabitItem(habitItem)
+        addHabitItem(habit)
     }
 
-    override fun deleteHabitItem(habitItem: HabitItem) {
-        habitList.remove(habitItem)
+    override fun deleteHabitItem(habit: Habit) {
+        habitList.remove(habit)
         updateList()
     }
 
-    override fun getHabitItem(habitItemId: Int): HabitItem {
+    override fun getHabitItem(habitItemId: Int): Habit {
         // ищем элемент по id и возвращаем его
         // если вдруг элемент не найден, приложение упадет с исключением
         return habitList.find {
@@ -60,7 +60,7 @@ object HabitListRepositoryImpl: HabitListRepository {
         } ?: throw RuntimeException("Element with id $habitItemId not found")
     }
 
-    override fun getHabitList(): LiveData<List<HabitItem>> {
+    override fun getHabitList(): LiveData<List<Habit>> {
         // лучше возвращать копию листа
         // если в getShopList() добавлять какие-то элементы или удалять их,
         // то на исходную коллекцию это никак не повлияет

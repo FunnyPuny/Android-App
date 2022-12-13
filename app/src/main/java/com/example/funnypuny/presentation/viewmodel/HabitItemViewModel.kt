@@ -1,10 +1,13 @@
-package com.example.funnypuny.presentation
+package com.example.funnypuny.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.funnypuny.data.HabitListRepositoryImpl
-import com.example.funnypuny.domain.*
+import com.example.funnypuny.domain.entity.Habit
+import com.example.funnypuny.domain.usecases.AddHabitItemUseCase
+import com.example.funnypuny.domain.usecases.EditHabitItemUseCase
+import com.example.funnypuny.domain.usecases.GetHabitItemUseCase
 
 class HabitItemViewModel: ViewModel() {
 
@@ -19,9 +22,9 @@ class HabitItemViewModel: ViewModel() {
         get() = _errorInputName
 
 
-    private val _habitItem = MutableLiveData<HabitItem>()
-    val habitItem: LiveData<HabitItem>
-        get() = _habitItem
+    private val _habit = MutableLiveData<Habit>()
+    val habit: LiveData<Habit>
+        get() = _habit
 
     private val _shouldCloseScreen = MutableLiveData<Unit>()
     val shouldCloseScreen: LiveData<Unit>
@@ -29,15 +32,15 @@ class HabitItemViewModel: ViewModel() {
 
     fun getHabitItem(habitItemId: Int) {
         val item = getHabitItemUseCase.getHabitItem(habitItemId)
-        _habitItem.value = item
+        _habit.value = item
     }
 
     fun addHabitItem(inputName: String?) {
         val name = parseName(inputName)
         val fieldsValid = validateInput(name)
         if (fieldsValid) {
-            val habitItem = HabitItem(name,true)
-            addHabitItemUseCase.addHabitItem(habitItem)
+            val habit = Habit(name,true)
+            addHabitItemUseCase.addHabitItem(habit)
             finishWork()
         }
     }
@@ -46,7 +49,7 @@ class HabitItemViewModel: ViewModel() {
         val name = parseName(inputName)
         val fieldsValid = validateInput(name)
         if (fieldsValid) {
-            _habitItem.value?.let {
+            _habit.value?.let {
                 val item = it.copy(name = name)
                 editHabitItemUseCase.editHabitItem(item)
                 finishWork()

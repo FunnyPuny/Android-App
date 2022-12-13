@@ -1,4 +1,4 @@
-package com.example.funnypuny.domain
+package com.example.funnypuny.domain.entity
 
 /*enum class FrequencyItem(val id: Int, val day: String) {
     SUN(1,"sun"),

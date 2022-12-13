@@ -4,7 +4,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.funnypuny.presentation.HabitItemViewModel" />
+            type="com.example.funnypuny.presentation.viewmodel.HabitItemViewModel" />
     </data>
     
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -60,7 +60,7 @@
                 tools:targetApi="p"
                 android:paddingStart="16dp"
                 app:errorInputName="@{viewModel.errorInputName}"
-                android:text="@{viewModel.habitItem.name}"/>
+                android:text="@{viewModel.habit.name}"/>
     
     
         <TextView

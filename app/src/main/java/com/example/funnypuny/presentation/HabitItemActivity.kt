@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.ActivityHabitItemBinding
-import com.example.funnypuny.domain.HabitItem
+import com.example.funnypuny.domain.entity.Habit
 
 class HabitItemActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFinishedListener {
 
@@ -15,7 +15,7 @@ class HabitItemActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEdit
         get() = _binding ?: throw RuntimeException("ActivityHabitItemBinding == null")
 
     private var screenMode = MODE_UNKNOWN
-    private var habitItemId = HabitItem.UNDEFINED_ID
+    private var habitId = Habit.UNDEFINED_ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +27,7 @@ class HabitItemActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEdit
 
     private fun launchRightMode() {
         val fragment = when (screenMode) {
-            MODE_EDIT -> HabitItemFragment.newInstanceEditItem(habitItemId)
+            MODE_EDIT -> HabitItemFragment.newInstanceEditItem(habitId)
             MODE_ADD -> HabitItemFragment.newInstanceAddItem()
             else -> throw RuntimeException("Unknown screen mode $screenMode")
         }
@@ -49,7 +49,7 @@ class HabitItemActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEdit
             if (!intent.hasExtra(EXTRA_SHOP_ITEM_ID)) {
                 throw RuntimeException("Param shop item id is absent")
             }
-            habitItemId = intent.getIntExtra(EXTRA_SHOP_ITEM_ID, HabitItem.UNDEFINED_ID)
+            habitId = intent.getIntExtra(EXTRA_SHOP_ITEM_ID, Habit.UNDEFINED_ID)
         }
     }
 

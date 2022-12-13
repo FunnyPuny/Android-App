@@ -1,17 +1,17 @@
-package com.example.funnypuny.presentation
+package com.example.funnypuny.presentation.adapter
  
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.funnypuny.R
-import com.example.funnypuny.domain.HabitItem
+import com.example.funnypuny.domain.entity.Habit
 import java.lang.RuntimeException
 
-class HabitListAdapter: ListAdapter<HabitItem, HabitItemViewHolder>(HabitItemDiffCallback()) {
+class HabitListAdapter: ListAdapter<Habit, HabitItemViewHolder>(HabitItemDiffCallback()) {
 
 
-    var onHabitItemClickListener: ((HabitItem) -> Unit)? = null
-    var onHabitItemLongClickListener: ((HabitItem)-> Unit)? = null
+    var onHabitItemClickListener: ((Habit) -> Unit)? = null
+    var onHabitItemLongClickListener: ((Habit)-> Unit)? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitItemViewHolder {
@@ -51,7 +51,7 @@ class HabitListAdapter: ListAdapter<HabitItem, HabitItemViewHolder>(HabitItemDif
 
     interface OnHabitItemClickListener {
 
-        fun onHabitItemClick (habitItem: HabitItem ) {
+        fun onHabitItemClick (habit: Habit) {
 
         }
     }
