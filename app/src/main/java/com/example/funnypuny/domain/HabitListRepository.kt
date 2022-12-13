@@ -14,4 +14,6 @@ interface HabitListRepository {
 
     fun getHabitList(): LiveData<List<HabitItem>>
 
+    fun getDayList(): LiveData<List<FrequencyItem>>
+
 }
