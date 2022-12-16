@@ -7,7 +7,7 @@ import com.example.funnypuny.R
 import com.example.funnypuny.domain.entity.Habit
 import java.lang.RuntimeException
 
-class HabitListAdapter: ListAdapter<Habit, HabitItemViewHolder>(HabitItemDiffCallback()) {
+class HabitListAdapter(): ListAdapter<Habit, HabitItemViewHolder>(HabitItemDiffCallback()) {
 
 
     var onHabitItemClickListener: ((Habit) -> Unit)? = null

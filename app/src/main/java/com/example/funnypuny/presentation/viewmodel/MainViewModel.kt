@@ -3,6 +3,7 @@ package com.example.funnypuny.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import com.example.funnypuny.data.HabitListRepositoryImpl
 import com.example.funnypuny.domain.entity.Habit
+import com.example.funnypuny.domain.repository.HabitRepository
 import com.example.funnypuny.domain.usecases.DeleteHabitItemUseCase
 import com.example.funnypuny.domain.usecases.EditHabitItemUseCase
 import com.example.funnypuny.domain.usecases.GetDayListUseCase
@@ -28,6 +29,9 @@ class MainViewModel: ViewModel() {
 
     val habitList = getHabitListUseCase.getHabitList()
     val dayList = getDayListUseCase.getDayList()
+
+    private val habitRepository = HabitRepository.get()
+    val habitsListLiveData = habitRepository.getAll()
 
 
     fun deleteHabitItem(habit: Habit) {

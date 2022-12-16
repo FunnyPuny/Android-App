@@ -13,8 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FunnyPuny"
         tools:targetApi="31">
-        <activity android:name=".presentation.HabitItemActivity"
-            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".presentation.StatisticsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.HabitItemActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".presentation.MainActivity"
             android:exported="true">

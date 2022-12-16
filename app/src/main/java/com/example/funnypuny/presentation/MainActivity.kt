@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.ActivityMainBinding
+import com.example.funnypuny.domain.repository.HabitRepository
 import com.example.funnypuny.presentation.adapter.HabitListAdapter
 import com.example.funnypuny.presentation.adapter.HorizontalCalendarAdapter
 import com.example.funnypuny.presentation.viewmodel.MainViewModel
@@ -54,6 +55,8 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        HabitRepository.initialize(this)
+
         setupRecyclerView()
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.habitList.observe(this) {
@@ -83,7 +86,9 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.nav_profile -> {
-                    // put your code here
+                    val intent = StatisticsActivity.newIntent(this)
+                    startActivity(intent)
+                    //launchStaticFragment(StatisticsFragment())
                     return@OnNavigationItemSelectedListener true
                 }
             }
@@ -214,6 +219,14 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
 
     private fun isOnePaneMode(): Boolean {
         return binding.habitItemContainer == null
+    }
+
+    private fun launchStaticFragment(fragment: Fragment) {
+        supportFragmentManager.popBackStack()
+        supportFragmentManager.beginTransaction()
+            .add(R.id.statistics_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun launchFragment(fragment: Fragment) {
