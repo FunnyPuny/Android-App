@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ProgressBar
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.ActivityHabitItemBinding
 import com.example.funnypuny.databinding.ActivityStatisticsBinding
@@ -21,6 +22,7 @@ class StatisticsActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.statistics_container, StatisticsFragment())
             .commit()
+
     }
 
     companion object {
