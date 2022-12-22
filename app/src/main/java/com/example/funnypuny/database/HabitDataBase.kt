@@ -10,7 +10,7 @@ import com.example.funnypuny.domain.entity.Habit
 @Database(entities = [ Habit::class ], version = 1)
 abstract class HabitDataBase: RoomDatabase() {
 
-    companion object {
+    /*companion object {
 
         private var db: HabitDataBase? = null
         private const val DB_NAME = "habit-database"
@@ -29,7 +29,7 @@ abstract class HabitDataBase: RoomDatabase() {
                 return instance
             }
         }
-    }
+    }*/
 
     abstract fun habitDao(): HabitDao
 

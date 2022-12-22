@@ -13,9 +13,6 @@ object HabitListRepositoryImpl: HabitListRepository {
     //храним все в переменной, в которой будем хранить коллекцию эллементов
     private val habitList = mutableListOf<Habit>()
 
-    private val dayListLD = MutableLiveData<List<Frequency>>()
-    private val dayList = mutableListOf<Frequency>()
-
     //переменная которая будет хранить id элементов
     private var autoIncrementId = 0
 
@@ -67,13 +64,8 @@ object HabitListRepositoryImpl: HabitListRepository {
         return habitListLD
     }
 
-    override fun getDayList(): LiveData<List<Frequency>> {
-        return dayListLD
-    }
-
     //обновление лайвдвты
     private fun updateList(){
         habitListLD.value = habitList.toList()
-        dayListLD.value = dayList.toList()
     }
 }

@@ -6,7 +6,6 @@ import com.example.funnypuny.domain.entity.Habit
 import com.example.funnypuny.domain.repository.HabitRepository
 import com.example.funnypuny.domain.usecases.DeleteHabitItemUseCase
 import com.example.funnypuny.domain.usecases.EditHabitItemUseCase
-import com.example.funnypuny.domain.usecases.GetDayListUseCase
 import com.example.funnypuny.domain.usecases.GetHabitListUseCase
 
 class MainViewModel: ViewModel() {
@@ -18,7 +17,6 @@ class MainViewModel: ViewModel() {
     private val getHabitListUseCase = GetHabitListUseCase(repository)
     private val deleteHabitItemUseCase = DeleteHabitItemUseCase(repository)
     private val editHabitItemUseCase = EditHabitItemUseCase(repository)
-    private val getDayListUseCase = GetDayListUseCase(repository)
 
     //отображение списка элементов
     // Взаимодействие activity и viewModel должно происходить через LiveData<List<ShopItem>>.
@@ -28,7 +26,6 @@ class MainViewModel: ViewModel() {
     // снова подпишется на объект LiveData<List<ShopItem>>.
 
     val habitList = getHabitListUseCase.getHabitList()
-    val dayList = getDayListUseCase.getDayList()
 
     private val habitRepository = HabitRepository.get()
     val habitsListLiveData = habitRepository.getAll()
