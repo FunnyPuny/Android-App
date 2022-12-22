@@ -63,10 +63,8 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             habitListAdapter.submitList(it)
         }
 
-        /*setupHorizontalRecycler()
-        viewModel.dayList.observe(this){
-            horizontalCalendarAdapter.su
-        }*/
+        //HabitRepository.initialize(this)
+        viewModel.habitsListLiveData
 
         binding.bottomNavigationMain.itemIconTintList = null
 

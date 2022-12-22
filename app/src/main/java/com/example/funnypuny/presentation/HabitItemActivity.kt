@@ -7,12 +7,16 @@ import android.os.Bundle
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.ActivityHabitItemBinding
 import com.example.funnypuny.domain.entity.Habit
+import com.example.funnypuny.presentation.adapter.FrequencyAdapter
+import com.example.funnypuny.presentation.adapter.HabitListAdapter
 
 class HabitItemActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFinishedListener {
 
     private var _binding: ActivityHabitItemBinding? = null
     private val binding: ActivityHabitItemBinding
         get() = _binding ?: throw RuntimeException("ActivityHabitItemBinding == null")
+
+    private lateinit var frequencyAdapter: FrequencyAdapter
 
     private var screenMode = MODE_UNKNOWN
     private var habitId = Habit.UNDEFINED_ID
@@ -23,6 +27,7 @@ class HabitItemActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEdit
         setContentView(binding.root)
         parseIntent()
         launchRightMode()
+
     }
 
     private fun launchRightMode() {

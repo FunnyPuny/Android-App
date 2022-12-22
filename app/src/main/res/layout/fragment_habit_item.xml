@@ -118,7 +118,7 @@
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
-            tools:listitem="@layout/item_frequence"
+            tools:listitem="@layout/item_frequency"
             android:layout_marginStart="16dp"/>
     
         <TextView

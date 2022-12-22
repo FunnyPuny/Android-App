@@ -11,7 +11,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.funnypuny.databinding.FragmentHabitItemBinding
+import com.example.funnypuny.domain.entity.Frequency
 import com.example.funnypuny.domain.entity.Habit
+import com.example.funnypuny.presentation.adapter.FrequencyAdapter
 import com.example.funnypuny.presentation.viewmodel.HabitItemViewModel
 
 class HabitItemFragment: Fragment() {
@@ -20,6 +22,7 @@ class HabitItemFragment: Fragment() {
     private val binding: FragmentHabitItemBinding
         get() = _binding ?: throw RuntimeException("FragmentHabitItemBinding == null")
 
+    private lateinit var frequencyAdapter: FrequencyAdapter
     private lateinit var onHabitItemEditingFinishedListener: OnHabitItemEditingFinishedListener
     private lateinit var viewModel: HabitItemViewModel
     private var screenMode = MODE_UNKNOWN
@@ -62,6 +65,21 @@ class HabitItemFragment: Fragment() {
         addTextChangeListeners()
         launchRightMode()
         observeViewModel()
+
+        val data = ArrayList<Frequency>()
+
+        data.add(Frequency("Sun"))
+        data.add(Frequency("Mon"))
+        data.add(Frequency("Tue"))
+        data.add(Frequency("Wed"))
+        data.add(Frequency("Thu"))
+        data.add(Frequency("Fri"))
+        data.add(Frequency("Sat"))
+
+        val rvFrequencyList = binding.rvFrequency
+        frequencyAdapter = FrequencyAdapter(data)
+        rvFrequencyList.adapter = frequencyAdapter
+
     }
 
     override fun onStart() {

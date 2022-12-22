@@ -1,7 +1,7 @@
 package com.example.funnypuny.domain.repository
 
 import androidx.lifecycle.LiveData
-import com.example.funnypuny.domain.entity.FrequencyItem
+import com.example.funnypuny.domain.entity.Frequency
 import com.example.funnypuny.domain.entity.Habit
 
 interface HabitListRepository {
@@ -16,6 +16,6 @@ interface HabitListRepository {
 
     fun getHabitList(): LiveData<List<Habit>>
 
-    fun getDayList(): LiveData<List<FrequencyItem>>
+    fun getDayList(): LiveData<List<Frequency>>
 
 }

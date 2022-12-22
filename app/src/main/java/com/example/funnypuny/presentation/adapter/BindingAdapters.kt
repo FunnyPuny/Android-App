@@ -11,5 +11,5 @@ fun bindErrorInputName(text: EditText, isError: Boolean) {
         } else {
             null
         }
-        text. error = message
+        text.error = message
 }
