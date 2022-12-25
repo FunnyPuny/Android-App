@@ -3,31 +3,30 @@ package com.example.funnypuny.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.funnypuny.domain.data.HabitListRepositoryImpl
-import com.example.funnypuny.domain.entity.Habit
-import com.example.funnypuny.domain.repository.HabitRepository
+import com.example.funnypuny.data.HabitRepositoryImpl
+import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.usecases.AddHabitItemUseCase
 import com.example.funnypuny.domain.usecases.EditHabitItemUseCase
 import com.example.funnypuny.domain.usecases.GetHabitItemUseCase
 
 class HabitItemViewModel: ViewModel() {
 
-    private val repository = HabitListRepositoryImpl
+    private val repository = HabitRepositoryImpl
 
     private val getHabitItemUseCase = GetHabitItemUseCase(repository)
     private val addHabitItemUseCase = AddHabitItemUseCase(repository)
     private val  editHabitItemUseCase = EditHabitItemUseCase(repository)
 
-    private val habitRepository = HabitRepository.get()
-    val habitsListLiveData = habitRepository.getAll()
+   // private val habitRepository = HabitRepository.get()
+   // val habitsListLiveData = habitRepository.getAll()
 
     private val _errorInputName = MutableLiveData<Boolean>()
     val errorInputName: LiveData<Boolean>
         get() = _errorInputName
 
 
-    private val _habit = MutableLiveData<Habit>()
-    val habit: LiveData<Habit>
+    private val _habit = MutableLiveData<HabitEntity>()
+    val habit: LiveData<HabitEntity>
         get() = _habit
 
     private val _shouldCloseScreen = MutableLiveData<Unit>()
@@ -43,7 +42,7 @@ class HabitItemViewModel: ViewModel() {
         val name = parseName(inputName)
         val fieldsValid = validateInput(name)
         if (fieldsValid) {
-            val habit = Habit(name,true)
+            val habit = HabitEntity(name,true)
             addHabitItemUseCase.addHabitItem(habit)
             finishWork()
         }

@@ -1,11 +1,11 @@
 package com.example.funnypuny.domain.usecases
 
-import com.example.funnypuny.domain.repository.HabitListRepository
-import com.example.funnypuny.domain.entity.Habit
+import com.example.funnypuny.domain.repository.HabitRepository
+import com.example.funnypuny.domain.entity.HabitEntity
 
-class GetHabitItemUseCase(private val habitListRepository: HabitListRepository) {
+class GetHabitItemUseCase(private val habitListRepository: HabitRepository) {
 
-    fun getHabitItem(habitItemId: Int): Habit {
+    fun getHabitItem(habitItemId: Int): HabitEntity {
         return habitListRepository.getHabitItem(habitItemId)
     }
 

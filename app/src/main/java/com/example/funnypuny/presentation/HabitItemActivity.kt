@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.ActivityHabitItemBinding
-import com.example.funnypuny.domain.entity.Habit
+import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.presentation.adapter.FrequencyAdapter
 
 class HabitItemActivity : AppCompatActivity(),
@@ -19,7 +19,7 @@ class HabitItemActivity : AppCompatActivity(),
     private lateinit var frequencyAdapter: FrequencyAdapter
 
     private var screenMode = MODE_UNKNOWN
-    private var habitId = Habit.UNDEFINED_ID
+    private var habitId = HabitEntity.UNDEFINED_ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +54,7 @@ class HabitItemActivity : AppCompatActivity(),
             if (!intent.hasExtra(EXTRA_SHOP_ITEM_ID)) {
                 throw RuntimeException("Param shop item id is absent")
             }
-            habitId = intent.getIntExtra(EXTRA_SHOP_ITEM_ID, Habit.UNDEFINED_ID)
+            habitId = intent.getIntExtra(EXTRA_SHOP_ITEM_ID, HabitEntity.UNDEFINED_ID)
         }
     }
 

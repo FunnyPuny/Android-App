@@ -1,6 +1,6 @@
 package com.example.funnypuny.domain.entity
 
-data class Habit(
+data class HabitEntity(
     val name: String,
     val enabled: Boolean,
     //val frequency: List<FrequencyItem>,

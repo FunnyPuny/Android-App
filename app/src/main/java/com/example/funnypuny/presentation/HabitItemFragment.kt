@@ -11,8 +11,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.funnypuny.databinding.FragmentHabitItemBinding
-import com.example.funnypuny.domain.entity.Frequency
-import com.example.funnypuny.domain.entity.Habit
+import com.example.funnypuny.domain.entity.HabitFrequencyEntity
+import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.presentation.adapter.FrequencyAdapter
 import com.example.funnypuny.presentation.viewmodel.HabitItemViewModel
 
@@ -26,7 +26,7 @@ class HabitItemFragment: Fragment() {
     private lateinit var onHabitItemEditingFinishedListener: OnHabitItemEditingFinishedListener
     private lateinit var viewModel: HabitItemViewModel
     private var screenMode = MODE_UNKNOWN
-    private var habitId: Int = Habit.UNDEFINED_ID
+    private var habitId: Int = HabitEntity.UNDEFINED_ID
 
 
     override fun onAttach(context: Context) {
@@ -66,15 +66,15 @@ class HabitItemFragment: Fragment() {
         launchRightMode()
         observeViewModel()
 
-        val data = ArrayList<Frequency>()
+        val data = ArrayList<HabitFrequencyEntity>()
 
-        data.add(Frequency("Sun"))
-        data.add(Frequency("Mon"))
-        data.add(Frequency("Tue"))
-        data.add(Frequency("Wed"))
-        data.add(Frequency("Thu"))
-        data.add(Frequency("Fri"))
-        data.add(Frequency("Sat"))
+        data.add(HabitFrequencyEntity("Sun"))
+        data.add(HabitFrequencyEntity("Mon"))
+        data.add(HabitFrequencyEntity("Tue"))
+        data.add(HabitFrequencyEntity("Wed"))
+        data.add(HabitFrequencyEntity("Thu"))
+        data.add(HabitFrequencyEntity("Fri"))
+        data.add(HabitFrequencyEntity("Sat"))
 
         val rvFrequencyList = binding.rvFrequency
         frequencyAdapter = FrequencyAdapter(data)
@@ -173,7 +173,7 @@ class HabitItemFragment: Fragment() {
             if (!args.containsKey(HABIT_ITEM_ID)) {
                 throw RuntimeException("Param shop item id is absent")
             }
-            habitId = args.getInt(HABIT_ITEM_ID, Habit.UNDEFINED_ID)
+            habitId = args.getInt(HABIT_ITEM_ID, HabitEntity.UNDEFINED_ID)
         }
     }
 

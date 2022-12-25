@@ -5,28 +5,29 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.ActivityMainBinding
-import com.example.funnypuny.domain.repository.HabitRepository
 import com.example.funnypuny.presentation.adapter.HabitListAdapter
 import com.example.funnypuny.presentation.adapter.HorizontalCalendarAdapter
 import com.example.funnypuny.presentation.viewmodel.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 
 class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFinishedListener {
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var viewModel: MainViewModel
+    val viewModel: MainViewModel by viewModel()
+
     private lateinit var habitListAdapter: HabitListAdapter
     private lateinit var horizontalCalendarAdapter: HorizontalCalendarAdapter
 
@@ -49,48 +50,49 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
     private val dates = ArrayList<Date>()
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        HabitRepository.initialize(this)
+        //HabitRepository.initialize(this)
 
         setupRecyclerView()
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        viewModel.habitList.observe(this) {
-            habitListAdapter.submitList(it)
-        }
+        //viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+
+        viewModel.habitListState.observe(this) { habitListAdapter.submitList(it) }
 
         binding.bottomNavigationMain.itemIconTintList = null
 
-        val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_add_box -> {
-                    if (isOnePaneMode()) {
-                        val intent = HabitItemActivity.newIntentAddItem(this)
-                        startActivity(intent)
-                    } else {
-                        launchFragment(HabitItemFragment.newInstanceAddItem())
+        val mOnNavigationItemSelectedListener =
+            BottomNavigationView.OnNavigationItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.nav_add_box -> {
+                        if (isOnePaneMode()) {
+                            val intent = HabitItemActivity.newIntentAddItem(this)
+                            startActivity(intent)
+                        } else {
+                            launchFragment(HabitItemFragment.newInstanceAddItem())
+                        }
+                        return@OnNavigationItemSelectedListener true
                     }
-                    return@OnNavigationItemSelectedListener true
+                    R.id.nav_home -> {
+                        // put your code here
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.nav_profile -> {
+                        val intent = StatisticsActivity.newIntent(this)
+                        startActivity(intent)
+                        //launchStatisticFragment(StatisticsFragment())
+                        //launchFragment(StatisticsFragment())
+                        return@OnNavigationItemSelectedListener true
+                    }
                 }
-                R.id.nav_home -> {
-                    // put your code here
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.nav_profile -> {
-                    val intent = StatisticsActivity.newIntent(this)
-                    startActivity(intent)
-                    //launchStatisticFragment(StatisticsFragment())
-                    //launchFragment(StatisticsFragment())
-                    return@OnNavigationItemSelectedListener true
-                }
+                false
             }
-            false
-        }
-        binding.bottomNavigationMain.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        binding.bottomNavigationMain.setOnNavigationItemSelectedListener(
+            mOnNavigationItemSelectedListener
+        )
 
         /**
          * Adding SnapHelper here, but it is not needed. I add it just to looks better.
@@ -180,7 +182,8 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         // Assigning calendar view.
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.monthRecyclerView!!.layoutManager = layoutManager
-        val horizontalCalendarAdapter = HorizontalCalendarAdapter(this, dates, currentDate, changeMonth)
+        val horizontalCalendarAdapter =
+            HorizontalCalendarAdapter(this, dates, currentDate, changeMonth)
         binding.monthRecyclerView!!.adapter = horizontalCalendarAdapter
 
         /**
@@ -189,7 +192,9 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
          */
         when {
             currentPosition > 2 -> binding.monthRecyclerView!!.scrollToPosition(currentPosition - 3)
-            maxDaysInMonth - currentPosition < 2 -> binding.monthRecyclerView!!.scrollToPosition(currentPosition)
+            maxDaysInMonth - currentPosition < 2 -> binding.monthRecyclerView!!.scrollToPosition(
+                currentPosition
+            )
             else -> binding.monthRecyclerView!!.scrollToPosition(currentPosition)
         }
 
@@ -198,7 +203,8 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
          * After calling up the OnClickListener, the text of the current month and year is changed.
          * Then change the selected day.
          */
-        horizontalCalendarAdapter.setOnItemClickListener(object : HorizontalCalendarAdapter.OnItemClickListener {
+        horizontalCalendarAdapter.setOnItemClickListener(object :
+            HorizontalCalendarAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val clickCalendar = Calendar.getInstance()
                 clickCalendar.time = dates[position]

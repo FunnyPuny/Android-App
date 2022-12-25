@@ -11,7 +11,7 @@ package com.example.funnypuny.domain.entity
     EVERYDAY(0,"everyday")
 }*/
 
-data class Frequency(
+data class HabitFrequencyEntity(
     val days: String
 ) {}
 

@@ -1,13 +1,13 @@
 package com.example.funnypuny.presentation.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.funnypuny.domain.entity.Habit
+import com.example.funnypuny.domain.entity.HabitEntity
 
 // Здесь сравниваем новый список и старый
 
 class HabitListDiffCallback(
-    private val oldList: List<Habit>,
-    private val newList: List<Habit>
+    private val oldList: List<HabitEntity>,
+    private val newList: List<HabitEntity>
 ): DiffUtil.Callback() {
     override fun getOldListSize(): Int {
         return oldList.size

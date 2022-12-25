@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.funnypuny.R
-import com.example.funnypuny.domain.entity.Habit
+import com.example.funnypuny.domain.entity.HabitEntity
 import java.lang.RuntimeException
 
-class HabitListAdapter(): ListAdapter<Habit, HabitItemViewHolder>(HabitItemDiffCallback()) {
+class HabitListAdapter(): ListAdapter<HabitEntity, HabitItemViewHolder>(HabitItemDiffCallback()) {
 
 
-    var onHabitItemClickListener: ((Habit) -> Unit)? = null
-    var onHabitItemLongClickListener: ((Habit)-> Unit)? = null
+    var onHabitItemClickListener: ((HabitEntity) -> Unit)? = null
+    var onHabitItemLongClickListener: ((HabitEntity)-> Unit)? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitItemViewHolder {
@@ -51,7 +51,7 @@ class HabitListAdapter(): ListAdapter<Habit, HabitItemViewHolder>(HabitItemDiffC
 
     interface OnHabitItemClickListener {
 
-        fun onHabitItemClick (habit: Habit) {
+        fun onHabitItemClick (habit: HabitEntity) {
 
         }
     }

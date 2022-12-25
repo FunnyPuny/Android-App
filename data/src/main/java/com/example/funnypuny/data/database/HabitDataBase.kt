@@ -1,6 +1,7 @@
 
 package com.example.funnypuny.data.database
 
+/*
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.funnypuny.domain.entity.Habit
@@ -9,6 +10,7 @@ import com.example.funnypuny.domain.entity.Habit
 abstract class HabitDataBase: RoomDatabase() {
 
 
+*/
 /*companion object {
 
         private var db: HabitDataBase? = null
@@ -28,9 +30,11 @@ abstract class HabitDataBase: RoomDatabase() {
                 return instance
             }
         }
-    }*/
+    }*//*
+
 
 
     abstract fun habitDao(): HabitDao
 
 }
+*/

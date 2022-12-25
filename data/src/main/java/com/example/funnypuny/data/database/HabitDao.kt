@@ -1,5 +1,6 @@
 package com.example.funnypuny.data.database
 
+/*
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.funnypuny.domain.entity.Habit
@@ -21,5 +22,6 @@ interface HabitDao {
     @Delete
     fun delete(habit: Habit?)
 }
+*/
 
 

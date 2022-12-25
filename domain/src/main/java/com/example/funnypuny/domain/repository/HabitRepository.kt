@@ -1,45 +1,20 @@
 package com.example.funnypuny.domain.repository
 
-import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.room.*
-import com.example.funnypuny.data.database.HabitDataBase
-import com.example.funnypuny.domain.entity.Habit
+import com.example.funnypuny.domain.entity.HabitEntity
 
-private const val DATABASE_NAME = "habit-database"
+interface HabitRepository {
 
-class HabitRepository private constructor(context: Context){
+    fun getHabitList(): List<HabitEntity>
 
-    private val database: HabitDataBase = Room.databaseBuilder(
-        context.applicationContext,
-        HabitDataBase::class.java,
-        DATABASE_NAME
-    ).build()
 
-    private val habitDao = database.habitDao()
 
-    fun getAll(): LiveData<Habit?>? = habitDao.getAll()
+    fun addHabitItem(habit: HabitEntity)
 
-    fun getById(id: Long): Habit? = habitDao.getById(id)
+    fun editHabitItem(habit: HabitEntity)
 
-    fun insert(habit: Habit?) = habitDao.insert(habit)
+    fun deleteHabitItem(habit: HabitEntity)
 
-    fun update(habit: Habit?) = habitDao.update(habit)
+    fun getHabitItem(habitItemId: Int): HabitEntity
 
-    fun delete(habit: Habit?) = habitDao.delete(habit)
 
-    companion object{
-        private var INSTANCE: HabitRepository? = null
-
-        fun initialize(context: Context) {
-            if (INSTANCE == null){
-                INSTANCE = HabitRepository(context)
-            }
-        }
-
-        fun get(): HabitRepository {
-            return INSTANCE ?:
-            throw IllegalStateException("HabitRepository must be initialized")
-        }
-    }
 }
