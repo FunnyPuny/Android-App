@@ -1,4 +1,4 @@
-package com.example.funnypuny.presentation
+package com.example.funnypuny.domain.presentation
 
 import android.widget.EditText
 import androidx.databinding.BindingAdapter

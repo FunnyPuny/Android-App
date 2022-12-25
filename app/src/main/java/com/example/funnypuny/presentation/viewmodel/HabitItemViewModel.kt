@@ -3,8 +3,9 @@ package com.example.funnypuny.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.funnypuny.data.HabitListRepositoryImpl
+import com.example.funnypuny.domain.data.HabitListRepositoryImpl
 import com.example.funnypuny.domain.entity.Habit
+import com.example.funnypuny.domain.repository.HabitRepository
 import com.example.funnypuny.domain.usecases.AddHabitItemUseCase
 import com.example.funnypuny.domain.usecases.EditHabitItemUseCase
 import com.example.funnypuny.domain.usecases.GetHabitItemUseCase
@@ -15,7 +16,10 @@ class HabitItemViewModel: ViewModel() {
 
     private val getHabitItemUseCase = GetHabitItemUseCase(repository)
     private val addHabitItemUseCase = AddHabitItemUseCase(repository)
-    private val  editHabitItemUseCase = EditHabitItemUseCase(repository )
+    private val  editHabitItemUseCase = EditHabitItemUseCase(repository)
+
+    private val habitRepository = HabitRepository.get()
+    val habitsListLiveData = habitRepository.getAll()
 
     private val _errorInputName = MutableLiveData<Boolean>()
     val errorInputName: LiveData<Boolean>

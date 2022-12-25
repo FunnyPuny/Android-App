@@ -2,7 +2,6 @@ package com.example.funnypuny.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.funnypuny.domain.entity.Frequency
 import com.example.funnypuny.domain.entity.Habit
 import com.example.funnypuny.domain.repository.HabitListRepository
 import java.lang.RuntimeException

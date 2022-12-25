@@ -5,6 +5,6 @@
     android:id="@+id/habit_item_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.HabitItemActivity"
+    tools:context="com.example.funnypuny.presentation.HabitItemActivity"
     tools:layout="@layout/fragment_habit_item"
     />

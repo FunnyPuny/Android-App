@@ -8,9 +8,9 @@ import com.example.funnypuny.R
 import com.example.funnypuny.databinding.ActivityHabitItemBinding
 import com.example.funnypuny.domain.entity.Habit
 import com.example.funnypuny.presentation.adapter.FrequencyAdapter
-import com.example.funnypuny.presentation.adapter.HabitListAdapter
 
-class HabitItemActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFinishedListener {
+class HabitItemActivity : AppCompatActivity(),
+    HabitItemFragment.OnHabitItemEditingFinishedListener {
 
     private var _binding: ActivityHabitItemBinding? = null
     private val binding: ActivityHabitItemBinding

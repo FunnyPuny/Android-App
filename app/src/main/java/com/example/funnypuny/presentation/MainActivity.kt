@@ -63,9 +63,6 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             habitListAdapter.submitList(it)
         }
 
-        //HabitRepository.initialize(this)
-        viewModel.habitsListLiveData
-
         binding.bottomNavigationMain.itemIconTintList = null
 
         val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -86,13 +83,13 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
                 R.id.nav_profile -> {
                     val intent = StatisticsActivity.newIntent(this)
                     startActivity(intent)
-                    //launchStaticFragment(StatisticsFragment())
+                    //launchStatisticFragment(StatisticsFragment())
+                    //launchFragment(StatisticsFragment())
                     return@OnNavigationItemSelectedListener true
                 }
             }
             false
         }
-
         binding.bottomNavigationMain.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         /**
@@ -219,7 +216,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         return binding.habitItemContainer == null
     }
 
-    private fun launchStaticFragment(fragment: Fragment) {
+    private fun launchStatisticFragment(fragment: Fragment) {
         supportFragmentManager.popBackStack()
         supportFragmentManager.beginTransaction()
             .add(R.id.statistics_container, fragment)

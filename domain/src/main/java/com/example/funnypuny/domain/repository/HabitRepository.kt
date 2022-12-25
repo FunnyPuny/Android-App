@@ -2,9 +2,8 @@ package com.example.funnypuny.domain.repository
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.*
-import com.example.funnypuny.database.HabitDataBase
+import com.example.funnypuny.data.database.HabitDataBase
 import com.example.funnypuny.domain.entity.Habit
 
 private const val DATABASE_NAME = "habit-database"

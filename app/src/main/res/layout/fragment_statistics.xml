@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".presentation.StatisticsFragment">
+    tools:context="com.example.funnypuny.presentation.StatisticsFragment">
 
     <TextView
         android:id="@+id/tv_title"

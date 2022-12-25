@@ -1,6 +1,5 @@
 package com.example.funnypuny.domain.repository
 
-import androidx.lifecycle.LiveData
 import com.example.funnypuny.domain.entity.Frequency
 import com.example.funnypuny.domain.entity.Habit
 

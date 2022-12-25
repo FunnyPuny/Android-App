@@ -1,7 +1,7 @@
 package com.example.funnypuny.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.funnypuny.data.HabitListRepositoryImpl
+import com.example.funnypuny.domain.data.HabitListRepositoryImpl
 import com.example.funnypuny.domain.entity.Habit
 import com.example.funnypuny.domain.repository.HabitRepository
 import com.example.funnypuny.domain.usecases.DeleteHabitItemUseCase

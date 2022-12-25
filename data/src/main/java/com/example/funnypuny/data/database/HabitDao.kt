@@ -1,7 +1,6 @@
-package com.example.funnypuny.database
+package com.example.funnypuny.data.database
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.*
 import com.example.funnypuny.domain.entity.Habit
 

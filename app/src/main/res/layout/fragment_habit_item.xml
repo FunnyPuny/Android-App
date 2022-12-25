@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         style="@style/AppBottomSheetDialogTheme"
-        tools:context=".presentation.HabitItemFragment">
+        tools:context="com.example.funnypuny.presentation.HabitItemFragment">
     
         <TextView
             android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
                 tools:targetApi="p"
                 android:paddingStart="16dp"
                 app:errorInputName="@{viewModel.errorInputName}"
-                android:text="@{viewModel.habit.name}"/>
+                android:text="Habit's name"/>
     
     
         <TextView
