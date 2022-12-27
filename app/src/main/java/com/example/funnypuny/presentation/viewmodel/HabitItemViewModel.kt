@@ -5,9 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.funnypuny.data.HabitRepositoryImpl
 import com.example.funnypuny.domain.entity.HabitEntity
-import com.example.funnypuny.domain.usecases.AddHabitItemUseCase
-import com.example.funnypuny.domain.usecases.EditHabitItemUseCase
-import com.example.funnypuny.domain.usecases.GetHabitItemUseCase
 import com.example.funnypuny.domain.usecases.MainUseCase
 
 class HabitItemViewModel(

@@ -6,7 +6,6 @@ interface HabitRepository {
 
     fun getHabitList(): List<HabitEntity>
 
-
     fun addHabitItem(habit: HabitEntity)
 
     fun editHabitItem(habit: HabitEntity)
