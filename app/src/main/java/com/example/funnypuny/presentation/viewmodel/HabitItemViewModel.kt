@@ -8,8 +8,11 @@ import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.usecases.AddHabitItemUseCase
 import com.example.funnypuny.domain.usecases.EditHabitItemUseCase
 import com.example.funnypuny.domain.usecases.GetHabitItemUseCase
+import com.example.funnypuny.domain.usecases.MainUseCase
 
-class HabitItemViewModel: ViewModel() {
+class HabitItemViewModel(
+    private val mainUseCase: MainUseCase
+): ViewModel() {
 
     //private val repository = HabitRepositoryImpl
 
@@ -36,6 +39,7 @@ class HabitItemViewModel: ViewModel() {
     fun getHabitItem(habitItemId: Int) {
        /* val item = getHabitItemUseCase.getHabitItem(habitItemId)
         _habit.value = item*/
+        _habit.value = mainUseCase.getHabitItem(habitItemId)
     }
 
     fun addHabitItem(inputName: String?) {
@@ -44,6 +48,7 @@ class HabitItemViewModel: ViewModel() {
         if (fieldsValid) {
             val habit = HabitEntity(name,true)
             //addHabitItemUseCase.addHabitItem(habit)
+            mainUseCase.addHabitItem(habit)
             finishWork()
         }
     }
@@ -55,6 +60,7 @@ class HabitItemViewModel: ViewModel() {
             _habit.value?.let {
                 val item = it.copy(name = name)
                 //editHabitItemUseCase.editHabitItem(item)
+                mainUseCase.editHabitItem(item)
                 finishWork()
             }
         }

@@ -32,6 +32,7 @@ class MainViewModel(
         showConfirmDeleteDialog.call()
     }*/
 
+
     fun onHabitListScrolled(){
 
     }
@@ -63,6 +64,7 @@ class MainViewModel(
 
     fun deleteHabitItem(habit: HabitEntity) {
         //deleteHabitItemUseCase.deleteHabitItem(habit)
+        mainUseCase.deleteHabitItem(habit)
     }
 
     fun changeEnableState(habit: HabitEntity) {
@@ -70,6 +72,7 @@ class MainViewModel(
         //но состояние enabled будет противоположное
         val newItem = habit.copy(enabled = !habit.enabled)
         //editHabitItemUseCase.editHabitItem(newItem)
+        mainUseCase.editHabitItem(newItem)
     }
 
 }

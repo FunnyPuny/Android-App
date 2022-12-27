@@ -15,6 +15,8 @@ import com.example.funnypuny.domain.entity.HabitFrequencyEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.presentation.adapter.FrequencyAdapter
 import com.example.funnypuny.presentation.viewmodel.HabitItemViewModel
+import com.example.funnypuny.presentation.viewmodel.MainViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HabitItemFragment: Fragment() {
 
@@ -24,7 +26,9 @@ class HabitItemFragment: Fragment() {
 
     private lateinit var frequencyAdapter: FrequencyAdapter
     private lateinit var onHabitItemEditingFinishedListener: OnHabitItemEditingFinishedListener
-    private lateinit var viewModel: HabitItemViewModel
+
+    val viewModel: HabitItemViewModel by viewModel()
+    //private lateinit var viewModel: HabitItemViewModel
     private var screenMode = MODE_UNKNOWN
     private var habitId: Int = HabitEntity.UNDEFINED_ID
 
@@ -58,8 +62,8 @@ class HabitItemFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("HabitItemFragment", "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[HabitItemViewModel::class.java]
-        binding.viewModel = viewModel
+        //viewModel = ViewModelProvider(this)[HabitItemViewModel::class.java]
+        //binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         //initViews(view)
         addTextChangeListeners()
@@ -171,7 +175,7 @@ class HabitItemFragment: Fragment() {
         screenMode = mode
         if (screenMode == MODE_EDIT) {
             if (!args.containsKey(HABIT_ITEM_ID)) {
-                throw RuntimeException("Param shop item id is absent")
+                throw RuntimeException("Param habit item id is absent")
             }
             habitId = args.getInt(HABIT_ITEM_ID, HabitEntity.UNDEFINED_ID)
         }

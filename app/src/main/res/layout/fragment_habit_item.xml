@@ -60,7 +60,7 @@
                 tools:targetApi="p"
                 android:paddingStart="16dp"
                 app:errorInputName="@{viewModel.errorInputName}"
-                android:text="Habit's name"/>
+                android:text="@{viewModel.habit.name}"/>
     
     
         <TextView
