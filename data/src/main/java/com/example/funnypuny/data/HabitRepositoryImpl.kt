@@ -51,7 +51,6 @@ class HabitRepositoryImpl : HabitRepository {
 
     override fun deleteHabitItem(habit: HabitEntity) {
         habitList.remove(habit)
-        updateList()
     }
 
     override fun getHabitItem(habitItemId: Int): HabitEntity {

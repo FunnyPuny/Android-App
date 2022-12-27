@@ -18,8 +18,9 @@ class MainInteractor(private val habitRepository: HabitRepository) : MainUseCase
         habitRepository.editHabitItem(habit)
     }
 
-    override fun deleteHabitItem(habit: HabitEntity) {
+    override fun deleteHabitItem(habit: HabitEntity): List<HabitEntity> {
         habitRepository.deleteHabitItem(habit)
+        return habitRepository.getHabitList()
     }
 
     override fun getHabitItem(habitItemId: Int): HabitEntity {

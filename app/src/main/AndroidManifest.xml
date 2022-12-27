@@ -21,7 +21,7 @@
             android:name="com.example.funnypuny.presentation.HabitItemActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.example.funnypuny.presentation.MainActivity"
+            android:name="com.example.funnypuny.presentation.view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

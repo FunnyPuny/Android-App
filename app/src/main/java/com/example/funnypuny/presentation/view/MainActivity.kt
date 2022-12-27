@@ -1,4 +1,4 @@
-package com.example.funnypuny.presentation
+package com.example.funnypuny.presentation.view
 
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.ActivityMainBinding
+import com.example.funnypuny.presentation.HabitItemActivity
+import com.example.funnypuny.presentation.HabitItemFragment
+import com.example.funnypuny.presentation.StatisticsActivity
 import com.example.funnypuny.presentation.adapter.HabitListAdapter
 import com.example.funnypuny.presentation.adapter.HorizontalCalendarAdapter
 import com.example.funnypuny.presentation.viewmodel.MainViewModel
@@ -266,7 +269,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val item = habitListAdapter.currentList[viewHolder.adapterPosition]
-                viewModel.deleteHabitItem(item)
+                viewModel.onSwipeHabits(item)
             }
         }
         val itemTouchHelper = ItemTouchHelper(callback)
