@@ -20,6 +20,7 @@ class MainInteractor(private val habitRepository: HabitRepository) : MainUseCase
 
     override fun deleteHabitItem(habit: HabitEntity): List<HabitEntity> {
         habitRepository.deleteHabitItem(habit)
+       // habitRepository.habitsSubject().call()
         return habitRepository.getHabitList()
     }
 

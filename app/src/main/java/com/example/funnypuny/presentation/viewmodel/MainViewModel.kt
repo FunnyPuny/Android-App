@@ -15,6 +15,13 @@ class MainViewModel(
 
     init {
         habitListState.value = mainUseCase.getHabitList()
+       /* mainUseCase
+            .habitsState()
+            .subscribeOn()
+            .observeOn()
+            .subscribe{ habits->
+                habitListState.value = habits
+            }*/
     }
 
     //----------------

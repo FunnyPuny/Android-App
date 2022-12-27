@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
     // all days in month
     private val dates = ArrayList<Date>()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)

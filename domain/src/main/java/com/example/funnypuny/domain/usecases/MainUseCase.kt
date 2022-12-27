@@ -12,4 +12,7 @@ interface MainUseCase {
     fun deleteHabitItem(habit: HabitEntity): List<HabitEntity>
 
     fun getHabitItem(habitItemId: Int): HabitEntity
+
+    //fun habitsState(): Observable<List<HabitEntity>>
+
 }
