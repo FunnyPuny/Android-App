@@ -30,11 +30,12 @@ class MainViewModel(
     fun onSwipeHabits(habit: HabitEntity) {
         mainUseCase.deleteHabitItem(habit)
         habitListState.value = mainUseCase.getHabitList()
+        //habitListState.value = mainUseCase.deleteHabitItem(habit)
     }
 
     fun changeEnableState(habit: HabitEntity) {
         val newItem = habit.copy(enabled = !habit.enabled)
-        //mainUseCase.editHabitItem(newItem)
+        //habitListState.value = mainUseCase.editHabitItem(newItem)
     }
 
 }
