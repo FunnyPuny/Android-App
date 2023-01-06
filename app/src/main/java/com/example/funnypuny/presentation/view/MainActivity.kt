@@ -16,14 +16,10 @@ import com.example.funnypuny.presentation.HabitItemFragment
 import com.example.funnypuny.presentation.StatisticsActivity
 import com.example.funnypuny.presentation.adapter.HabitListAdapter
 import com.example.funnypuny.presentation.adapter.HorizontalCalendarAdapter
-import com.example.funnypuny.presentation.viewmodel.HorizontalCalendarViewModel
 import com.example.funnypuny.presentation.viewmodel.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 
 class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFinishedListener {
@@ -31,8 +27,6 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
     private lateinit var binding: ActivityMainBinding
 
     val viewModel: MainViewModel by viewModel()
-
-    private lateinit var calendaViewModel: HorizontalCalendarViewModel
 
     private lateinit var habitListAdapter: HabitListAdapter
     private lateinit var horizontalCalendarAdapter: HorizontalCalendarAdapter
@@ -63,6 +57,24 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         setupRecyclerView()
 
         viewModel.habitListState.observe(this) { habitListAdapter.submitList(it) }
+        viewModel.monthTitleState.observe(this) { binding.monthTextView.text = it }
+        viewModel.monthWithPositionState.observe(this) { (changeMonth,position) ->
+            val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            binding.monthRecyclerView.layoutManager = layoutManager
+            val horizontalCalendarAdapter =
+                HorizontalCalendarAdapter(this, viewModel.dates, viewModel.currentDate, changeMonth)
+            binding.monthRecyclerView.adapter = horizontalCalendarAdapter
+            binding.monthRecyclerView.scrollToPosition(position)
+            horizontalCalendarAdapter.setOnItemClickListener(object :
+                HorizontalCalendarAdapter.OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    viewModel.onMonthClick(position)
+                }
+            })
+        }
+
+
+
 
         binding.bottomNavigationMain.itemIconTintList = null
 
@@ -101,12 +113,11 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         snapHelper.attachToRecyclerView(binding.monthRecyclerView)
 
         // Максимальное количество месяцев, которое отображается в календаре
-        calendaViewModel.lastDayInCalendar.add(Calendar.MONTH, 6)
+        //lastDayInCalendar.add(Calendar.MONTH, 6)
 
-        setUpCalendar()
 
         //Переход к предедущему месяцу
-        binding.calendarPrevButton!!.setOnClickListener {
+        binding.calendarPrevButton?.setOnClickListener {
             /*if (cal.after(currentDate)) {
                 cal.add(Calendar.MONTH, -1)
                 if (cal == currentDate)
@@ -114,20 +125,20 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
                 else
                     setUpCalendar(changeMonth = cal)
             }*/
-            calendaViewModel.onPrevButtonClick()
+            viewModel.onPrevButtonClick()
         }
 
         //Переход к следуюющему месяцу
-        binding.calendarNextButton!!.setOnClickListener {
+        binding.calendarNextButton?.setOnClickListener {
             /*if (cal.before(lastDayInCalendar)) {
                 cal.add(Calendar.MONTH, 1)
                 setUpCalendar(changeMonth = cal)
             }*/
-            calendaViewModel.onNextButtonClick()
+            viewModel.onNextButtonClick()
         }
     }
 
-    private fun setUpCalendar(changeMonth: Calendar? = null) {
+    /*private fun setUpCalendar(changeMonth: Calendar? = null) {
         binding.monthTextView.text = sdf.format(cal.time)
         val monthCalendar = cal.clone() as Calendar
         val maxDaysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH)
@@ -165,11 +176,11 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         }
 
         // Assigning calendar view.
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        *//*val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.monthRecyclerView.layoutManager = layoutManager
         val horizontalCalendarAdapter =
             HorizontalCalendarAdapter(this, dates, currentDate, changeMonth)
-        binding.monthRecyclerView.adapter = horizontalCalendarAdapter
+        binding.monthRecyclerView.adapter = horizontalCalendarAdapter*//*
 
         // При запуске приложение центрируется текущий день, если это не 1,2,3 и 29,30,31
         when {
@@ -190,7 +201,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
                 selectedDay = clickCalendar[Calendar.DAY_OF_MONTH]
             }
         })
-    }
+    }*/
 
     override fun onHabitItemEditingFinished() {
         Toast.makeText(this@MainActivity, "Success", Toast.LENGTH_LONG).show()
