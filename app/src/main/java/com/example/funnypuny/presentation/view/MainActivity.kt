@@ -31,23 +31,6 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
     private lateinit var habitListAdapter: HabitListAdapter
     private lateinit var horizontalCalendarAdapter: HorizontalCalendarAdapter
 
-    /*private val lastDayInCalendar = Calendar.getInstance(Locale.ENGLISH)
-    private val sdf = SimpleDateFormat("MMMM yyyy", Locale.ENGLISH)
-    private val cal = Calendar.getInstance(Locale.ENGLISH)
-
-    // current date
-    private val currentDate = Calendar.getInstance(Locale.ENGLISH)
-    private val currentDay = currentDate[Calendar.DAY_OF_MONTH]
-    private val currentMonth = currentDate[Calendar.MONTH]
-    private val currentYear = currentDate[Calendar.YEAR]
-
-    // selected date
-    private var selectedDay: Int = currentDay
-    private var selectedMonth: Int = currentMonth
-    private var selectedYear: Int = currentYear
-
-    // all days in month
-    private val dates = ArrayList<Date>()*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,9 +55,6 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
                 }
             })
         }
-
-
-
 
         binding.bottomNavigationMain.itemIconTintList = null
 
@@ -106,102 +86,16 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             mOnNavigationItemSelectedListener
         )
 
-        /**
-         * Adding SnapHelper here, but it is not needed. I add it just to looks better.
-         */
-        val snapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(binding.monthRecyclerView)
-
-        // Максимальное количество месяцев, которое отображается в календаре
-        //lastDayInCalendar.add(Calendar.MONTH, 6)
-
-
         //Переход к предедущему месяцу
         binding.calendarPrevButton?.setOnClickListener {
-            /*if (cal.after(currentDate)) {
-                cal.add(Calendar.MONTH, -1)
-                if (cal == currentDate)
-                    setUpCalendar()
-                else
-                    setUpCalendar(changeMonth = cal)
-            }*/
             viewModel.onPrevButtonClick()
         }
 
         //Переход к следуюющему месяцу
         binding.calendarNextButton?.setOnClickListener {
-            /*if (cal.before(lastDayInCalendar)) {
-                cal.add(Calendar.MONTH, 1)
-                setUpCalendar(changeMonth = cal)
-            }*/
             viewModel.onNextButtonClick()
         }
     }
-
-    /*private fun setUpCalendar(changeMonth: Calendar? = null) {
-        binding.monthTextView.text = sdf.format(cal.time)
-        val monthCalendar = cal.clone() as Calendar
-        val maxDaysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH)
-
-        //Если changeMonth не равен нулю, то я возьму из него день, месяц и год,
-        //в противном случае установите выбранную дату как текущую дату.
-        selectedDay =
-            when {
-                changeMonth != null -> changeMonth.getActualMinimum(Calendar.DAY_OF_MONTH)
-                else -> currentDay
-            }
-        selectedMonth =
-            when {
-                changeMonth != null -> changeMonth[Calendar.MONTH]
-                else -> currentMonth
-            }
-        selectedYear =
-            when {
-                changeMonth != null -> changeMonth[Calendar.YEAR]
-                else -> currentYear
-            }
-
-        var currentPosition = 0
-        dates.clear()
-        monthCalendar.set(Calendar.DAY_OF_MONTH, 1)
-
-        //Заполнение даты днями и установить currentPosition.
-        //currentPosition — позиция первого выбранного дня.
-        while (dates.size < maxDaysInMonth) {
-            // get position of selected day
-            if (monthCalendar[Calendar.DAY_OF_MONTH] == selectedDay)
-                currentPosition = dates.size
-            dates.add(monthCalendar.time)
-            monthCalendar.add(Calendar.DAY_OF_MONTH, 1)
-        }
-
-        // Assigning calendar view.
-        *//*val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.monthRecyclerView.layoutManager = layoutManager
-        val horizontalCalendarAdapter =
-            HorizontalCalendarAdapter(this, dates, currentDate, changeMonth)
-        binding.monthRecyclerView.adapter = horizontalCalendarAdapter*//*
-
-        // При запуске приложение центрируется текущий день, если это не 1,2,3 и 29,30,31
-        when {
-            currentPosition > 2 -> binding.monthRecyclerView.scrollToPosition(currentPosition - 3)
-            maxDaysInMonth - currentPosition < 2 -> binding.monthRecyclerView.scrollToPosition(
-                currentPosition
-            )
-            else -> binding.monthRecyclerView.scrollToPosition(currentPosition)
-        }
-
-
-        //Меняется текст текущего месяца и года
-        horizontalCalendarAdapter.setOnItemClickListener(object :
-            HorizontalCalendarAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                val clickCalendar = Calendar.getInstance()
-                clickCalendar.time = dates[position]
-                selectedDay = clickCalendar[Calendar.DAY_OF_MONTH]
-            }
-        })
-    }*/
 
     override fun onHabitItemEditingFinished() {
         Toast.makeText(this@MainActivity, "Success", Toast.LENGTH_LONG).show()
