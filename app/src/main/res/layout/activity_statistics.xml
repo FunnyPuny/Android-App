@@ -5,6 +5,6 @@
     android:id="@+id/statistics_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.funnypuny.presentation.StatisticsActivity"
+    tools:context="com.example.funnypuny.presentation.view.StatisticsActivity"
     tools:layout="@layout/fragment_statistics"
     />

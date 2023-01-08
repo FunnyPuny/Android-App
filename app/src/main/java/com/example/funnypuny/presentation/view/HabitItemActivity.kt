@@ -1,4 +1,4 @@
-package com.example.funnypuny.presentation
+package com.example.funnypuny.presentation.view
 
 import android.content.Context
 import android.content.Intent
@@ -7,6 +7,7 @@ import android.os.Bundle
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.ActivityHabitItemBinding
 import com.example.funnypuny.domain.entity.HabitEntity
+import com.example.funnypuny.presentation.HabitItemFragment
 import com.example.funnypuny.presentation.adapter.FrequencyAdapter
 
 class HabitItemActivity : AppCompatActivity(),

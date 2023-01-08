@@ -7,19 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.ActivityMainBinding
-import com.example.funnypuny.presentation.HabitItemActivity
 import com.example.funnypuny.presentation.HabitItemFragment
-import com.example.funnypuny.presentation.StatisticsActivity
 import com.example.funnypuny.presentation.adapter.HabitListAdapter
 import com.example.funnypuny.presentation.adapter.HorizontalCalendarAdapter
 import com.example.funnypuny.presentation.viewmodel.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.Calendar
 
 
 class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFinishedListener {
