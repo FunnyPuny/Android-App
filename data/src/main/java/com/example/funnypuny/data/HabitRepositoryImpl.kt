@@ -35,7 +35,8 @@ class HabitRepositoryImpl : HabitRepository {
             habit.id = autoIncrementId++
         }
         habitList.add(habit)
-        updateList()
+        //updateList()
+
     }
 
     override fun editHabitItem(habit: HabitEntity) {

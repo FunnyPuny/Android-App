@@ -4,10 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.usecases.MainUseCase
-import com.example.funnypuny.presentation.adapter.HorizontalCalendarAdapter
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 class MainViewModel(
     private val mainUseCase: MainUseCase
@@ -49,10 +45,6 @@ class MainViewModel(
             .subscribe{ habits->
                 habitListState.value = habits
             }*/
-
-        //lastDayInCalendar.add(Calendar.MONTH, 6)
-
-        setUpCalendar(null)
     }
 
     //----------------
