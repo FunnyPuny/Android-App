@@ -24,20 +24,25 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
 
     val viewModel: MainViewModel by viewModel()
 
-    private lateinit var habitListAdapter: HabitListAdapter
-    private lateinit var horizontalCalendarAdapter: HorizontalCalendarAdapter
-
+    private var habitListAdapter: HabitListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupRecyclerView()
+        //Переход к предедущему месяцу
+        binding.calendarPrevButton?.setOnClickListener { viewModel.onPrevButtonClick() }
+        //Переход к следуюющему месяцу
+        binding.calendarNextButton?.setOnClickListener { viewModel.onNextButtonClick() }
 
-        viewModel.habitListState.observe(this) { habitListAdapter.submitList(it) }
+        setupHabitList()
+        setupBottomNavigation()
+
+        viewModel.habitListState.observe(this) { habitListAdapter?.submitList(it) }
         viewModel.monthTitleState.observe(this) { binding.monthTextView.text = it }
-        viewModel.monthWithPositionState.observe(this) { (changeMonth,position) ->
+        viewModel.monthWithPositionState.observe(this) { (changeMonth, position) ->
+            //todo сделать инициализацию адаптера один раз, а здесь просто уведомляь его о изменениях
             val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
             binding.monthRecyclerView.layoutManager = layoutManager
             val horizontalCalendarAdapter =
@@ -51,59 +56,28 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
                 }
             })
         }
-
-        binding.bottomNavigationMain.itemIconTintList = null
-
-        val mOnNavigationItemSelectedListener =
-            BottomNavigationView.OnNavigationItemSelectedListener { item ->
-                when (item.itemId) {
-                    R.id.nav_add_box -> {
-                        if (isOnePaneMode()) {
-                            val intent = HabitItemActivity.newIntentAddItem(this)
-                            startActivity(intent)
-                        } else {
-                            launchFragment(HabitItemFragment.newInstanceAddItem())
-                        }
-                        return@OnNavigationItemSelectedListener true
-                    }
-                    R.id.nav_home -> {
-                        // put your code here
-                        return@OnNavigationItemSelectedListener true
-                    }
-                    R.id.nav_profile -> {
-                        val intent = StatisticsActivity.newIntent(this)
-                        startActivity(intent)
-                        return@OnNavigationItemSelectedListener true
-                    }
-                }
-                false
-            }
-        binding.bottomNavigationMain.setOnNavigationItemSelectedListener(
-            mOnNavigationItemSelectedListener
-        )
-
-        //Переход к предедущему месяцу
-        binding.calendarPrevButton?.setOnClickListener {
-            viewModel.onPrevButtonClick()
+        viewModel.showHabitItemActivity.observe(this) {
+            startActivity(HabitItemActivity.newIntentAddItem(this))
         }
 
-        //Переход к следуюющему месяцу
-        binding.calendarNextButton?.setOnClickListener {
-            viewModel.onNextButtonClick()
+        viewModel.showHabitItemFragment.observe(this) { withPopBackStack ->
+            launchFragment(HabitItemFragment.newInstanceAddItem(), withPopBackStack)
         }
     }
 
     override fun onHabitItemEditingFinished() {
+        //todo через вьюмодель и SingleLiveEvent
         Toast.makeText(this@MainActivity, "Success", Toast.LENGTH_LONG).show()
         supportFragmentManager.popBackStack()
     }
 
     private fun isOnePaneMode(): Boolean {
+        //todo переименовать вcе xml идентификаторы по типу tv...
         return binding.habitItemContainer == null
     }
 
-    private fun launchFragment(fragment: Fragment) {
-        supportFragmentManager.popBackStack()
+    private fun launchFragment(fragment: Fragment, withPopBackStack: Boolean) {
+        if (withPopBackStack) supportFragmentManager.popBackStack()
         supportFragmentManager.beginTransaction()
             .replace(R.id.habit_item_container, fragment)
             .addToBackStack(null)
@@ -111,10 +85,21 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
     }
 
 
-    private fun setupRecyclerView() {
-        val rvShopList = binding.rvHabitList
-        with(rvShopList) {
-            habitListAdapter = HabitListAdapter()
+    private fun setupHabitList() {
+        habitListAdapter = HabitListAdapter().apply {
+            onHabitItemLongClickListener = {
+                //todo сделать по аналогии с  viewModel.onHabitAddClick(isOnePaneMode())
+                if (isOnePaneMode()) {
+                    Log.d("MainActivity", it.toString())
+                    val intent = HabitItemActivity.newIntentEditItem(this@MainActivity, it.id)
+                    startActivity(intent)
+                } else {
+                    launchFragment(HabitItemFragment.newInstanceEditItem(it.id), true)
+                }
+            }
+            onHabitItemClickListener = { viewModel.changeEnableState(it) }
+        }
+        with(binding.rvHabitList) {
             adapter = habitListAdapter
             recycledViewPool.setMaxRecycledViews(
                 HabitListAdapter.VIEW_TYPE_ENABLED,
@@ -125,12 +110,39 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
                 HabitListAdapter.MAX_POOL_SIZE
             )
         }
-        setupLongClickListener()
-        setupClickListener()
-        setupSwipeListener(rvShopList)
+        setupSwipeHabitListener()
     }
 
-    private fun setupSwipeListener(rvShopList: RecyclerView) {
+    private fun setupBottomNavigation() {
+        with(binding.bottomNavigationMain) {
+            itemIconTintList = null
+            setOnNavigationItemSelectedListener(
+                BottomNavigationView.OnNavigationItemSelectedListener { item ->
+                    //todo переименовать идентификаторы
+                    when (item.itemId) {
+                        R.id.nav_add_box -> {
+                            viewModel.onHabitAddClick(isOnePaneMode())
+                            return@OnNavigationItemSelectedListener true
+                        }
+                        R.id.nav_home -> {
+                            // put your code here
+                            return@OnNavigationItemSelectedListener true
+                        }
+                        R.id.nav_profile -> {
+                            //todo сделать по аналогии с R.id.nav_add_box
+                            val intent = StatisticsActivity.newIntent(this@MainActivity)
+                            startActivity(intent)
+                            return@OnNavigationItemSelectedListener true
+                        }
+                    }
+                    false
+                }
+            )
+        }
+    }
+
+
+    private fun setupSwipeHabitListener() {
         val callback = object : ItemTouchHelper.SimpleCallback(
             0,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
@@ -145,30 +157,11 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val item = habitListAdapter.currentList[viewHolder.adapterPosition]
-                viewModel.onSwipeHabits(item)
+                viewModel.onSwipeHabit(viewHolder.adapterPosition)
             }
         }
         val itemTouchHelper = ItemTouchHelper(callback)
-        itemTouchHelper.attachToRecyclerView(rvShopList)
-    }
-
-    private fun setupLongClickListener() {
-        habitListAdapter.onHabitItemLongClickListener = {
-            if (isOnePaneMode()) {
-                Log.d("MainActivity", it.toString())
-                val intent = HabitItemActivity.newIntentEditItem(this, it.id)
-                startActivity(intent)
-            } else {
-                launchFragment(HabitItemFragment.newInstanceEditItem(it.id))
-            }
-        }
-    }
-
-    private fun setupClickListener() {
-        habitListAdapter.onHabitItemClickListener = {
-            viewModel.changeEnableState(it)
-        }
+        itemTouchHelper.attachToRecyclerView(binding.rvHabitList)
     }
 
 }

@@ -4,13 +4,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.usecases.MainUseCase
+import com.example.funnypuny.presentation.common.SingleLiveData
+import com.example.funnypuny.presentation.common.SingleLiveDataEmpty
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class MainViewModel(
     private val mainUseCase: MainUseCase
 ) : ViewModel() {
 
     private val lastDayInCalendar = Calendar.getInstance(Locale.ENGLISH).apply {
-        add(Calendar.MONTH,6)
+        add(Calendar.MONTH, 6)
     }
     private val sdf = SimpleDateFormat("MMMM yyyy", Locale.ENGLISH)
     private val cal = Calendar.getInstance(Locale.ENGLISH)
@@ -30,7 +36,10 @@ class MainViewModel(
     val dates = ArrayList<Date>()
 
     val monthTitleState = MutableLiveData<String>()
-    val monthWithPositionState = MutableLiveData<Pair<Calendar?,Int>>()
+    val monthWithPositionState = MutableLiveData<Pair<Calendar?, Int>>()
+
+    val showHabitItemActivity = SingleLiveDataEmpty()
+    val showHabitItemFragment = SingleLiveData<Boolean>()
 
     val habitListState =
         MutableLiveData<List<HabitEntity>>() //состояние вью, всегда мутабельная лайв дата
@@ -38,29 +47,30 @@ class MainViewModel(
 
     init {
         habitListState.value = mainUseCase.getHabitList()
-       /* mainUseCase
-            .habitsState()
-            .subscribeOn()
-            .observeOn()
-            .subscribe{ habits->
-                habitListState.value = habits
-            }*/
+        /* mainUseCase
+             .habitsState()
+             .subscribeOn()
+             .observeOn()
+             .subscribe{ habits->
+                 habitListState.value = habits
+             }*/
     }
 
     //----------------
 
 
-    fun onSwipeHabits(habit: HabitEntity) {
-        mainUseCase.deleteHabitItem(habit)
-        habitListState.value = mainUseCase.getHabitList()
-        //habitListState.value = mainUseCase.deleteHabitItem(habit)
+    fun onSwipeHabit(position: Int) {
+        habitListState.value?.getOrNull(position)?.let { habit ->
+            mainUseCase.deleteHabitItem(habit)
+            habitListState.value = mainUseCase.getHabitList()
+            //habitListState.value = mainUseCase.deleteHabitItem(habit)
+        }
     }
 
     fun changeEnableState(habit: HabitEntity) {
         val newItem = habit.copy(enabled = !habit.enabled)
         //habitListState.value = mainUseCase.editHabitItem(newItem)
     }
-
 
     fun onPrevButtonClick() {
         if (cal.after(currentDate)) {
@@ -84,6 +94,14 @@ class MainViewModel(
             val clickCalendar = Calendar.getInstance()
             clickCalendar.time = date
             selectedDay = clickCalendar[Calendar.DAY_OF_MONTH]
+        }
+    }
+
+    fun onHabitAddClick(isPaneMode:Boolean){
+        if (isPaneMode) {
+            showHabitItemActivity.value = Unit
+        } else {
+            showHabitItemFragment.value = true
         }
     }
 
@@ -141,7 +159,7 @@ class MainViewModel(
             else -> currentPosition
         }
 
-        monthWithPositionState.value = Pair(changeMonth,position)
+        monthWithPositionState.value = Pair(changeMonth, position)
 
     }
 
