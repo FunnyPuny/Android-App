@@ -1,4 +1,4 @@
-package com.example.funnypuny.presentation
+package com.example.funnypuny.presentation.view
 
 import android.content.Context
 import android.content.Intent
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.ActivityStatisticsBinding
+import com.example.funnypuny.presentation.StatisticsFragment
 
 class StatisticsActivity : AppCompatActivity() {
 

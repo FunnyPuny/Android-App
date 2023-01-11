@@ -7,7 +7,7 @@ import com.example.funnypuny.domain.usecases.StatisticUseCase
 class StatisticInteractor(private val habitRepository: HabitRepository): StatisticUseCase {
 
     override fun getHabitList(): List<HabitEntity> {
-        TODO("Not yet implemented")
+        return habitRepository.getHabitList()
     }
 
 }
