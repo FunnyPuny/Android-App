@@ -6,5 +6,5 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.R
 
 class HabitItemViewHolder(val view: View): RecyclerView.ViewHolder(view) {
-    val tvName = view.findViewById<TextView>(R.id.tv_name)
+    val tvHabitName = view.findViewById<TextView>(R.id.tvHabitName)
 }

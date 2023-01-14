@@ -1,5 +1,6 @@
 package com.example.funnypuny.presentation.viewmodel
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.funnypuny.domain.entity.HabitEntity
@@ -16,7 +17,7 @@ class MainViewModel(
 ) : ViewModel() {
 
     private val lastDayInCalendar = Calendar.getInstance(Locale.ENGLISH).apply {
-        add(Calendar.MONTH, 6)
+        add(Calendar.MONTH,6)
     }
     private val sdf = SimpleDateFormat("MMMM yyyy", Locale.ENGLISH)
     private val cal = Calendar.getInstance(Locale.ENGLISH)
@@ -40,6 +41,11 @@ class MainViewModel(
 
     val showHabitItemActivity = SingleLiveDataEmpty()
     val showHabitItemFragment = SingleLiveData<Boolean>()
+
+    val showHabitItemActivityEditItem = SingleLiveData<HabitEntity>()
+    val showHabitItemFragmentEditItem = SingleLiveData<Pair<HabitEntity,Boolean>>()
+
+    val showStatisticActivity = SingleLiveDataEmpty()
 
     val habitListState =
         MutableLiveData<List<HabitEntity>>() //состояние вью, всегда мутабельная лайв дата
@@ -72,7 +78,7 @@ class MainViewModel(
         //habitListState.value = mainUseCase.editHabitItem(newItem)
     }
 
-    fun onPrevButtonClick() {
+    fun onPrevMonthButtonClick() {
         if (cal.after(currentDate)) {
             cal.add(Calendar.MONTH, -1)
             if (cal == currentDate)
@@ -82,7 +88,7 @@ class MainViewModel(
         }
     }
 
-    fun onNextButtonClick() {
+    fun onNextMonthButtonClick() {
         if (cal.before(lastDayInCalendar)) {
             cal.add(Calendar.MONTH, 1)
             setUpCalendar(changeMonth = cal)
@@ -104,6 +110,18 @@ class MainViewModel(
             showHabitItemFragment.value = true
         }
     }
+
+    fun onStatisticPageClick() {
+        showStatisticActivity.call()
+    }
+
+    /*fun onEditHabitItem(isPaneMode: Boolean) {
+        if (isPaneMode) {
+            showHabitItemActivityEditItem.value
+        } else {
+            showHabitItemFragmentEditItem.value = Pair(HabitEntity,true)
+        }
+    }*/
 
     private fun setUpCalendar(changeMonth: Calendar?) {
         monthTitleState.value = sdf.format(cal.time)

@@ -34,16 +34,16 @@ class StatisticsFragment : Fragment() {
         //val drawable = ContextCompat.getDrawable(requireActivity(), R.drawable.circularprogressbar)
         //val drawable = ResourcesCompat.getDrawable(getResources(),R.drawable.circularprogressbar, null)
         //val progressBar: ProgressBar = findViewById(R.id.circularProgressbar)
-        binding.circularProgressbar.progress = 0
-        binding.circularProgressbar.secondaryProgress = 0
-        binding.circularProgressbar.max = 100
-        binding.circularProgressbar.progressDrawable = drawable
+        binding.prgbCircularProgress.progress = 0
+        binding.prgbCircularProgress.secondaryProgress = 0
+        binding.prgbCircularProgress.max = 100
+        binding.prgbCircularProgress.progressDrawable = drawable
         Thread {
             while (status < 100) {
                 status += 1
                 handler.post {
-                    binding.circularProgressbar.progress = status
-                    binding.textView.text = String.format("%d%%", status)
+                    binding.prgbCircularProgress.progress = status
+                    binding.tvCircularProgress.text = String.format("%d%%", status)
                 }
                 try {
                     Thread.sleep(16)

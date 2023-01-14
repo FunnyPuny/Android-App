@@ -114,8 +114,8 @@ class HorizontalCalendarAdapter(private val context: Context,
     }
 
     inner class ViewHolder(itemView: View, val listener: OnItemClickListener): RecyclerView.ViewHolder(itemView) {
-        var txtDay = itemView.findViewById<TextView>(R.id.txt_date)
-        var txtDayInWeek = itemView.findViewById<TextView>(R.id.txt_day)
+        var txtDay = itemView.findViewById<TextView>(R.id.tvDate)
+        var txtDayInWeek = itemView.findViewById<TextView>(R.id.tvDay)
         var linearLayout = itemView.findViewById<LinearLayout>(R.id.calendar_linear_layout)
     }
 

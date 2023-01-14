@@ -9,13 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.funnypuny.databinding.FragmentHabitItemBinding
 import com.example.funnypuny.domain.entity.HabitFrequencyEntity
 import com.example.funnypuny.domain.entity.HabitEntity
-import com.example.funnypuny.presentation.adapter.FrequencyAdapter
+import com.example.funnypuny.presentation.adapter.FrequencyOfTheDayAdapter
 import com.example.funnypuny.presentation.viewmodel.HabitItemViewModel
-import com.example.funnypuny.presentation.viewmodel.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HabitItemFragment: Fragment() {
@@ -24,11 +22,10 @@ class HabitItemFragment: Fragment() {
     private val binding: FragmentHabitItemBinding
         get() = _binding ?: throw RuntimeException("FragmentHabitItemBinding == null")
 
-    private lateinit var frequencyAdapter: FrequencyAdapter
+    private lateinit var frequencyOfTheDayAdapter: FrequencyOfTheDayAdapter
     private lateinit var onHabitItemEditingFinishedListener: OnHabitItemEditingFinishedListener
 
     val viewModel: HabitItemViewModel by viewModel()
-    //private lateinit var viewModel: HabitItemViewModel
     private var screenMode = MODE_UNKNOWN
     private var habitId: Int = HabitEntity.UNDEFINED_ID
 
@@ -54,7 +51,7 @@ class HabitItemFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("ShopItemFragment", "onCreateView")
+        Log.d("HabitItemFragment", "onCreateView")
         _binding = FragmentHabitItemBinding.inflate(inflater,container,false)
         return binding.root
     }
@@ -80,9 +77,9 @@ class HabitItemFragment: Fragment() {
         data.add(HabitFrequencyEntity("Fri"))
         data.add(HabitFrequencyEntity("Sat"))
 
-        val rvFrequencyList = binding.rvFrequency
-        frequencyAdapter = FrequencyAdapter(data)
-        rvFrequencyList.adapter = frequencyAdapter
+        val rvFrequencyList = binding.rvFrequencyOfTheDay
+        frequencyOfTheDayAdapter = FrequencyOfTheDayAdapter(data)
+        rvFrequencyList.adapter = frequencyOfTheDayAdapter
 
     }
 
@@ -137,7 +134,7 @@ class HabitItemFragment: Fragment() {
     }
 
     private fun addTextChangeListeners() {
-        binding.etName.addTextChangedListener(object : TextWatcher {
+        binding.tietName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -152,14 +149,14 @@ class HabitItemFragment: Fragment() {
 
     private fun launchEditMode() {
         viewModel.getHabitItem(habitId)
-        binding.saveButton.setOnClickListener {
-            viewModel.editHabitItem(binding.etName.text?.toString())
+        binding.btnSave.setOnClickListener {
+            viewModel.editHabitItem(binding.tietName.text?.toString())
         }
     }
 
     private fun launchAddMode() {
-        binding.saveButton.setOnClickListener {
-            viewModel.addHabitItem(binding.etName.text?.toString())
+        binding.btnSave.setOnClickListener {
+            viewModel.addHabitItem(binding.tietName.text?.toString())
         }
     }
 

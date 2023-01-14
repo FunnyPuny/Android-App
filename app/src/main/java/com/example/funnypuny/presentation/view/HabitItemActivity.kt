@@ -8,7 +8,7 @@ import com.example.funnypuny.R
 import com.example.funnypuny.databinding.ActivityHabitItemBinding
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.presentation.HabitItemFragment
-import com.example.funnypuny.presentation.adapter.FrequencyAdapter
+import com.example.funnypuny.presentation.adapter.FrequencyOfTheDayAdapter
 
 class HabitItemActivity : AppCompatActivity(),
     HabitItemFragment.OnHabitItemEditingFinishedListener {
@@ -17,7 +17,7 @@ class HabitItemActivity : AppCompatActivity(),
     private val binding: ActivityHabitItemBinding
         get() = _binding ?: throw RuntimeException("ActivityHabitItemBinding == null")
 
-    private lateinit var frequencyAdapter: FrequencyAdapter
+    private lateinit var frequencyOfTheDayAdapter: FrequencyOfTheDayAdapter
 
     private var screenMode = MODE_UNKNOWN
     private var habitId = HabitEntity.UNDEFINED_ID

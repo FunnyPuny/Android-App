@@ -26,13 +26,16 @@
         <entry key="app/src/main/res/drawable/ic_white_ellipse.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/rounded_bottom_sheet.xml" value="0.1" />
         <entry key="app/src/main/res/layout-land/activity_main.xml" value="0.13483255645375192" />
-        <entry key="app/src/main/res/layout/activity_habit_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_habit_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2315112540192926" />
         <entry key="app/src/main/res/layout/activity_statistics.xml" value="0.24583333333333332" />
         <entry key="app/src/main/res/layout/fragment_habit_item.xml" value="0.16816816816816818" />
         <entry key="app/src/main/res/layout/fragment_statistics.xml" value="0.29810943603515627" />
         <entry key="app/src/main/res/layout/item_day.xml" value="0.20969202898550723" />
         <entry key="app/src/main/res/layout/item_frequence.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layout/item_frequency.xml" value="0.2826086956521739" />
+        <entry key="app/src/main/res/layout/item_habit_disabled.xml" value="0.2826086956521739" />
+        <entry key="app/src/main/res/layout/item_habit_enabled.xml" value="0.2826086956521739" />
         <entry key="app/src/main/res/menu/home_navigation_menu.xml" value="0.1" />
       </map>
     </option>

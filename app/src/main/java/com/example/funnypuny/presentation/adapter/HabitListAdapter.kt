@@ -36,7 +36,7 @@ class HabitListAdapter(): ListAdapter<HabitEntity, HabitItemViewHolder>(HabitIte
 
     override fun onBindViewHolder(holder: HabitItemViewHolder, position: Int) {
         val habitItem = getItem(position)
-        holder.tvName.text = habitItem.name
+        holder.tvHabitName.text = habitItem.name
     }
 
 

@@ -8,7 +8,7 @@
     tools:context="com.example.funnypuny.presentation.StatisticsFragment">
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tvStatisticPageTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="All habits"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/tvStatisticPageTitle"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="26dp"
@@ -37,15 +37,15 @@
         android:background="@drawable/ic_disabled_cardview_corner">
 
         <RelativeLayout
-            android:id="@+id/progress_bar"
+            android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/ll_completed">
+            app:layout_constraintEnd_toStartOf="@id/llCompletedHabits">
             <ProgressBar
-                android:id="@+id/circularProgressbar"
+                android:id="@+id/prgbCircularProgress"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
@@ -55,7 +55,7 @@
                 android:progress="50"
                 android:secondaryProgress="100" />
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/tvCircularProgress"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerInParent="true"
@@ -67,7 +67,7 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/ll_completed"
+            android:id="@+id/llCompletedHabits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -79,7 +79,7 @@
             app:layout_constraintEnd_toStartOf="@id/view">
 
             <TextView
-                android:id="@+id/tv_completed"
+                android:id="@+id/tvCompletedHabits"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
@@ -102,13 +102,13 @@
             android:layout_width="1dp"
             android:layout_height="52dp"
             android:background="@color/grey_light"
-            app:layout_constraintStart_toEndOf="@id/ll_completed"
+            app:layout_constraintStart_toEndOf="@id/llCompletedHabits"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/ll_missed"/>
+            app:layout_constraintEnd_toStartOf="@id/llMissedHabits"/>
 
         <LinearLayout
-            android:id="@+id/ll_missed"
+            android:id="@+id/llMissedHabits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -120,7 +120,7 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <TextView
-                android:id="@+id/tv_missed"
+                android:id="@+id/tvMissedHabits"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
@@ -141,7 +141,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <CalendarView
-        android:id="@+id/calendar_view"
+        android:id="@+id/calendarView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/progress_container"

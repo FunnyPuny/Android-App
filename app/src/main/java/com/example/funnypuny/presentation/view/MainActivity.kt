@@ -32,23 +32,23 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         setContentView(binding.root)
 
         //Переход к предедущему месяцу
-        binding.calendarPrevButton?.setOnClickListener { viewModel.onPrevButtonClick() }
+        binding.ivMonthPrevButton.setOnClickListener { viewModel.onPrevMonthButtonClick() }
         //Переход к следуюющему месяцу
-        binding.calendarNextButton?.setOnClickListener { viewModel.onNextButtonClick() }
+        binding.ivNextMonthButton.setOnClickListener { viewModel.onNextMonthButtonClick() }
 
         setupHabitList()
         setupBottomNavigation()
 
         viewModel.habitListState.observe(this) { habitListAdapter?.submitList(it) }
-        viewModel.monthTitleState.observe(this) { binding.monthTextView.text = it }
+        viewModel.monthTitleState.observe(this) { binding.tvMonthTitle.text = it }
         viewModel.monthWithPositionState.observe(this) { (changeMonth, position) ->
             //todo сделать инициализацию адаптера один раз, а здесь просто уведомляь его о изменениях
             val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-            binding.monthRecyclerView.layoutManager = layoutManager
+            binding.rvWeeklyCalendar.layoutManager = layoutManager
             val horizontalCalendarAdapter =
                 HorizontalCalendarAdapter(this, viewModel.dates, viewModel.currentDate, changeMonth)
-            binding.monthRecyclerView.adapter = horizontalCalendarAdapter
-            binding.monthRecyclerView.scrollToPosition(position)
+            binding.rvWeeklyCalendar.adapter = horizontalCalendarAdapter
+            binding.rvWeeklyCalendar.scrollToPosition(position)
             horizontalCalendarAdapter.setOnItemClickListener(object :
                 HorizontalCalendarAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
@@ -63,6 +63,18 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         viewModel.showHabitItemFragment.observe(this) { withPopBackStack ->
             launchFragment(HabitItemFragment.newInstanceAddItem(), withPopBackStack)
         }
+
+        viewModel.showStatisticActivity.observe(this) {
+            startActivity(StatisticsActivity.newIntent(this@MainActivity))
+        }
+
+        /*viewModel.showHabitItemActivityEditItem.observe(this) {
+            startActivity(HabitItemActivity.newIntentEditItem(this@MainActivity, it.id))
+        }
+
+        viewModel.showHabitItemFragmentEditItem.observe(this) { (habitId, boolean) ->
+            launchFragment(HabitItemFragment.newInstanceEditItem(habitId.id), boolean)
+        }*/
     }
 
     override fun onHabitItemEditingFinished() {
@@ -89,6 +101,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         habitListAdapter = HabitListAdapter().apply {
             onHabitItemLongClickListener = {
                 //todo сделать по аналогии с  viewModel.onHabitAddClick(isOnePaneMode())
+                //viewModel.onEditHabitItem(isOnePaneMode())
                 if (isOnePaneMode()) {
                     Log.d("MainActivity", it.toString())
                     val intent = HabitItemActivity.newIntentEditItem(this@MainActivity, it.id)
@@ -114,24 +127,22 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
     }
 
     private fun setupBottomNavigation() {
-        with(binding.bottomNavigationMain) {
+        with(binding.bnvMain) {
             itemIconTintList = null
             setOnNavigationItemSelectedListener(
                 BottomNavigationView.OnNavigationItemSelectedListener { item ->
                     //todo переименовать идентификаторы
                     when (item.itemId) {
-                        R.id.nav_add_box -> {
+                        R.id.nav_add_habit -> {
                             viewModel.onHabitAddClick(isOnePaneMode())
                             return@OnNavigationItemSelectedListener true
                         }
-                        R.id.nav_home -> {
-                            // put your code here
+                        R.id.nav_home_page -> {
                             return@OnNavigationItemSelectedListener true
                         }
-                        R.id.nav_profile -> {
+                        R.id.nav_statistic_page -> {
                             //todo сделать по аналогии с R.id.nav_add_box
-                            val intent = StatisticsActivity.newIntent(this@MainActivity)
-                            startActivity(intent)
+                            viewModel.onStatisticPageClick()
                             return@OnNavigationItemSelectedListener true
                         }
                     }
