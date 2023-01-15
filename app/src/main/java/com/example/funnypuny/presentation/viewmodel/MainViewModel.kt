@@ -115,13 +115,13 @@ class MainViewModel(
         showStatisticActivity.call()
     }
 
-    /*fun onEditHabitItem(isPaneMode: Boolean) {
+    fun onEditHabitItem(isPaneMode: Boolean) {
         if (isPaneMode) {
-            showHabitItemActivityEditItem.value
+            showHabitItemActivityEditItem.value = Unit
         } else {
             showHabitItemFragmentEditItem.value = Pair(HabitEntity,true)
         }
-    }*/
+    }
 
     private fun setUpCalendar(changeMonth: Calendar?) {
         monthTitleState.value = sdf.format(cal.time)

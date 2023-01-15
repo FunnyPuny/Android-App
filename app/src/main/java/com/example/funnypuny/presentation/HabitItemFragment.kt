@@ -77,9 +77,9 @@ class HabitItemFragment: Fragment() {
         data.add(HabitFrequencyEntity("Fri"))
         data.add(HabitFrequencyEntity("Sat"))
 
-        val rvFrequencyList = binding.rvFrequencyOfTheDay
+        //val rvFrequencyList = binding.rvFrequencyOfTheDay
         frequencyOfTheDayAdapter = FrequencyOfTheDayAdapter(data)
-        rvFrequencyList.adapter = frequencyOfTheDayAdapter
+        binding.rvFrequencyOfTheDay.adapter = frequencyOfTheDayAdapter
 
     }
 

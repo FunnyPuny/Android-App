@@ -68,13 +68,13 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             startActivity(StatisticsActivity.newIntent(this@MainActivity))
         }
 
-        /*viewModel.showHabitItemActivityEditItem.observe(this) {
+        viewModel.showHabitItemActivityEditItem.observe(this) {
             startActivity(HabitItemActivity.newIntentEditItem(this@MainActivity, it.id))
         }
 
-        viewModel.showHabitItemFragmentEditItem.observe(this) { (habitId, boolean) ->
-            launchFragment(HabitItemFragment.newInstanceEditItem(habitId.id), boolean)
-        }*/
+        viewModel.showHabitItemFragmentEditItem.observe(this) {
+            launchFragment(HabitItemFragment.newInstanceEditItem(it.id), true)
+        }
     }
 
     override fun onHabitItemEditingFinished() {
