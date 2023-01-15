@@ -75,16 +75,17 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         viewModel.showHabitItemFragmentEditItem.observe(this) {
             launchFragment(HabitItemFragment.newInstanceEditItem(it.id), true)
         }
+
+        viewModel.showHabititemEditingFinished.observe(this) {
+            supportFragmentManager.popBackStack()
+        }
     }
 
     override fun onHabitItemEditingFinished() {
-        //todo через вьюмодель и SingleLiveEvent
-        Toast.makeText(this@MainActivity, "Success", Toast.LENGTH_LONG).show()
-        supportFragmentManager.popBackStack()
+        viewModel.onHabititemEditingFinished()
     }
 
     private fun isOnePaneMode(): Boolean {
-        //todo переименовать вcе xml идентификаторы по типу tv...
         return binding.habitItemContainer == null
     }
 
@@ -131,7 +132,6 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             itemIconTintList = null
             setOnNavigationItemSelectedListener(
                 BottomNavigationView.OnNavigationItemSelectedListener { item ->
-                    //todo переименовать идентификаторы
                     when (item.itemId) {
                         R.id.nav_add_habit -> {
                             viewModel.onHabitAddClick(isOnePaneMode())
@@ -141,7 +141,6 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
                             return@OnNavigationItemSelectedListener true
                         }
                         R.id.nav_statistic_page -> {
-                            //todo сделать по аналогии с R.id.nav_add_box
                             viewModel.onStatisticPageClick()
                             return@OnNavigationItemSelectedListener true
                         }

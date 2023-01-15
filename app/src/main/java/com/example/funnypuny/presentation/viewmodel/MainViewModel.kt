@@ -47,6 +47,8 @@ class MainViewModel(
 
     val showStatisticActivity = SingleLiveDataEmpty()
 
+    val showHabititemEditingFinished = SingleLiveDataEmpty()
+
     val habitListState =
         MutableLiveData<List<HabitEntity>>() //состояние вью, всегда мутабельная лайв дата
     //val showConfirmDeleteDialog = SingleLiveDataEmpty() //какое-то действие, которое нужно сделать один раз
@@ -121,6 +123,10 @@ class MainViewModel(
         } else {
             showHabitItemFragmentEditItem.value = Pair(HabitEntity,true)
         }
+    }
+
+    fun onHabititemEditingFinished() {
+        showHabititemEditingFinished.call()
     }
 
     private fun setUpCalendar(changeMonth: Calendar?) {
