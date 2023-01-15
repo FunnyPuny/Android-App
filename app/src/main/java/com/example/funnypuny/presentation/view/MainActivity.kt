@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         setupHabitList()
         setupBottomNavigation()
 
+        //todo при добавлении элемент не появился
         viewModel.habitListState.observe(this) { habitListAdapter?.submitList(it) }
         viewModel.monthTitleState.observe(this) { binding.tvMonthTitle.text = it }
         viewModel.monthWithPositionState.observe(this) { (changeMonth, position) ->
@@ -68,12 +69,12 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             startActivity(StatisticsActivity.newIntent(this@MainActivity))
         }
 
-        viewModel.showHabitItemActivityEditItem.observe(this) {
-            startActivity(HabitItemActivity.newIntentEditItem(this@MainActivity, it.id))
+        viewModel.showHabitItemActivityEditItem.observe(this) { id ->
+            startActivity(HabitItemActivity.newIntentEditItem(this@MainActivity, id))
         }
 
-        viewModel.showHabitItemFragmentEditItem.observe(this) {
-            launchFragment(HabitItemFragment.newInstanceEditItem(it.id), true)
+        viewModel.showHabitItemFragmentEditItem.observe(this) { (id, withPopBackStack) ->
+            launchFragment(HabitItemFragment.newInstanceEditItem(id), withPopBackStack)
         }
 
         viewModel.showHabititemEditingFinished.observe(this) {
@@ -100,16 +101,8 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
 
     private fun setupHabitList() {
         habitListAdapter = HabitListAdapter().apply {
-            onHabitItemLongClickListener = {
-                //todo сделать по аналогии с  viewModel.onHabitAddClick(isOnePaneMode())
-                //viewModel.onEditHabitItem(isOnePaneMode())
-                if (isOnePaneMode()) {
-                    Log.d("MainActivity", it.toString())
-                    val intent = HabitItemActivity.newIntentEditItem(this@MainActivity, it.id)
-                    startActivity(intent)
-                } else {
-                    launchFragment(HabitItemFragment.newInstanceEditItem(it.id), true)
-                }
+            onHabitItemLongClickListener = { habit ->
+                viewModel.onEditHabitItem(isOnePaneMode(),habit.id)
             }
             onHabitItemClickListener = { viewModel.changeEnableState(it) }
         }
@@ -125,6 +118,11 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             )
         }
         setupSwipeHabitListener()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.onViewShown()
     }
 
     private fun setupBottomNavigation() {

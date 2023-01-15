@@ -1,12 +1,15 @@
 package com.example.funnypuny.presentation.viewmodel
 
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.usecases.MainUseCase
+import com.example.funnypuny.presentation.HabitItemFragment
 import com.example.funnypuny.presentation.common.SingleLiveData
 import com.example.funnypuny.presentation.common.SingleLiveDataEmpty
+import com.example.funnypuny.presentation.view.HabitItemActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -42,8 +45,8 @@ class MainViewModel(
     val showHabitItemActivity = SingleLiveDataEmpty()
     val showHabitItemFragment = SingleLiveData<Boolean>()
 
-    val showHabitItemActivityEditItem = SingleLiveData<HabitEntity>()
-    val showHabitItemFragmentEditItem = SingleLiveData<Pair<HabitEntity,Boolean>>()
+    val showHabitItemActivityEditItem = SingleLiveData<Int>()
+    val showHabitItemFragmentEditItem = SingleLiveData<Pair<Int,Boolean>>()
 
     val showStatisticActivity = SingleLiveDataEmpty()
 
@@ -62,9 +65,14 @@ class MainViewModel(
              .subscribe{ habits->
                  habitListState.value = habits
              }*/
+        setUpCalendar(null)
     }
 
     //----------------
+
+    fun onViewShown() {
+        habitListState.value = mainUseCase.getHabitList()
+    }
 
 
     fun onSwipeHabit(position: Int) {
@@ -117,11 +125,11 @@ class MainViewModel(
         showStatisticActivity.call()
     }
 
-    fun onEditHabitItem(isPaneMode: Boolean) {
+    fun onEditHabitItem(isPaneMode: Boolean, id: Int) {
         if (isPaneMode) {
-            showHabitItemActivityEditItem.value = Unit
+            showHabitItemActivityEditItem.value = id
         } else {
-            showHabitItemFragmentEditItem.value = Pair(HabitEntity,true)
+            showHabitItemFragmentEditItem.value = Pair(id,true)
         }
     }
 
