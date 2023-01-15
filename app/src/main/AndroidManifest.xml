@@ -4,6 +4,7 @@
     package="com.example.funnypuny">
 
     <application
+        android:name=".presentation.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -14,13 +15,13 @@
         android:theme="@style/Theme.FunnyPuny"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.StatisticsActivity"
+            android:name="com.example.funnypuny.presentation.view.StatisticsActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.HabitItemActivity"
+            android:name="com.example.funnypuny.presentation.view.HabitItemActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".presentation.MainActivity"
+            android:name="com.example.funnypuny.presentation.view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

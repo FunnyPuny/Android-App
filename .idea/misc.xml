@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/bg_center_nav_option.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/circularprogressbar.xml" value="0.1895187377929687" />
+        <entry key="app/src/main/res/drawable/ic_add_box_state.xml" value="0.1605" />
+        <entry key="app/src/main/res/drawable/ic_add_button.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_add_button_selected.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_check_box.xml" value="0.1605" />
+        <entry key="app/src/main/res/drawable/ic_check_box_enabled.xml" value="0.1605" />
+        <entry key="app/src/main/res/drawable/ic_chevron_left.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_chevron_right.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_disabled_cardview_corner.xml" value="0.1375" />
+        <entry key="app/src/main/res/drawable/ic_edit_text_corner.xml" value="0.1025" />
+        <entry key="app/src/main/res/drawable/ic_ellipse_disable.xml" value="0.13585815429687492" />
+        <entry key="app/src/main/res/drawable/ic_ellipse_enable.xml" value="0.1605" />
+        <entry key="app/src/main/res/drawable/ic_home_button_selected.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_home_state.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_profile_button.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_profile_button_selected.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_statistic_button.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_statistic_button_selected.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_statistic_state.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_white_ellipse.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/rounded_bottom_sheet.xml" value="0.1" />
+        <entry key="app/src/main/res/layout-land/activity_main.xml" value="0.13483255645375192" />
+        <entry key="app/src/main/res/layout/activity_habit_item.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2315112540192926" />
+        <entry key="app/src/main/res/layout/activity_statistics.xml" value="0.24583333333333332" />
+        <entry key="app/src/main/res/layout/fragment_habit_item.xml" value="0.16816816816816818" />
+        <entry key="app/src/main/res/layout/fragment_statistics.xml" value="0.29810943603515627" />
+        <entry key="app/src/main/res/layout/item_day.xml" value="0.20969202898550723" />
+        <entry key="app/src/main/res/layout/item_frequence.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layout/item_frequency.xml" value="0.2826086956521739" />
+        <entry key="app/src/main/res/layout/item_habit_disabled.xml" value="0.2826086956521739" />
+        <entry key="app/src/main/res/layout/item_habit_enabled.xml" value="0.2826086956521739" />
+        <entry key="app/src/main/res/menu/home_navigation_menu.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" project-jdk-name="11" project-jdk-type="JavaSDK" />
+</project>

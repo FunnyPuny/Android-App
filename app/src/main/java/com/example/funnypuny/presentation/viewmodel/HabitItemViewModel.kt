@@ -3,27 +3,30 @@ package com.example.funnypuny.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.funnypuny.data.HabitListRepositoryImpl
-import com.example.funnypuny.domain.entity.Habit
-import com.example.funnypuny.domain.usecases.AddHabitItemUseCase
-import com.example.funnypuny.domain.usecases.EditHabitItemUseCase
-import com.example.funnypuny.domain.usecases.GetHabitItemUseCase
+import com.example.funnypuny.data.HabitRepositoryImpl
+import com.example.funnypuny.domain.entity.HabitEntity
+import com.example.funnypuny.domain.usecases.MainUseCase
 
-class HabitItemViewModel: ViewModel() {
+class HabitItemViewModel(
+    private val mainUseCase: MainUseCase
+): ViewModel() {
 
-    private val repository = HabitListRepositoryImpl
+    //private val repository = HabitRepositoryImpl
 
-    private val getHabitItemUseCase = GetHabitItemUseCase(repository)
-    private val addHabitItemUseCase = AddHabitItemUseCase(repository)
-    private val  editHabitItemUseCase = EditHabitItemUseCase(repository )
+    //private val getHabitItemUseCase = GetHabitItemUseCase(repository)
+    //private val addHabitItemUseCase = AddHabitItemUseCase(repository)
+    //private val  editHabitItemUseCase = EditHabitItemUseCase(repository)
+
+   // private val habitRepository = HabitRepository.get()
+   // val habitsListLiveData = habitRepository.getAll()
 
     private val _errorInputName = MutableLiveData<Boolean>()
     val errorInputName: LiveData<Boolean>
         get() = _errorInputName
 
 
-    private val _habit = MutableLiveData<Habit>()
-    val habit: LiveData<Habit>
+    private val _habit = MutableLiveData<HabitEntity>()
+    val habit: LiveData<HabitEntity>
         get() = _habit
 
     private val _shouldCloseScreen = MutableLiveData<Unit>()
@@ -31,16 +34,18 @@ class HabitItemViewModel: ViewModel() {
         get() = _shouldCloseScreen
 
     fun getHabitItem(habitItemId: Int) {
-        val item = getHabitItemUseCase.getHabitItem(habitItemId)
-        _habit.value = item
+       /* val item = getHabitItemUseCase.getHabitItem(habitItemId)
+        _habit.value = item*/
+        _habit.value = mainUseCase.getHabitItem(habitItemId)
     }
 
     fun addHabitItem(inputName: String?) {
         val name = parseName(inputName)
         val fieldsValid = validateInput(name)
         if (fieldsValid) {
-            val habit = Habit(name,true)
-            addHabitItemUseCase.addHabitItem(habit)
+            val habit = HabitEntity(name,true)
+            //addHabitItemUseCase.addHabitItem(habit)
+            mainUseCase.addHabitItem(habit)
             finishWork()
         }
     }
@@ -51,7 +56,8 @@ class HabitItemViewModel: ViewModel() {
         if (fieldsValid) {
             _habit.value?.let {
                 val item = it.copy(name = name)
-                editHabitItemUseCase.editHabitItem(item)
+                //editHabitItemUseCase.editHabitItem(item)
+                mainUseCase.editHabitItem(item)
                 finishWork()
             }
         }

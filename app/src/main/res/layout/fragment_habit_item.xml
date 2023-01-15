@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         style="@style/AppBottomSheetDialogTheme"
-        tools:context=".presentation.HabitItemFragment">
+        tools:context="com.example.funnypuny.presentation.HabitItemFragment">
     
         <TextView
             android:layout_width="wrap_content"
@@ -28,7 +28,7 @@
             android:lineHeight="20sp"/>
     
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/tvName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Name"
@@ -45,7 +45,7 @@
     
     
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_name"
+                android:id="@+id/tietName"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:hint="Habit's name"
@@ -64,7 +64,7 @@
     
     
         <TextView
-            android:id="@+id/tv_reminder_note"
+            android:id="@+id/tvReminderNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Reminder note"
@@ -80,7 +80,7 @@
     
     
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_reminder_note"
+            android:id="@+id/tietReminderNote"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:hint="Note"
@@ -98,7 +98,7 @@
     
     
         <TextView
-            android:id="@+id/tv_frequency"
+            android:id="@+id/tvFrequencyOfTheDay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Frequence"
@@ -113,7 +113,7 @@
             android:layout_marginBottom="16dp"/>
     
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_frequency"
+            android:id="@+id/rvFrequencyOfTheDay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -122,7 +122,7 @@
             android:layout_marginStart="16dp"/>
     
         <TextView
-            android:id="@+id/tv_reminder_timer"
+            android:id="@+id/tvReminderTimer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Reminder timer"
@@ -142,7 +142,7 @@
             android:orientation="horizontal">
     
             <EditText
-                android:id="@+id/et_hh"
+                android:id="@+id/etHH"
                 android:layout_width="48dp"
                 android:layout_height="40dp"
                 android:inputType="time"
@@ -175,7 +175,7 @@
             </LinearLayout>
     
             <EditText
-                android:id="@+id/et_mm"
+                android:id="@+id/etMM"
                 android:layout_width="48dp"
                 android:layout_height="40dp"
                 android:inputType="time"
@@ -188,7 +188,7 @@
         </LinearLayout>
     
         <Button
-            android:id="@+id/save_button"
+            android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

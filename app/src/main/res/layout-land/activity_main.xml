@@ -5,11 +5,21 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.MainActivity"
+        tools:context="com.example.funnypuny.presentation.view.MainActivity"
         android:background="@color/white">
 
+        <ImageView
+            android:id="@+id/ivMonthPrevButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_chevron_left"
+            app:layout_constraintEnd_toStartOf="@id/tvMonthTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvMonthTitle"
+            app:layout_constraintBottom_toBottomOf="@id/tvMonthTitle"/>
+
         <TextView
-            android:id="@+id/month_text_view"
+            android:id="@+id/tvMonthTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -22,35 +32,50 @@
             android:textColor="@color/primary"
             android:textSize="24sp"
             android:textStyle="normal"
-            app:layout_constraintBottom_toTopOf="@+id/month_recycler_view"
-            app:layout_constraintEnd_toEndOf="@id/guideline_middle"
+            app:layout_constraintBottom_toTopOf="@+id/rvWeeklyCalendar"
+            app:layout_constraintEnd_toEndOf="@id/guidelineMiddle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/month_recycler_view"
-            android:layout_width="0dp"
-            android:layout_height="88dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/guideline_middle"
-            app:layout_constraintTop_toBottomOf="@+id/month_text_view"
-            android:background="@color/grey_light"
-            app:layout_constraintBottom_toTopOf="@id/rv_habit_list" />
+        <ImageView
+            android:id="@+id/ivNextMonthButton"
+            android:src="@drawable/ic_chevron_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/tvMonthTitle"
+            app:layout_constraintEnd_toEndOf="@id/guidelineMiddle"
+            app:layout_constraintTop_toTopOf="@id/tvMonthTitle"
+            app:layout_constraintBottom_toBottomOf="@id/tvMonthTitle"/>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvWeeklyCalendar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guidelineMiddle"
+            app:layout_constraintTop_toBottomOf="@+id/tvMonthTitle"
+            app:layout_constraintBottom_toTopOf="@id/rvHabitList"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_day"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvHabitList"
             android:layout_marginTop="16dp"
-            android:id="@+id/rv_habit_list"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/guideline_middle"
-            app:layout_constraintTop_toBottomOf="@id/month_recycler_view"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_main"
+            app:layout_constraintEnd_toEndOf="@id/guidelineMiddle"
+            app:layout_constraintTop_toBottomOf="@id/rvWeeklyCalendar"
+            app:layout_constraintBottom_toTopOf="@+id/bnvMain"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_habit_enabled"/>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation_main"
+            android:id="@+id/bnvMain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,18 +87,19 @@
             app:menu="@menu/home_navigation_menu"/>
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_middle"
+            android:id="@+id/guidelineMiddle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/habit_item_container"
+            android:id="@+id/habitItemContainer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            app:layout_constraintStart_toStartOf="@id/guideline_middle"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintStart_toStartOf="@id/guidelineMiddle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

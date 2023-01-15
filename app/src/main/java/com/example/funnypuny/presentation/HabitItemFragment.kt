@@ -9,12 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.funnypuny.databinding.FragmentHabitItemBinding
-import com.example.funnypuny.domain.entity.Frequency
-import com.example.funnypuny.domain.entity.Habit
-import com.example.funnypuny.presentation.adapter.FrequencyAdapter
+import com.example.funnypuny.domain.entity.HabitFrequencyEntity
+import com.example.funnypuny.domain.entity.HabitEntity
+import com.example.funnypuny.presentation.adapter.FrequencyOfTheDayAdapter
 import com.example.funnypuny.presentation.viewmodel.HabitItemViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HabitItemFragment: Fragment() {
 
@@ -22,11 +22,12 @@ class HabitItemFragment: Fragment() {
     private val binding: FragmentHabitItemBinding
         get() = _binding ?: throw RuntimeException("FragmentHabitItemBinding == null")
 
-    private lateinit var frequencyAdapter: FrequencyAdapter
+    private lateinit var frequencyOfTheDayAdapter: FrequencyOfTheDayAdapter
     private lateinit var onHabitItemEditingFinishedListener: OnHabitItemEditingFinishedListener
-    private lateinit var viewModel: HabitItemViewModel
+
+    val viewModel: HabitItemViewModel by viewModel()
     private var screenMode = MODE_UNKNOWN
-    private var habitId: Int = Habit.UNDEFINED_ID
+    private var habitId: Int = HabitEntity.UNDEFINED_ID
 
 
     override fun onAttach(context: Context) {
@@ -50,7 +51,7 @@ class HabitItemFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("ShopItemFragment", "onCreateView")
+        Log.d("HabitItemFragment", "onCreateView")
         _binding = FragmentHabitItemBinding.inflate(inflater,container,false)
         return binding.root
     }
@@ -58,27 +59,27 @@ class HabitItemFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("HabitItemFragment", "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[HabitItemViewModel::class.java]
-        binding.viewModel = viewModel
+        //viewModel = ViewModelProvider(this)[HabitItemViewModel::class.java]
+        //binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         //initViews(view)
         addTextChangeListeners()
         launchRightMode()
         observeViewModel()
 
-        val data = ArrayList<Frequency>()
+        val data = ArrayList<HabitFrequencyEntity>()
 
-        data.add(Frequency("Sun"))
-        data.add(Frequency("Mon"))
-        data.add(Frequency("Tue"))
-        data.add(Frequency("Wed"))
-        data.add(Frequency("Thu"))
-        data.add(Frequency("Fri"))
-        data.add(Frequency("Sat"))
+        data.add(HabitFrequencyEntity("Sun"))
+        data.add(HabitFrequencyEntity("Mon"))
+        data.add(HabitFrequencyEntity("Tue"))
+        data.add(HabitFrequencyEntity("Wed"))
+        data.add(HabitFrequencyEntity("Thu"))
+        data.add(HabitFrequencyEntity("Fri"))
+        data.add(HabitFrequencyEntity("Sat"))
 
-        val rvFrequencyList = binding.rvFrequency
-        frequencyAdapter = FrequencyAdapter(data)
-        rvFrequencyList.adapter = frequencyAdapter
+        //val rvFrequencyList = binding.rvFrequencyOfTheDay
+        frequencyOfTheDayAdapter = FrequencyOfTheDayAdapter(data)
+        binding.rvFrequencyOfTheDay.adapter = frequencyOfTheDayAdapter
 
     }
 
@@ -133,7 +134,7 @@ class HabitItemFragment: Fragment() {
     }
 
     private fun addTextChangeListeners() {
-        binding.etName.addTextChangedListener(object : TextWatcher {
+        binding.tietName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -148,14 +149,14 @@ class HabitItemFragment: Fragment() {
 
     private fun launchEditMode() {
         viewModel.getHabitItem(habitId)
-        binding.saveButton.setOnClickListener {
-            viewModel.editHabitItem(binding.etName.text?.toString())
+        binding.btnSave.setOnClickListener {
+            viewModel.editHabitItem(binding.tietName.text?.toString())
         }
     }
 
     private fun launchAddMode() {
-        binding.saveButton.setOnClickListener {
-            viewModel.addHabitItem(binding.etName.text?.toString())
+        binding.btnSave.setOnClickListener {
+            viewModel.addHabitItem(binding.tietName.text?.toString())
         }
     }
 
@@ -171,9 +172,9 @@ class HabitItemFragment: Fragment() {
         screenMode = mode
         if (screenMode == MODE_EDIT) {
             if (!args.containsKey(HABIT_ITEM_ID)) {
-                throw RuntimeException("Param shop item id is absent")
+                throw RuntimeException("Param habit item id is absent")
             }
-            habitId = args.getInt(HABIT_ITEM_ID, Habit.UNDEFINED_ID)
+            habitId = args.getInt(HABIT_ITEM_ID, HabitEntity.UNDEFINED_ID)
         }
     }
 
