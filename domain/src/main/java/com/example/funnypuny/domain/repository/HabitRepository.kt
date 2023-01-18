@@ -1,6 +1,7 @@
 package com.example.funnypuny.domain.repository
 
 import com.example.funnypuny.domain.entity.HabitEntity
+import com.example.funnypuny.domain.entity.HabitFrequencyEntity
 
 interface HabitRepository {
 
@@ -12,7 +13,8 @@ interface HabitRepository {
 
     fun editHabitItem(habit: HabitEntity)
 
-    fun deleteHabitItem(habit: HabitEntity)
+    //todo убрать лист
+    fun deleteHabitItem(habit: HabitEntity): List<HabitEntity>
 
     fun getHabitItem(habitItemId: Int): HabitEntity
 

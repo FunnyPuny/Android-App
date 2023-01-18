@@ -1,11 +1,18 @@
 package com.example.funnypuny.presentation.viewmodel
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.funnypuny.R
 import com.example.funnypuny.data.HabitRepositoryImpl
 import com.example.funnypuny.domain.entity.HabitEntity
+import com.example.funnypuny.domain.entity.HabitFrequencyEntity
 import com.example.funnypuny.domain.usecases.MainUseCase
+import com.example.funnypuny.presentation.HabitItemFragment
+import com.example.funnypuny.presentation.common.SingleLiveData
+import com.example.funnypuny.presentation.common.SingleLiveDataEmpty
+import com.example.funnypuny.presentation.view.HabitItemActivity
 
 class HabitItemViewModel(
     private val mainUseCase: MainUseCase
@@ -32,6 +39,39 @@ class HabitItemViewModel(
     private val _shouldCloseScreen = MutableLiveData<Unit>()
     val shouldCloseScreen: LiveData<Unit>
         get() = _shouldCloseScreen
+
+    private val data = ArrayList<HabitFrequencyEntity>()
+    val daysOfTheWeekState = MutableLiveData<ArrayList<HabitFrequencyEntity>>()
+
+    val showEditHabitItemFragment = SingleLiveDataEmpty()
+    val showAddHabitItemFragment = SingleLiveDataEmpty()
+
+    val showException = SingleLiveData<String>()
+
+
+    init {
+        data.add(HabitFrequencyEntity("Sun"))
+        data.add(HabitFrequencyEntity("Mon"))
+        data.add(HabitFrequencyEntity("Tue"))
+        data.add(HabitFrequencyEntity("Wed"))
+        data.add(HabitFrequencyEntity("Thu"))
+        data.add(HabitFrequencyEntity("Fri"))
+        data.add(HabitFrequencyEntity("Sat"))
+        daysOfTheWeekState.value = data
+    }
+
+    fun onShowRuntimeException(exception: String){
+        showException.value = exception
+    }
+
+    fun onEditHabitItemFragment() {
+        showEditHabitItemFragment.call()
+    }
+
+    fun onAddHabitItemFragment() {
+        showAddHabitItemFragment.call()
+    }
+
 
     fun getHabitItem(habitItemId: Int) {
        /* val item = getHabitItemUseCase.getHabitItem(habitItemId)

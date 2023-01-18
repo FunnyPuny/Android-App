@@ -9,10 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.example.funnypuny.databinding.FragmentHabitItemBinding
 import com.example.funnypuny.domain.entity.HabitFrequencyEntity
 import com.example.funnypuny.domain.entity.HabitEntity
-import com.example.funnypuny.presentation.adapter.FrequencyOfTheDayAdapter
+import com.example.funnypuny.presentation.adapter.HabitFrequencyAdapter
 import com.example.funnypuny.presentation.viewmodel.HabitItemViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -22,7 +23,7 @@ class HabitItemFragment: Fragment() {
     private val binding: FragmentHabitItemBinding
         get() = _binding ?: throw RuntimeException("FragmentHabitItemBinding == null")
 
-    private lateinit var frequencyOfTheDayAdapter: FrequencyOfTheDayAdapter
+    private lateinit var habitFrequencyAdapter: HabitFrequencyAdapter
     private lateinit var onHabitItemEditingFinishedListener: OnHabitItemEditingFinishedListener
 
     val viewModel: HabitItemViewModel by viewModel()
@@ -59,15 +60,13 @@ class HabitItemFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("HabitItemFragment", "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
-        //viewModel = ViewModelProvider(this)[HabitItemViewModel::class.java]
-        //binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-        //initViews(view)
-        addTextChangeListeners()
-        launchRightMode()
-        observeViewModel()
 
-        val data = ArrayList<HabitFrequencyEntity>()
+
+        //viewModel = ViewModelProvider(this)[HabitItemViewModel::class.java]
+        //addTextChangeListeners()
+        launchRightMode()
+        //observeViewModel()
+        /*val data = ArrayList<HabitFrequencyEntity>()
 
         data.add(HabitFrequencyEntity("Sun"))
         data.add(HabitFrequencyEntity("Mon"))
@@ -78,8 +77,35 @@ class HabitItemFragment: Fragment() {
         data.add(HabitFrequencyEntity("Sat"))
 
         //val rvFrequencyList = binding.rvFrequencyOfTheDay
-        frequencyOfTheDayAdapter = FrequencyOfTheDayAdapter(data)
-        binding.rvFrequencyOfTheDay.adapter = frequencyOfTheDayAdapter
+        habitFrequencyAdapter = HabitFrequencyAdapter(data)
+        binding.rvFrequencyOfTheDay.adapter = habitFrequencyAdapter*/
+
+        viewModel.daysOfTheWeekState.observe(viewLifecycleOwner) {
+            habitFrequencyAdapter = HabitFrequencyAdapter(it)
+            binding.rvFrequencyOfTheDay.adapter = habitFrequencyAdapter
+        }
+
+        //слушатель ввода текста
+        binding.tietName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.resetErrorInputName()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+
+        viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
+            onHabitItemEditingFinishedListener.onHabitItemEditingFinished()
+            //activity?.onBackPressed()
+        }
+
+        viewModel.showException.observe(viewLifecycleOwner){
+            throw RuntimeException(it)
+        }
 
     }
 
@@ -119,12 +145,12 @@ class HabitItemFragment: Fragment() {
         super.onDetach()
     }
 
-    private fun observeViewModel() {
+    /*private fun observeViewModel() {
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
             onHabitItemEditingFinishedListener.onHabitItemEditingFinished()
             //activity?.onBackPressed()
         }
-    }
+    }*/
 
     private fun launchRightMode() {
         when (screenMode) {
@@ -133,7 +159,7 @@ class HabitItemFragment: Fragment() {
         }
     }
 
-    private fun addTextChangeListeners() {
+    /*private fun addTextChangeListeners() {
         binding.tietName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -145,7 +171,7 @@ class HabitItemFragment: Fragment() {
             override fun afterTextChanged(s: Editable?) {
             }
         })
-    }
+    }*/
 
     private fun launchEditMode() {
         viewModel.getHabitItem(habitId)
@@ -160,19 +186,21 @@ class HabitItemFragment: Fragment() {
         }
     }
 
+    //проверка что все необходимые параметры переданы
     private fun parseParams() {
         val args = requireArguments()
         if (!args.containsKey(SCREEN_MODE)) {
-            throw RuntimeException("Param screen mode is absent")
+            viewModel.onShowRuntimeException("Param screen mode is absent")
         }
         val mode = args.getString(SCREEN_MODE)
         if (mode != MODE_EDIT && mode != MODE_ADD) {
+            //viewModel.onShowRuntimeException("Unknown screen mode $mode")
             throw RuntimeException("Unknown screen mode $mode")
         }
         screenMode = mode
         if (screenMode == MODE_EDIT) {
             if (!args.containsKey(HABIT_ITEM_ID)) {
-                throw RuntimeException("Param habit item id is absent")
+                viewModel.onShowRuntimeException("Param habit item id is absent")
             }
             habitId = args.getInt(HABIT_ITEM_ID, HabitEntity.UNDEFINED_ID)
         }
