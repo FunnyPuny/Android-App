@@ -9,11 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.example.funnypuny.databinding.FragmentHabitItemBinding
-import com.example.funnypuny.domain.entity.HabitFrequencyEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.presentation.adapter.HabitFrequencyAdapter
+import com.example.funnypuny.presentation.viewmodel.HabitItemAction
 import com.example.funnypuny.presentation.viewmodel.HabitItemViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -27,8 +26,6 @@ class HabitItemFragment: Fragment() {
     private lateinit var onHabitItemEditingFinishedListener: OnHabitItemEditingFinishedListener
 
     val viewModel: HabitItemViewModel by viewModel()
-    private var screenMode = MODE_UNKNOWN
-    private var habitId: Int = HabitEntity.UNDEFINED_ID
 
 
     override fun onAttach(context: Context) {
@@ -44,7 +41,11 @@ class HabitItemFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("HabitItemFragment", "onCreate")
         super.onCreate(savedInstanceState)
-        parseParams()
+        //parseParams()
+        val args = requireArguments()
+        val mode = (args.getSerializable(SCREEN_MODE) as? HabitItemAction)!!
+        val habitId = args.getInt(HABIT_ITEM_ID, HabitEntity.UNDEFINED_ID)
+        viewModel.init(mode,habitId)
     }
 
     override fun onCreateView(
@@ -64,7 +65,7 @@ class HabitItemFragment: Fragment() {
 
         //viewModel = ViewModelProvider(this)[HabitItemViewModel::class.java]
         //addTextChangeListeners()
-        launchRightMode()
+        //launchRightMode()
         //observeViewModel()
         /*val data = ArrayList<HabitFrequencyEntity>()
 
@@ -80,12 +81,8 @@ class HabitItemFragment: Fragment() {
         habitFrequencyAdapter = HabitFrequencyAdapter(data)
         binding.rvFrequencyOfTheDay.adapter = habitFrequencyAdapter*/
 
-        viewModel.daysOfTheWeekState.observe(viewLifecycleOwner) {
-            habitFrequencyAdapter = HabitFrequencyAdapter(it)
-            binding.rvFrequencyOfTheDay.adapter = habitFrequencyAdapter
-        }
-
         //слушатель ввода текста
+        //todo сохранять введенные значения на vm и убрать onSaveClick
         binding.tietName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -97,6 +94,15 @@ class HabitItemFragment: Fragment() {
             override fun afterTextChanged(s: Editable?) {
             }
         })
+
+        binding.btnSave.setOnClickListener {
+            viewModel.onSaveClick(binding.tietName.text?.toString()?.trim())
+        }
+
+        viewModel.daysOfTheWeekState.observe(viewLifecycleOwner) {
+            habitFrequencyAdapter = HabitFrequencyAdapter(it)
+            binding.rvFrequencyOfTheDay.adapter = habitFrequencyAdapter
+        }
 
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
             onHabitItemEditingFinishedListener.onHabitItemEditingFinished()
@@ -152,12 +158,12 @@ class HabitItemFragment: Fragment() {
         }
     }*/
 
-    private fun launchRightMode() {
+    /*private fun launchRightMode() {
         when (screenMode) {
-            MODE_EDIT -> launchEditMode()
-            MODE_ADD -> launchAddMode()
+            MODE_EDIT -> launchEditHabitMode()
+            MODE_ADD -> launchAddHabitMode()
         }
-    }
+    }*/
 
     /*private fun addTextChangeListeners() {
         binding.tietName.addTextChangedListener(object : TextWatcher {
@@ -173,38 +179,38 @@ class HabitItemFragment: Fragment() {
         })
     }*/
 
-    private fun launchEditMode() {
+    /*private fun launchEditHabitMode() {
         viewModel.getHabitItem(habitId)
         binding.btnSave.setOnClickListener {
             viewModel.editHabitItem(binding.tietName.text?.toString())
         }
-    }
+    }*/
 
-    private fun launchAddMode() {
+    /*private fun launchAddHabitMode() {
         binding.btnSave.setOnClickListener {
             viewModel.addHabitItem(binding.tietName.text?.toString())
         }
-    }
+    }*/
 
     //проверка что все необходимые параметры переданы
-    private fun parseParams() {
+    /*private fun parseParams() {
         val args = requireArguments()
-        if (!args.containsKey(SCREEN_MODE)) {
+        *//*if (!args.containsKey(SCREEN_MODE)) {
             viewModel.onShowRuntimeException("Param screen mode is absent")
-        }
+        }*//*
         val mode = args.getString(SCREEN_MODE)
-        if (mode != MODE_EDIT && mode != MODE_ADD) {
-            //viewModel.onShowRuntimeException("Unknown screen mode $mode")
+        *//*if (mode != MODE_EDIT && mode != MODE_ADD) {
+            viewModel.onShowRuntimeException("Unknown screen mode $mode")
             throw RuntimeException("Unknown screen mode $mode")
-        }
+        }*//*
         screenMode = mode
-        if (screenMode == MODE_EDIT) {
+        *//*if (screenMode == MODE_EDIT) {
             if (!args.containsKey(HABIT_ITEM_ID)) {
                 viewModel.onShowRuntimeException("Param habit item id is absent")
             }
             habitId = args.getInt(HABIT_ITEM_ID, HabitEntity.UNDEFINED_ID)
-        }
-    }
+        }*//*
+    }*/
 
     /*private fun initViews(view: View) {
         with(view) {
@@ -220,16 +226,18 @@ class HabitItemFragment: Fragment() {
 
     companion object {
 
+        //todo extra screen mode...
         private const val SCREEN_MODE = "screen_mode"
         private const val HABIT_ITEM_ID = "habit_item_id"
-        private const val MODE_EDIT = "mode_edit"
-        private const val MODE_ADD = "mode_add"
-        private const val MODE_UNKNOWN = ""
+        //private const val MODE_EDIT = "mode_edit"
+        //private const val MODE_ADD = "mode_add"
+        //private const val MODE_UNKNOWN = ""
 
         fun newInstanceAddItem(): HabitItemFragment {
             return HabitItemFragment().apply {
                 arguments = Bundle().apply {
-                    putString(SCREEN_MODE, MODE_ADD)
+                    //putString(SCREEN_MODE, MODE_ADD)
+                    putSerializable(SCREEN_MODE, HabitItemAction.ADD)
                 }
             }
         }
@@ -237,7 +245,8 @@ class HabitItemFragment: Fragment() {
         fun newInstanceEditItem(habitItemId: Int): HabitItemFragment {
             return HabitItemFragment().apply {
                 arguments = Bundle().apply {
-                    putString(SCREEN_MODE, MODE_EDIT)
+                    //putString(SCREEN_MODE, MODE_EDIT)
+                    putSerializable(SCREEN_MODE,HabitItemAction.EDIT)
                     putInt(HABIT_ITEM_ID, habitItemId)
                 }
             }

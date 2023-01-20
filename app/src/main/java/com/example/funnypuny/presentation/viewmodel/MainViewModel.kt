@@ -133,7 +133,7 @@ class MainViewModel(
         }
     }
 
-    fun onHabititemEditingFinished() {
+    fun onHabitItemEditingFinished() {
         showHabititemEditingFinished.call()
     }
 

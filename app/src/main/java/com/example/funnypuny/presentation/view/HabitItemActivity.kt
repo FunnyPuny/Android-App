@@ -58,6 +58,7 @@ class HabitItemActivity : AppCompatActivity(),
             .commit()
     }
 
+    //проверка что все необходимые аргументы переданы
     private fun parseIntent() {
         if (!intent.hasExtra(EXTRA_SCREEN_MODE)) {
             viewModel.onShowRuntimeException("Param screen mode is absent")
