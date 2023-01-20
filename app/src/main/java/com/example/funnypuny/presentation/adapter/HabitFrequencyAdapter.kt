@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.databinding.ItemFrequencyBinding
 import com.example.funnypuny.domain.entity.HabitFrequencyEntity
 
-class FrequencyOfTheDayAdapter(private val frequencyList: ArrayList<HabitFrequencyEntity>): RecyclerView.Adapter<FrequencyOfTheDayAdapter.FrequencyViewHolder>() {
+class HabitFrequencyAdapter(private val frequencyList: ArrayList<HabitFrequencyEntity>): RecyclerView.Adapter<HabitFrequencyAdapter.FrequencyViewHolder>() {
 
 
     class FrequencyViewHolder(private val binding: ItemFrequencyBinding): RecyclerView.ViewHolder(binding.root) {

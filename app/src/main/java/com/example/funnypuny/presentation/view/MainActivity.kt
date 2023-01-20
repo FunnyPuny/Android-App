@@ -1,8 +1,6 @@
 package com.example.funnypuny.presentation.view
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -83,7 +81,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
     }
 
     override fun onHabitItemEditingFinished() {
-        viewModel.onHabititemEditingFinished()
+        viewModel.onHabitItemEditingFinished()
     }
 
     private fun isOnePaneMode(): Boolean {
@@ -104,7 +102,8 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             onHabitItemLongClickListener = { habit ->
                 viewModel.onEditHabitItem(isOnePaneMode(),habit.id)
             }
-            onHabitItemClickListener = { viewModel.changeEnableState(it) }
+            onHabitItemClickListener = { habit ->
+                viewModel.changeEnableState(habit) }
         }
         with(binding.rvHabitList) {
             adapter = habitListAdapter

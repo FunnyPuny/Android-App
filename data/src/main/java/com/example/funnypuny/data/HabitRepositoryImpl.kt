@@ -1,6 +1,7 @@
 package com.example.funnypuny.data
 
 import com.example.funnypuny.domain.entity.HabitEntity
+import com.example.funnypuny.domain.entity.HabitFrequencyEntity
 import com.example.funnypuny.domain.repository.HabitRepository
 
 class HabitRepositoryImpl : HabitRepository {
@@ -50,8 +51,9 @@ class HabitRepositoryImpl : HabitRepository {
         addHabitItem(habit)
     }
 
-    override fun deleteHabitItem(habit: HabitEntity) {
+    override fun deleteHabitItem(habit: HabitEntity): List<HabitEntity> {
         habitList.remove(habit)
+        return habitList
     }
 
     override fun getHabitItem(habitItemId: Int): HabitEntity {

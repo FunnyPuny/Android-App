@@ -3,9 +3,13 @@ package com.example.funnypuny.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.funnypuny.data.HabitRepositoryImpl
+import com.example.funnypuny.R
 import com.example.funnypuny.domain.entity.HabitEntity
+import com.example.funnypuny.domain.entity.HabitFrequencyEntity
 import com.example.funnypuny.domain.usecases.MainUseCase
+import com.example.funnypuny.presentation.HabitItemFragment
+import com.example.funnypuny.presentation.common.SingleLiveData
+import com.example.funnypuny.presentation.common.SingleLiveDataEmpty
 
 class HabitItemViewModel(
     private val mainUseCase: MainUseCase
@@ -25,21 +29,85 @@ class HabitItemViewModel(
         get() = _errorInputName
 
 
-    private val _habit = MutableLiveData<HabitEntity>()
+    private val _habitState = MutableLiveData<HabitEntity>()
     val habit: LiveData<HabitEntity>
-        get() = _habit
+        get() = _habitState
 
     private val _shouldCloseScreen = MutableLiveData<Unit>()
     val shouldCloseScreen: LiveData<Unit>
         get() = _shouldCloseScreen
 
-    fun getHabitItem(habitItemId: Int) {
-       /* val item = getHabitItemUseCase.getHabitItem(habitItemId)
-        _habit.value = item*/
-        _habit.value = mainUseCase.getHabitItem(habitItemId)
+    private val data = ArrayList<HabitFrequencyEntity>()
+    val daysOfTheWeekState = MutableLiveData<ArrayList<HabitFrequencyEntity>>()
+
+    val showEditHabitItemFragment = SingleLiveDataEmpty()
+    val showAddHabitItemFragment = SingleLiveDataEmpty()
+
+    val showNewInstanceEditItem = SingleLiveDataEmpty()
+    val showNewInstanceAddItem = SingleLiveDataEmpty()
+
+    var action: HabitItemAction? = null
+    var id: Int? = null
+    var isAlreadyInited = false
+
+
+    init {
+        data.add(HabitFrequencyEntity("Sun"))
+        data.add(HabitFrequencyEntity("Mon"))
+        data.add(HabitFrequencyEntity("Tue"))
+        data.add(HabitFrequencyEntity("Wed"))
+        data.add(HabitFrequencyEntity("Thu"))
+        data.add(HabitFrequencyEntity("Fri"))
+        data.add(HabitFrequencyEntity("Sat"))
+        daysOfTheWeekState.value = data
     }
 
-    fun addHabitItem(inputName: String?) {
+    fun init(action: HabitItemAction, id: Int) {
+        if (isAlreadyInited) return
+        this.action = action
+        this.id = id
+
+        when(action){
+            HabitItemAction.ADD -> Unit
+            HabitItemAction.EDIT -> initHabitItem(id)
+        }
+
+        isAlreadyInited = true
+    }
+
+    fun onLaunchRightMode() {
+        when (action) {
+            HabitItemAction.ADD -> showNewInstanceAddItem.call()
+            HabitItemAction.EDIT -> showNewInstanceEditItem.call()
+            null -> TODO()
+        }
+    }
+
+    //todo нужно убрать inputName на вход и сетить его в отдельную переменную по аналогии с методом init
+    fun onSaveClick(inputName: String?) {
+        when (action) {
+            HabitItemAction.ADD -> addHabitItem(inputName)
+            HabitItemAction.EDIT -> editHabitItem(inputName)
+            null -> Unit
+        }
+    }
+
+    fun onEditHabitItemFragment() {
+        showEditHabitItemFragment.call()
+    }
+
+    fun onAddHabitItemFragment() {
+        showAddHabitItemFragment.call()
+    }
+
+
+    private fun initHabitItem(habitItemId: Int) {
+       /* val item = getHabitItemUseCase.getHabitItem(habitItemId)
+        _habit.value = item*/
+        _habitState.value = mainUseCase.getHabitItem(habitItemId)
+    }
+
+    private fun addHabitItem(inputName: String?) {
         val name = parseName(inputName)
         val fieldsValid = validateInput(name)
         if (fieldsValid) {
@@ -50,11 +118,11 @@ class HabitItemViewModel(
         }
     }
 
-    fun editHabitItem(inputName: String?) {
+    private fun editHabitItem(inputName: String?) {
         val name = parseName(inputName)
         val fieldsValid = validateInput(name)
         if (fieldsValid) {
-            _habit.value?.let {
+            _habitState.value?.let {
                 val item = it.copy(name = name)
                 //editHabitItemUseCase.editHabitItem(item)
                 mainUseCase.editHabitItem(item)
@@ -96,4 +164,9 @@ class HabitItemViewModel(
         _shouldCloseScreen.value = Unit
     }
 
+}
+
+enum class HabitItemAction() {
+    ADD,
+    EDIT
 }
