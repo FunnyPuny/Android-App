@@ -3,9 +3,11 @@ package com.example.funnypuny.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.funnypuny.R
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.HabitFrequencyEntity
 import com.example.funnypuny.domain.usecases.MainUseCase
+import com.example.funnypuny.presentation.HabitItemFragment
 import com.example.funnypuny.presentation.common.SingleLiveData
 import com.example.funnypuny.presentation.common.SingleLiveDataEmpty
 
@@ -41,7 +43,8 @@ class HabitItemViewModel(
     val showEditHabitItemFragment = SingleLiveDataEmpty()
     val showAddHabitItemFragment = SingleLiveDataEmpty()
 
-    val showException = SingleLiveData<String>()
+    val showNewInstanceEditItem = SingleLiveDataEmpty()
+    val showNewInstanceAddItem = SingleLiveDataEmpty()
 
     var action: HabitItemAction? = null
     var id: Int? = null
@@ -72,6 +75,14 @@ class HabitItemViewModel(
         isAlreadyInited = true
     }
 
+    fun onLaunchRightMode() {
+        when (action) {
+            HabitItemAction.ADD -> showNewInstanceAddItem.call()
+            HabitItemAction.EDIT -> showNewInstanceEditItem.call()
+            null -> TODO()
+        }
+    }
+
     //todo нужно убрать inputName на вход и сетить его в отдельную переменную по аналогии с методом init
     fun onSaveClick(inputName: String?) {
         when (action) {
@@ -79,10 +90,6 @@ class HabitItemViewModel(
             HabitItemAction.EDIT -> editHabitItem(inputName)
             null -> Unit
         }
-    }
-
-    fun onShowRuntimeException(exception: String){
-        showException.value = exception
     }
 
     fun onEditHabitItemFragment() {
