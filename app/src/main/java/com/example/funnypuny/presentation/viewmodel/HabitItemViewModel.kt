@@ -96,7 +96,7 @@ class HabitItemViewModel(
         when (action) {
             HabitItemAction.ADD -> showNewInstanceAddItem.call()
             HabitItemAction.EDIT -> showNewInstanceEditItem.call()
-            null -> TODO()
+            null -> Unit
         }
     }
 

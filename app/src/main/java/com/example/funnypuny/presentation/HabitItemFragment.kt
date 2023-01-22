@@ -43,7 +43,7 @@ class HabitItemFragment: Fragment() {
         super.onCreate(savedInstanceState)
         //parseParams()
         val args = requireArguments()
-        val mode = (args.getSerializable(SCREEN_MODE) as? HabitItemAction)!!
+        val mode = (args.getSerializable(EXTRA_SCREEN_MODE) as? HabitItemAction)!!
         val habitId = args.getInt(HABIT_ITEM_ID, HabitEntity.UNDEFINED_ID)
         viewModel.init(mode,habitId)
     }
@@ -135,14 +135,13 @@ class HabitItemFragment: Fragment() {
 
     companion object {
 
-        //todo extra screen mode...
-        private const val SCREEN_MODE = "screen_mode"
+        private const val EXTRA_SCREEN_MODE = "extra_screen_mode"
         private const val HABIT_ITEM_ID = "habit_item_id"
 
         fun newInstanceAddItem(): HabitItemFragment {
             return HabitItemFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(SCREEN_MODE, HabitItemAction.ADD)
+                    putSerializable(EXTRA_SCREEN_MODE, HabitItemAction.ADD)
                 }
             }
         }
@@ -150,7 +149,7 @@ class HabitItemFragment: Fragment() {
         fun newInstanceEditItem(habitItemId: Int): HabitItemFragment {
             return HabitItemFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(SCREEN_MODE,HabitItemAction.EDIT)
+                    putSerializable(EXTRA_SCREEN_MODE,HabitItemAction.EDIT)
                     putInt(HABIT_ITEM_ID, habitItemId)
                 }
             }
