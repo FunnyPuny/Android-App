@@ -1,5 +1,6 @@
 package com.example.funnypuny.presentation.viewmodel
 
+import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -46,9 +47,12 @@ class HabitItemViewModel(
     val showNewInstanceEditItem = SingleLiveDataEmpty()
     val showNewInstanceAddItem = SingleLiveDataEmpty()
 
+    val inputNameState = MutableLiveData<String>()
+
     var action: HabitItemAction? = null
     var id: Int? = null
     var isAlreadyInited = false
+    var inputName: String? = null
 
 
     init {
@@ -75,14 +79,6 @@ class HabitItemViewModel(
         isAlreadyInited = true
     }
 
-    fun onLaunchRightMode() {
-        when (action) {
-            HabitItemAction.ADD -> showNewInstanceAddItem.call()
-            HabitItemAction.EDIT -> showNewInstanceEditItem.call()
-            null -> TODO()
-        }
-    }
-
     //todo нужно убрать inputName на вход и сетить его в отдельную переменную по аналогии с методом init
     fun onSaveClick(inputName: String?) {
         when (action) {
@@ -92,12 +88,16 @@ class HabitItemViewModel(
         }
     }
 
-    fun onEditHabitItemFragment() {
-        showEditHabitItemFragment.call()
+    fun onNameChanged(inputName: String?) {
+        this.inputName = inputName
     }
 
-    fun onAddHabitItemFragment() {
-        showAddHabitItemFragment.call()
+    fun onLaunchRightMode() {
+        when (action) {
+            HabitItemAction.ADD -> showNewInstanceAddItem.call()
+            HabitItemAction.EDIT -> showNewInstanceEditItem.call()
+            null -> TODO()
+        }
     }
 
 
