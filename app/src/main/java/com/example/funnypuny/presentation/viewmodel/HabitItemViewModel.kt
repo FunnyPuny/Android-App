@@ -1,37 +1,24 @@
 package com.example.funnypuny.presentation.viewmodel
 
-import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.funnypuny.R
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.HabitFrequencyEntity
 import com.example.funnypuny.domain.usecases.MainUseCase
-import com.example.funnypuny.presentation.HabitItemFragment
-import com.example.funnypuny.presentation.common.SingleLiveData
 import com.example.funnypuny.presentation.common.SingleLiveDataEmpty
 
 class HabitItemViewModel(
     private val mainUseCase: MainUseCase
 ): ViewModel() {
 
-    //private val repository = HabitRepositoryImpl
-
-    //private val getHabitItemUseCase = GetHabitItemUseCase(repository)
-    //private val addHabitItemUseCase = AddHabitItemUseCase(repository)
-    //private val  editHabitItemUseCase = EditHabitItemUseCase(repository)
-
-   // private val habitRepository = HabitRepository.get()
-   // val habitsListLiveData = habitRepository.getAll()
-
-    private val _errorInputName = MutableLiveData<Boolean>()
-    val errorInputName: LiveData<Boolean>
-        get() = _errorInputName
+    private val _errorInputNameState = MutableLiveData<Boolean>()
+    val errorInputNameState: LiveData<Boolean>
+        get() = _errorInputNameState
 
 
     private val _habitState = MutableLiveData<HabitEntity>()
-    val habit: LiveData<HabitEntity>
+    val habitState: LiveData<HabitEntity>
         get() = _habitState
 
     private val _shouldCloseScreen = MutableLiveData<Unit>()
@@ -40,9 +27,6 @@ class HabitItemViewModel(
 
     private val data = ArrayList<HabitFrequencyEntity>()
     val daysOfTheWeekState = MutableLiveData<ArrayList<HabitFrequencyEntity>>()
-
-    val showEditHabitItemFragment = SingleLiveDataEmpty()
-    val showAddHabitItemFragment = SingleLiveDataEmpty()
 
     val showNewInstanceEditItem = SingleLiveDataEmpty()
     val showNewInstanceAddItem = SingleLiveDataEmpty()
@@ -77,14 +61,10 @@ class HabitItemViewModel(
         }
 
         isAlreadyInited = true
-    }
 
-    //todo нужно убрать inputName на вход и сетить его в отдельную переменную по аналогии с методом init
-    fun onSaveClick(inputName: String?) {
         when (action) {
-            HabitItemAction.ADD -> addHabitItem(inputName)
-            HabitItemAction.EDIT -> editHabitItem(inputName)
-            null -> Unit
+            HabitItemAction.ADD -> showNewInstanceAddItem.call()
+            HabitItemAction.EDIT -> showNewInstanceEditItem.call()
         }
     }
 
@@ -92,10 +72,11 @@ class HabitItemViewModel(
         this.inputName = inputName
     }
 
-    fun onLaunchRightMode() {
+    //todo нужно убрать inputName на вход и сетить его в отдельную переменную по аналогии с методом init
+    fun onSaveClick() {
         when (action) {
-            HabitItemAction.ADD -> showNewInstanceAddItem.call()
-            HabitItemAction.EDIT -> showNewInstanceEditItem.call()
+            HabitItemAction.ADD -> addHabitItem(inputName)
+            HabitItemAction.EDIT -> editHabitItem(inputName)
             null -> Unit
         }
     }
@@ -108,55 +89,42 @@ class HabitItemViewModel(
     }
 
     private fun addHabitItem(inputName: String?) {
-        val name = parseName(inputName)
-        val fieldsValid = validateInput(name)
+        val fieldsValid = validateInput(inputName)
         if (fieldsValid) {
-            val habit = HabitEntity(name,true)
-            //addHabitItemUseCase.addHabitItem(habit)
-            mainUseCase.addHabitItem(habit)
-            finishWork()
-        }
-    }
-
-    private fun editHabitItem(inputName: String?) {
-        val name = parseName(inputName)
-        val fieldsValid = validateInput(name)
-        if (fieldsValid) {
-            _habitState.value?.let {
-                val item = it.copy(name = name)
-                //editHabitItemUseCase.editHabitItem(item)
-                mainUseCase.editHabitItem(item)
+            inputName?.let { name ->
+                val habit = HabitEntity(name,true)
+                //addHabitItemUseCase.addHabitItem(habit)
+                mainUseCase.addHabitItem(habit)
                 finishWork()
             }
         }
     }
 
-    //обрезаем пробелы
-    private fun parseName(inputName: String?): String {
-        return inputName?.trim() ?: ""
+    private fun editHabitItem(inputName: String?) {
+        val fieldsValid = validateInput(inputName)
+        if (fieldsValid) {
+            inputName?.let { name ->
+                _habitState.value?.let { habit ->
+                    val item = habit.copy(name = name)
+                    mainUseCase.editHabitItem(item)
+                    finishWork()
+                }
+            }
+        }
     }
 
-    //преобразовываем в число
-    //ошибка при вводе НЕчисла, выводим 0
-    /*private fun parseCount(inputCount: String?): Int {
-        return try {
-            inputCount?.trim()?.toInt() ?: 0
-        } catch (e: Exception) {
-            0
-        }
-    }*/
-
-    private fun validateInput(name: String): Boolean {
+    private fun validateInput(name: String?): Boolean {
         var result = true
-        if (name.isBlank()) {
-            _errorInputName.value = true
+        //if ( name?.isBlank() == true ) {
+        if ( name.isNullOrBlank() ) {
+            _errorInputNameState.value = true
             result = false
         }
         return result
     }
 
     fun resetErrorInputName() {
-        _errorInputName.value = false
+        _errorInputNameState.value = false
     }
 
 

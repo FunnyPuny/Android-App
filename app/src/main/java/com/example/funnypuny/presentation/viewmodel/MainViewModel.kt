@@ -77,9 +77,7 @@ class MainViewModel(
 
     fun onSwipeHabit(position: Int) {
         habitListState.value?.getOrNull(position)?.let { habit ->
-            mainUseCase.deleteHabitItem(habit)
-            habitListState.value = mainUseCase.getHabitList()
-            //habitListState.value = mainUseCase.deleteHabitItem(habit)
+            habitListState.value = mainUseCase.deleteHabitItem(habit)
         }
     }
 

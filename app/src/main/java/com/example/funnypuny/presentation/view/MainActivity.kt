@@ -38,7 +38,11 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         setupBottomNavigation()
 
         //todo при добавлении элемент не появился
-        viewModel.habitListState.observe(this) { habitListAdapter?.submitList(it) }
+        viewModel.habitListState.observe(this) {
+            habitListAdapter?.submitList(it)
+            //todo надо убрать
+            habitListAdapter?.notifyDataSetChanged()
+        }
         viewModel.monthTitleState.observe(this) { binding.tvMonthTitle.text = it }
         viewModel.monthWithPositionState.observe(this) { (changeMonth, position) ->
             //todo сделать инициализацию адаптера один раз, а здесь просто уведомляь его о изменениях
