@@ -40,7 +40,7 @@ class HabitRepositoryImpl : HabitRepository {
 
     }
 
-    override fun editHabitItem(habit: HabitEntity) {
+    override fun editHabitItem(habit: HabitEntity): List<HabitEntity> {
         // нужно удалить старый объект и положить новый
         // но в кач-ве параметра прилетает уже новый объект с измененными полями
         // т.е мы не можем удалить его из коллекции - элемент найден не будет
@@ -49,6 +49,7 @@ class HabitRepositoryImpl : HabitRepository {
         val oldElement = getHabitItem(habit.id)
         habitList.remove(oldElement)
         addHabitItem(habit)
+        return habitList
     }
 
     override fun deleteHabitItem(habit: HabitEntity): List<HabitEntity> {

@@ -81,7 +81,7 @@ class MainViewModel(
 
     fun changeEnableState(habit: HabitEntity) {
         val newItem = habit.copy(enabled = !habit.enabled)
-        //habitListState.value = mainUseCase.editHabitItem(newItem)
+        habitListState.value = mainUseCase.editHabitItem(newItem)
     }
 
     fun onPrevMonthButtonClick() {

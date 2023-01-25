@@ -18,8 +18,9 @@ class MainInteractor(
         habitRepository.addHabitItem(habit)
     }
 
-    override fun editHabitItem(habit: HabitEntity) {
+    override fun editHabitItem(habit: HabitEntity): List<HabitEntity> {
         habitRepository.editHabitItem(habit)
+        return habitRepository.getHabitList()
     }
 
     override fun deleteHabitItem(habit: HabitEntity): List<HabitEntity> {
