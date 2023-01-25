@@ -58,9 +58,7 @@
                 android:inputType="textCapWords"
                 android:background="@drawable/ic_edit_text_corner"
                 tools:targetApi="p"
-                android:paddingStart="16dp"
-                app:errorInputName="@{viewModel.errorInputName}"
-                android:text="@{viewModel.habit.name}"/>
+                android:paddingStart="16dp"/>
     
     
         <TextView

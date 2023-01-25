@@ -25,7 +25,6 @@ class HabitItemActivity : AppCompatActivity(),
         get() = _binding ?: throw RuntimeException("ActivityHabitItemBinding == null")
 
 
-    private var habitId = HabitEntity.UNDEFINED_ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,9 +32,8 @@ class HabitItemActivity : AppCompatActivity(),
         setContentView(binding.root)
 
         val mode = intent.getSerializableExtra(EXTRA_SCREEN_MODE) as HabitItemAction
-        habitId = intent.getIntExtra(EXTRA_HABIT_ITEM_ID, HabitEntity.UNDEFINED_ID)
+        val habitId = intent.getIntExtra(EXTRA_HABIT_ITEM_ID, HabitEntity.UNDEFINED_ID)
         viewModel.init(mode,habitId)
-        viewModel.onLaunchRightMode()
 
         viewModel.showNewInstanceAddItem.observe(this){
             supportFragmentManager.beginTransaction()
@@ -59,7 +57,7 @@ class HabitItemActivity : AppCompatActivity(),
     companion object {
 
         private const val EXTRA_SCREEN_MODE = "extra_mode"
-        private const val EXTRA_HABIT_ITEM_ID = "extra_shop_item_id"
+        private const val EXTRA_HABIT_ITEM_ID = "extra_habit_item_id"
 
         fun newIntentAddItem(context: Context): Intent {
             val intent = Intent(context, HabitItemActivity::class.java)

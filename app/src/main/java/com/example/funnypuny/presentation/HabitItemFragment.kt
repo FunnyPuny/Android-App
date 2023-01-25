@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.funnypuny.R
 import com.example.funnypuny.databinding.FragmentHabitItemBinding
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.presentation.adapter.HabitFrequencyAdapter
@@ -43,7 +44,7 @@ class HabitItemFragment: Fragment() {
         super.onCreate(savedInstanceState)
         //parseParams()
         val args = requireArguments()
-        val mode = (args.getSerializable(SCREEN_MODE) as? HabitItemAction)!!
+        val mode = (args.getSerializable(EXTRA_SCREEN_MODE) as? HabitItemAction)!!
         val habitId = args.getInt(HABIT_ITEM_ID, HabitEntity.UNDEFINED_ID)
         viewModel.init(mode,habitId)
     }
@@ -58,13 +59,8 @@ class HabitItemFragment: Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("HabitItemFragment", "onViewCreated")
-        super.onViewCreated(view, savedInstanceState)
-
-        //слушатель ввода текста
-        //todo сохранять введенные значения на vm и убрать onSaveClick
-        binding.tietName.addTextChangedListener(object : TextWatcher {
+    private val nameTextWatcher by lazy {
+        object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -73,11 +69,19 @@ class HabitItemFragment: Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
+                viewModel.onNameChanged(s?.toString()?.trim())
             }
-        })
+        }
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("HabitItemFragment", "onViewCreated")
+        super.onViewCreated(view, savedInstanceState)
+
+        //слушатель ввода текста
+        binding.tietName.addTextChangedListener(nameTextWatcher)
 
         binding.btnSave.setOnClickListener {
-            viewModel.onSaveClick(binding.tietName.text?.toString()?.trim())
+            viewModel.onSaveClick()
         }
 
         viewModel.daysOfTheWeekState.observe(viewLifecycleOwner) {
@@ -85,9 +89,24 @@ class HabitItemFragment: Fragment() {
             binding.rvFrequencyOfTheDay.adapter = habitFrequencyAdapter
         }
 
-        viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
+        viewModel.shouldCloseScreenState.observe(viewLifecycleOwner) {
             onHabitItemEditingFinishedListener.onHabitItemEditingFinished()
             //activity?.onBackPressed()
+        }
+
+        viewModel.errorInputNameState.observe(viewLifecycleOwner) { isError ->
+            val message = if (isError) {
+                getString(R.string.error_input_name)
+            } else {
+                null
+            }
+            binding.tietName.error = message
+        }
+
+        viewModel.habitState.observe(viewLifecycleOwner) { habit ->
+            binding.tietName.removeTextChangedListener(nameTextWatcher)
+            binding.tietName.setText(habit.name)
+            binding.tietName.addTextChangedListener(nameTextWatcher)
         }
 
     }
@@ -135,14 +154,13 @@ class HabitItemFragment: Fragment() {
 
     companion object {
 
-        //todo extra screen mode...
-        private const val SCREEN_MODE = "screen_mode"
+        private const val EXTRA_SCREEN_MODE = "extra_screen_mode"
         private const val HABIT_ITEM_ID = "habit_item_id"
 
         fun newInstanceAddItem(): HabitItemFragment {
             return HabitItemFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(SCREEN_MODE, HabitItemAction.ADD)
+                    putSerializable(EXTRA_SCREEN_MODE, HabitItemAction.ADD)
                 }
             }
         }
@@ -150,7 +168,7 @@ class HabitItemFragment: Fragment() {
         fun newInstanceEditItem(habitItemId: Int): HabitItemFragment {
             return HabitItemFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(SCREEN_MODE,HabitItemAction.EDIT)
+                    putSerializable(EXTRA_SCREEN_MODE,HabitItemAction.EDIT)
                     putInt(HABIT_ITEM_ID, habitItemId)
                 }
             }
