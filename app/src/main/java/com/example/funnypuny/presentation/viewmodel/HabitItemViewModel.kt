@@ -47,7 +47,7 @@ class HabitItemViewModel(
 
         when(action){
             HabitItemAction.ADD -> Unit
-            HabitItemAction.EDIT -> initHabitItem(id)
+            HabitItemAction.EDIT -> onInitHabitItem(id)
         }
 
         isAlreadyInited = true
@@ -65,36 +65,36 @@ class HabitItemViewModel(
     //todo нужно убрать inputName на вход и сетить его в отдельную переменную по аналогии с методом init
     fun onSaveClick() {
         when (action) {
-            HabitItemAction.ADD -> addHabitItem(inputName)
-            HabitItemAction.EDIT -> editHabitItem(inputName)
+            HabitItemAction.ADD -> onAddHabitItem(inputName)
+            HabitItemAction.EDIT -> onEditHabitItem(inputName)
             null -> Unit
         }
     }
 
 
-    private fun initHabitItem(habitItemId: Int) {
+    private fun onInitHabitItem(habitItemId: Int) {
         habitState.value = mainUseCase.getHabitItem(habitItemId)
     }
 
-    private fun addHabitItem(inputName: String?) {
+    private fun onAddHabitItem(inputName: String?) {
         val fieldsValid = validateInput(inputName)
         if (fieldsValid) {
             inputName?.let { name ->
                 val habit = HabitEntity(name,true)
                 mainUseCase.addHabitItem(habit)
-                finishWork()
+                onFinishWork()
             }
         }
     }
 
-    private fun editHabitItem(inputName: String?) {
+    private fun onEditHabitItem(inputName: String?) {
         val fieldsValid = validateInput(inputName)
         if (fieldsValid) {
             inputName?.let { name ->
                 habitState.value?.let { habit ->
                     val item = habit.copy(name = name)
                     mainUseCase.editHabitItem(item)
-                    finishWork()
+                    onFinishWork()
                 }
             }
         }
@@ -109,12 +109,12 @@ class HabitItemViewModel(
         return result
     }
 
-    fun resetErrorInputName() {
+    fun onResetErrorInputName() {
         errorInputNameState.value = false
     }
 
 
-    private fun finishWork() {
+    private fun onFinishWork() {
         shouldCloseScreenState.value = Unit
     }
 
