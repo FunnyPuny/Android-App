@@ -7,23 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.SpinnerAdapter
-import android.widget.Toast
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.FragmentStatisticsBinding
-import com.example.funnypuny.domain.entity.HabitEntity
-import com.example.funnypuny.presentation.adapter.HabitListAdapter
-import com.example.funnypuny.presentation.viewmodel.HabitAction
-import com.example.funnypuny.presentation.viewmodel.HabitItemAction
-import com.example.funnypuny.presentation.viewmodel.MainViewModel
 import com.example.funnypuny.presentation.viewmodel.StatisticViewModel
-import org.koin.androidx.scope.fragmentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class StatisticFragment : Fragment() {
+class StatisticsFragment : Fragment() {
 
     private var status = 0
     private val handler = Handler()

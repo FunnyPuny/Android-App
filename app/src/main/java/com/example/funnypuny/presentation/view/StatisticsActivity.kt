@@ -6,10 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.ActivityStatisticsBinding
-import com.example.funnypuny.domain.entity.HabitEntity
-import com.example.funnypuny.presentation.StatisticFragment
-import com.example.funnypuny.presentation.viewmodel.HabitAction
-import com.example.funnypuny.presentation.viewmodel.HabitItemAction
+import com.example.funnypuny.presentation.StatisticsFragment
 import com.example.funnypuny.presentation.viewmodel.StatisticViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -31,7 +28,7 @@ class StatisticsActivity : AppCompatActivity() {
         viewModel.init(mode,habitId)*/
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.statistics_container, StatisticFragment())
+            .replace(R.id.statistics_container, StatisticsFragment())
             .commit()
 
     }
