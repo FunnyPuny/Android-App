@@ -17,5 +17,4 @@ interface HabitRepository {
 
     fun getHabitItem(habitItemId: Int): HabitEntity
 
-
 }
