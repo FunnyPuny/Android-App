@@ -57,7 +57,7 @@ class HabitItemActivity : AppCompatActivity(),
     companion object {
 
         private const val EXTRA_SCREEN_MODE = "extra_mode"
-        private const val EXTRA_HABIT_ITEM_ID = "extra_shop_item_id"
+        private const val EXTRA_HABIT_ITEM_ID = "extra_habit_item_id"
 
         fun newIntentAddItem(context: Context): Intent {
             val intent = Intent(context, HabitItemActivity::class.java)

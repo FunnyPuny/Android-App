@@ -1,6 +1,5 @@
 package com.example.funnypuny.presentation.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.funnypuny.domain.entity.HabitEntity
@@ -12,26 +11,17 @@ class HabitItemViewModel(
     private val mainUseCase: MainUseCase
 ): ViewModel() {
 
-    private val _errorInputNameState = MutableLiveData<Boolean>()
-    val errorInputNameState: LiveData<Boolean>
-        get() = _errorInputNameState
+    val errorInputNameState= MutableLiveData<Boolean>()
 
+    val habitState= MutableLiveData<HabitEntity>()
 
-    private val _habitState = MutableLiveData<HabitEntity>()
-    val habitState: LiveData<HabitEntity>
-        get() = _habitState
-
-    private val _shouldCloseScreen = MutableLiveData<Unit>()
-    val shouldCloseScreen: LiveData<Unit>
-        get() = _shouldCloseScreen
+    val shouldCloseScreenState = MutableLiveData<Unit>()
 
     private val data = ArrayList<HabitFrequencyEntity>()
     val daysOfTheWeekState = MutableLiveData<ArrayList<HabitFrequencyEntity>>()
 
     val showNewInstanceEditItem = SingleLiveDataEmpty()
     val showNewInstanceAddItem = SingleLiveDataEmpty()
-
-    val inputNameState = MutableLiveData<String>()
 
     var action: HabitItemAction? = null
     var id: Int? = null
@@ -83,9 +73,7 @@ class HabitItemViewModel(
 
 
     private fun initHabitItem(habitItemId: Int) {
-       /* val item = getHabitItemUseCase.getHabitItem(habitItemId)
-        _habit.value = item*/
-        _habitState.value = mainUseCase.getHabitItem(habitItemId)
+        habitState.value = mainUseCase.getHabitItem(habitItemId)
     }
 
     private fun addHabitItem(inputName: String?) {
@@ -93,7 +81,6 @@ class HabitItemViewModel(
         if (fieldsValid) {
             inputName?.let { name ->
                 val habit = HabitEntity(name,true)
-                //addHabitItemUseCase.addHabitItem(habit)
                 mainUseCase.addHabitItem(habit)
                 finishWork()
             }
@@ -104,7 +91,7 @@ class HabitItemViewModel(
         val fieldsValid = validateInput(inputName)
         if (fieldsValid) {
             inputName?.let { name ->
-                _habitState.value?.let { habit ->
+                habitState.value?.let { habit ->
                     val item = habit.copy(name = name)
                     mainUseCase.editHabitItem(item)
                     finishWork()
@@ -115,21 +102,20 @@ class HabitItemViewModel(
 
     private fun validateInput(name: String?): Boolean {
         var result = true
-        //if ( name?.isBlank() == true ) {
         if ( name.isNullOrBlank() ) {
-            _errorInputNameState.value = true
+            errorInputNameState.value = true
             result = false
         }
         return result
     }
 
     fun resetErrorInputName() {
-        _errorInputNameState.value = false
+        errorInputNameState.value = false
     }
 
 
     private fun finishWork() {
-        _shouldCloseScreen.value = Unit
+        shouldCloseScreenState.value = Unit
     }
 
 }

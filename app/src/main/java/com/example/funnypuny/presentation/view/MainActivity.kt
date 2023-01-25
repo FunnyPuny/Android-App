@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         setContentView(binding.root)
 
         //Переход к предедущему месяцу
-        binding.ivMonthPrevButton.setOnClickListener { viewModel.onPrevMonthButtonClick() }
+        binding.ivPrevMonthButton.setOnClickListener { viewModel.onPrevMonthButtonClick() }
         //Переход к следуюющему месяцу
         binding.ivNextMonthButton.setOnClickListener { viewModel.onNextMonthButtonClick() }
 

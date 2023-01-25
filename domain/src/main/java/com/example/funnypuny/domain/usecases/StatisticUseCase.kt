@@ -6,4 +6,6 @@ interface StatisticUseCase {
 
     fun getHabitList(): List<HabitEntity>
 
+    fun getHabitItem(habitItemId: Int): HabitEntity
+
 }

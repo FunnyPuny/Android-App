@@ -89,7 +89,7 @@ class HabitItemFragment: Fragment() {
             binding.rvFrequencyOfTheDay.adapter = habitFrequencyAdapter
         }
 
-        viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
+        viewModel.shouldCloseScreenState.observe(viewLifecycleOwner) {
             onHabitItemEditingFinishedListener.onHabitItemEditingFinished()
             //activity?.onBackPressed()
         }

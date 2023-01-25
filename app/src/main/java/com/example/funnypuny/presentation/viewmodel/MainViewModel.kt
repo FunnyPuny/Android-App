@@ -52,9 +52,7 @@ class MainViewModel(
 
     val showHabititemEditingFinished = SingleLiveDataEmpty()
 
-    val habitListState =
-        MutableLiveData<List<HabitEntity>>() //состояние вью, всегда мутабельная лайв дата
-    //val showConfirmDeleteDialog = SingleLiveDataEmpty() //какое-то действие, которое нужно сделать один раз
+    val habitListState = MutableLiveData<List<HabitEntity>>()
 
     init {
         habitListState.value = mainUseCase.getHabitList()
@@ -140,8 +138,6 @@ class MainViewModel(
         val monthCalendar = cal.clone() as Calendar
         val maxDaysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH)
 
-        //Если changeMonth не равен нулю, то я возьму из него день, месяц и год,
-        //в противном случае установите выбранную дату как текущую дату.
         selectedDay =
             when {
                 changeMonth != null -> changeMonth.getActualMinimum(Calendar.DAY_OF_MONTH)
@@ -162,8 +158,6 @@ class MainViewModel(
         dates.clear()
         monthCalendar.set(Calendar.DAY_OF_MONTH, 1)
 
-        //Заполнение даты днями и установить currentPosition.
-        //currentPosition — позиция первого выбранного дня.
         while (dates.size < maxDaysInMonth) {
             // get position of selected day
             if (monthCalendar[Calendar.DAY_OF_MONTH] == selectedDay)
@@ -171,16 +165,6 @@ class MainViewModel(
             dates.add(monthCalendar.time)
             monthCalendar.add(Calendar.DAY_OF_MONTH, 1)
         }
-
-
-        // При запуске приложение центрируется текущий день, если это не 1,2,3 и 29,30,31
-        /*when {
-            currentPosition > 2 -> binding.monthRecyclerView.scrollToPosition(currentPosition - 3)
-            maxDaysInMonth - currentPosition < 2 -> binding.monthRecyclerView.scrollToPosition(
-                currentPosition
-            )
-            else -> binding.monthRecyclerView.scrollToPosition(currentPosition)
-        }*/
 
         val position = when {
             currentPosition > 2 -> currentPosition - 3
