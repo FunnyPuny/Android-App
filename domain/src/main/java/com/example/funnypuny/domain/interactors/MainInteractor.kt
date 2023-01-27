@@ -6,9 +6,7 @@ import com.example.funnypuny.domain.repository.HabitRepository
 import com.example.funnypuny.domain.usecases.GetHabitListUseCase
 import com.example.funnypuny.domain.usecases.MainUseCase
 
-class MainInteractor(
-    private val habitRepository: HabitRepository
-) : MainUseCase {
+class MainInteractor(private val habitRepository: HabitRepository) : MainUseCase {
 
     override fun getHabitList(): List<HabitEntity> {
         return habitRepository.getHabitList()
@@ -18,8 +16,9 @@ class MainInteractor(
         habitRepository.addHabitItem(habit)
     }
 
-    override fun editHabitItem(habit: HabitEntity) {
+    override fun editHabitItem(habit: HabitEntity): List<HabitEntity> {
         habitRepository.editHabitItem(habit)
+        return habitRepository.getHabitList()
     }
 
     override fun deleteHabitItem(habit: HabitEntity): List<HabitEntity> {

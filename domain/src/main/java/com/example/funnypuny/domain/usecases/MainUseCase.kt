@@ -8,7 +8,7 @@ interface MainUseCase {
 
     fun addHabitItem(habit: HabitEntity)
 
-    fun editHabitItem(habit: HabitEntity)
+    fun editHabitItem(habit: HabitEntity): List<HabitEntity>
 
     fun deleteHabitItem(habit: HabitEntity): List<HabitEntity>
 

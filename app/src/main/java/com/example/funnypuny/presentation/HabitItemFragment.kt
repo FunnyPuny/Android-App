@@ -65,7 +65,7 @@ class HabitItemFragment: Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.resetErrorInputName()
+                viewModel.onResetErrorInputName()
             }
 
             override fun afterTextChanged(s: Editable?) {

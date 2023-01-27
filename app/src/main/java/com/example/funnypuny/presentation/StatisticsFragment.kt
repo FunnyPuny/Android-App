@@ -7,8 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.SpinnerAdapter
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.FragmentStatisticsBinding
+import com.example.funnypuny.domain.entity.HabitEntity
+import com.example.funnypuny.presentation.adapter.HabitListAdapter
+import com.example.funnypuny.presentation.viewmodel.HabitItemAction
 import com.example.funnypuny.presentation.viewmodel.StatisticViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -23,6 +29,8 @@ class StatisticsFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentStatisticsBinding == null")
 
     val viewModel: StatisticViewModel by viewModel()
+
+    private var habitListAdapter: HabitListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("HabitItemFragment", "onCreate")
@@ -61,38 +69,33 @@ class StatisticsFragment : Fragment() {
                 }
             }
         }.start()
+        viewModel.habitListState.observe(viewLifecycleOwner) {habit ->
+                habitListAdapter?.submitList(habit)
+                //val habitarr = arrayOf(habit)
+                if (binding.spinerDropDown != null) {
+                    val adapter = activity?.let {
+                        ArrayAdapter(
+                            it.baseContext,
+                            android.R.layout.simple_spinner_item, habit)
+                    }
 
-        /*val languages = resources.getStringArray(R.array.Languages)
+                    binding.spinerDropDown.adapter = adapter
 
+                    binding.spinerDropDown.onItemSelectedListener = object :
+                        AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            parent: AdapterView<*>,
+                            view: View, position: Int, id: Long
+                        ) {
+                            binding.tvStatisticPageTitle.text = habit[position].name
+                        }
 
-        // access the spinner
-        if (binding.spinerDropDown != null) {
-            val adapter = activity?.let {
-                ArrayAdapter(
-                    it.baseContext,
-                    android.R.layout.simple_spinner_item, languages)
+                        override fun onNothingSelected(parent: AdapterView<*>) {
+                        }
+                    }
             }
 
-            binding.spinerDropDown.adapter = adapter
-
-            binding.spinerDropDown.onItemSelectedListener = object :
-                AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View, position: Int, id: Long
-                ) {
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {
-                    // write code to perform some action
-                }
-            }
-
-            viewModel.habitListState.observe(viewLifecycleOwner) {
-                habitListAdapter?.submitList(it)
-            }
-
-        }*/
+        }
 
     }
     override fun onDestroyView() {
