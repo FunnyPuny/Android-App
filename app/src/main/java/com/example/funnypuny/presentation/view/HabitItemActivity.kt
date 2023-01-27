@@ -37,13 +37,13 @@ class HabitItemActivity : AppCompatActivity(),
 
         viewModel.showNewInstanceAddItem.observe(this){
             supportFragmentManager.beginTransaction()
-                .replace(R.id.habit_item_container, HabitItemFragment.newInstanceAddItem())
+                .replace(R.id.habitItemContainer, HabitItemFragment.newInstanceAddItem())
                 .commit()
         }
 
         viewModel.showNewInstanceEditItem.observe(this){
             supportFragmentManager.beginTransaction()
-                .replace(R.id.habit_item_container, HabitItemFragment.newInstanceEditItem(habitId))
+                .replace(R.id.habitItemContainer, HabitItemFragment.newInstanceEditItem(habitId))
                 .commit()
         }
 

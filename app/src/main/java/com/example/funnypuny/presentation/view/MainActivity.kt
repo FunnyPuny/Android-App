@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.ActivityMainBinding
 import com.example.funnypuny.presentation.HabitItemFragment
+import com.example.funnypuny.presentation.StatisticsFragment
 import com.example.funnypuny.presentation.adapter.HabitListAdapter
 import com.example.funnypuny.presentation.adapter.HorizontalCalendarAdapter
 import com.example.funnypuny.presentation.viewmodel.MainViewModel
@@ -42,6 +43,12 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             habitListAdapter?.submitList(it)
             //todo надо убрать
             habitListAdapter?.notifyDataSetChanged()
+            /*val transaction = supportFragmentManager.beginTransaction()
+            val fragment = StatisticsFragment()
+            fragment.arguments?.putString("HABIT_NAME", habitListAdapter.toString())
+            transaction.replace(R.id.statistics_container, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()*/
         }
         viewModel.monthTitleState.observe(this) { binding.tvMonthTitle.text = it }
         viewModel.monthWithPositionState.observe(this) { (changeMonth, position) ->
@@ -82,6 +89,13 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         viewModel.showHabititemEditingFinished.observe(this) {
             supportFragmentManager.popBackStack()
         }
+
+        /*val transaction = supportFragmentManager.beginTransaction()
+        val fragment = StatisticsFragment()
+        fragment.arguments?.putString("HABIT_NAME", habitListAdapter.toString())
+        transaction.replace(R.id.habitItemContainer, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()*/
     }
 
     override fun onHabitItemEditingFinished() {
@@ -95,7 +109,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
     private fun launchFragment(fragment: Fragment, withPopBackStack: Boolean) {
         if (withPopBackStack) supportFragmentManager.popBackStack()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.habit_item_container, fragment)
+            .replace(R.id.habitItemContainer, fragment)
             .addToBackStack(null)
             .commit()
     }
@@ -111,14 +125,14 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         }
         with(binding.rvHabitList) {
             adapter = habitListAdapter
-            recycledViewPool.setMaxRecycledViews(
+            /*recycledViewPool.setMaxRecycledViews(
                 HabitListAdapter.VIEW_TYPE_ENABLED,
                 HabitListAdapter.MAX_POOL_SIZE
             )
             recycledViewPool.setMaxRecycledViews(
                 HabitListAdapter.VIEW_TYPE_DISABLED,
                 HabitListAdapter.MAX_POOL_SIZE
-            )
+            )*/
         }
         setupSwipeHabitListener()
     }

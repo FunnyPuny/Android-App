@@ -14,11 +14,11 @@ class HabitRepositoryImpl : HabitRepository {
     private var autoIncrementId = 0
 
 
-    /*init {
+    init {
         for (i in 0 until 5) {
             addHabitItem(HabitEntity("Name: $i", true, i))
         }
-    }*/
+    }
 
     override fun getHabitList(): List<HabitEntity> {
         // лучше возвращать копию листа

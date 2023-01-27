@@ -62,7 +62,6 @@ class HabitItemViewModel(
         this.inputName = inputName
     }
 
-    //todo нужно убрать inputName на вход и сетить его в отдельную переменную по аналогии с методом init
     fun onSaveClick() {
         when (action) {
             HabitItemAction.ADD -> onAddHabitItem(inputName)
@@ -71,6 +70,9 @@ class HabitItemViewModel(
         }
     }
 
+    fun onResetErrorInputName() {
+        errorInputNameState.value = false
+    }
 
     private fun onInitHabitItem(habitItemId: Int) {
         habitState.value = mainUseCase.getHabitItem(habitItemId)
@@ -108,11 +110,6 @@ class HabitItemViewModel(
         }
         return result
     }
-
-    fun onResetErrorInputName() {
-        errorInputNameState.value = false
-    }
-
 
     private fun onFinishWork() {
         shouldCloseScreenState.value = Unit
