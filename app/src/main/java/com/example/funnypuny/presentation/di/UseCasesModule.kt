@@ -7,6 +7,6 @@ import com.example.funnypuny.domain.usecases.StatisticUseCase
 import org.koin.dsl.module
 
 val useCasesModule = module {
-    factory<MainUseCase> { MainInteractor(get()) }
+    factory<MainUseCase> { MainInteractor(get(),get()) }
     factory<StatisticUseCase> { StatisticInteractor(get()) }
 }

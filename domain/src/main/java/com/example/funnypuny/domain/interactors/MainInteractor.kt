@@ -1,15 +1,17 @@
 package com.example.funnypuny.domain.interactors
 
 import com.example.funnypuny.domain.entity.HabitEntity
-import com.example.funnypuny.domain.entity.HabitFrequencyEntity
 import com.example.funnypuny.domain.repository.HabitRepository
-import com.example.funnypuny.domain.usecases.GetHabitListUseCase
+import com.example.funnypuny.domain.usecases.SharedGetHabitListUseCase
 import com.example.funnypuny.domain.usecases.MainUseCase
 
-class MainInteractor(private val habitRepository: HabitRepository) : MainUseCase {
+class MainInteractor(
+    private val habitRepository: HabitRepository,
+    private val sharedGetHabitListUseCase: SharedGetHabitListUseCase
+) : MainUseCase {
 
     override fun getHabitList(): List<HabitEntity> {
-        return habitRepository.getHabitList()
+        return sharedGetHabitListUseCase.getHabitList()
     }
 
     override fun addHabitItem(habit: HabitEntity) {

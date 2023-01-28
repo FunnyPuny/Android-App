@@ -15,15 +15,12 @@ class HabitRepositoryImpl : HabitRepository {
 
 
     init {
-        for (i in 0 until 5) {
+        for (i in 0 until 3) {
             addHabitItem(HabitEntity("Name: $i", true, i))
         }
     }
 
     override fun getHabitList(): List<HabitEntity> {
-        // лучше возвращать копию листа
-        // если в getShopList() добавлять какие-то элементы или удалять их,
-        // то на исходную коллекцию это никак не повлияет
         return habitList
     }
 
