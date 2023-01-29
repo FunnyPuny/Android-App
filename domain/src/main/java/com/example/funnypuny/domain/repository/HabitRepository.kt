@@ -15,6 +15,6 @@ interface HabitRepository {
 
     fun deleteHabitItem(habit: HabitEntity): List<HabitEntity>
 
-    fun getHabitItem(habitItemId: Int): HabitEntity
+    fun getHabitItem(habitItemId: Int): HabitEntity?
 
 }
