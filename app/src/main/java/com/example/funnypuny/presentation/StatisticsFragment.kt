@@ -71,7 +71,6 @@ class StatisticsFragment : Fragment() {
         }.start()
         viewModel.habitListState.observe(viewLifecycleOwner) {habit ->
                 habitListAdapter?.submitList(habit)
-                //val habitarr = arrayOf(habit)
                 if (binding.spinerDropDown != null) {
                     val adapter = activity?.let {
                         ArrayAdapter(

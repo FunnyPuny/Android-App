@@ -1,22 +1,20 @@
 package com.example.funnypuny.presentation.viewmodel
 
-import android.util.Log
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.funnypuny.domain.entity.HabitEntity
+import com.example.funnypuny.domain.usecases.HabitListSharedUseCase
 import com.example.funnypuny.domain.usecases.MainUseCase
-import com.example.funnypuny.presentation.HabitItemFragment
 import com.example.funnypuny.presentation.common.SingleLiveData
 import com.example.funnypuny.presentation.common.SingleLiveDataEmpty
-import com.example.funnypuny.presentation.view.HabitItemActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
 class MainViewModel(
-    private val mainUseCase: MainUseCase
+    private val mainUseCase: MainUseCase,
+    private val habitListSharedUseCase: HabitListSharedUseCase
 ) : ViewModel() {
 
     private val lastDayInCalendar = Calendar.getInstance(Locale.ENGLISH).apply {
@@ -55,7 +53,7 @@ class MainViewModel(
     val habitListState = MutableLiveData<List<HabitEntity>>()
 
     init {
-        habitListState.value = mainUseCase.getHabitList()
+        habitListState.value = habitListSharedUseCase.getHabitList()
         /* mainUseCase
              .habitsState()
              .subscribeOn()
@@ -69,7 +67,7 @@ class MainViewModel(
     //----------------
 
     fun onViewShown() {
-        habitListState.value = mainUseCase.getHabitList()
+        habitListState.value = habitListSharedUseCase.getHabitList()
     }
 
 
@@ -79,7 +77,7 @@ class MainViewModel(
         }
     }
 
-    fun changeEnableState(habit: HabitEntity) {
+    fun onChangeEnableState(habit: HabitEntity) {
         val newItem = habit.copy(enabled = !habit.enabled)
         habitListState.value = mainUseCase.editHabitItem(newItem)
     }

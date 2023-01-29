@@ -75,8 +75,12 @@ class HabitItemViewModel(
     }
 
     private fun onInitHabitItem(habitItemId: Int) {
-        habitState.value = mainUseCase.getHabitItem(habitItemId)
+        mainUseCase.getHabitItem(habitItemId)
+            ?.let { habit -> habitState.value = habit }
+            ?: onFinishWork()
     }
+
+    private fun test(habitEntity: HabitEntity){}
 
     private fun onAddHabitItem(inputName: String?) {
         val fieldsValid = validateInput(inputName)

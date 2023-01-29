@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.ActivityMainBinding
 import com.example.funnypuny.presentation.HabitItemFragment
-import com.example.funnypuny.presentation.StatisticsFragment
 import com.example.funnypuny.presentation.adapter.HabitListAdapter
 import com.example.funnypuny.presentation.adapter.HorizontalCalendarAdapter
 import com.example.funnypuny.presentation.viewmodel.MainViewModel
@@ -121,7 +120,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
                 viewModel.onEditHabitItem(isOnePaneMode(),habit.id)
             }
             onHabitItemClickListener = { habit ->
-                viewModel.changeEnableState(habit) }
+                viewModel.onChangeEnableState(habit) }
         }
         with(binding.rvHabitList) {
             adapter = habitListAdapter
