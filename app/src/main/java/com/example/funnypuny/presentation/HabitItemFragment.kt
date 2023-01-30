@@ -1,6 +1,7 @@
 package com.example.funnypuny.presentation
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,12 +13,15 @@ import androidx.fragment.app.Fragment
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.FragmentHabitItemBinding
 import com.example.funnypuny.domain.entity.HabitEntity
+import com.example.funnypuny.domain.entity.HabitActionEntity
 import com.example.funnypuny.presentation.adapter.HabitFrequencyAdapter
-import com.example.funnypuny.presentation.viewmodel.HabitItemAction
+import com.example.funnypuny.presentation.view.HabitAction
+import com.example.funnypuny.presentation.view.HabitItemActivity
 import com.example.funnypuny.presentation.viewmodel.HabitItemViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
-class HabitItemFragment: Fragment() {
+class HabitItemFragment : Fragment() {
 
     private var _binding: FragmentHabitItemBinding? = null
     private val binding: FragmentHabitItemBinding
@@ -26,7 +30,9 @@ class HabitItemFragment: Fragment() {
     private lateinit var habitFrequencyAdapter: HabitFrequencyAdapter
     private lateinit var onHabitItemEditingFinishedListener: OnHabitItemEditingFinishedListener
 
-    val viewModel: HabitItemViewModel by viewModel()
+    val viewModel: HabitItemViewModel by viewModel(parameters = {
+        parametersOf(getHabitAction(fragment = HabitItemFragment()))
+    })
 
 
     override fun onAttach(context: Context) {
@@ -43,19 +49,13 @@ class HabitItemFragment: Fragment() {
         Log.d("HabitItemFragment", "onCreate")
         super.onCreate(savedInstanceState)
         //parseParams()
-        val args = requireArguments()
-        val mode = (args.getSerializable(EXTRA_SCREEN_MODE) as? HabitItemAction)!!
-        val habitId = args.getInt(HABIT_ITEM_ID, HabitEntity.UNDEFINED_ID)
-        viewModel.init(mode,habitId)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         Log.d("HabitItemFragment", "onCreateView")
-        _binding = FragmentHabitItemBinding.inflate(inflater,container,false)
+        _binding = FragmentHabitItemBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -65,7 +65,6 @@ class HabitItemFragment: Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.onResetErrorInputName()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -73,6 +72,7 @@ class HabitItemFragment: Fragment() {
             }
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("HabitItemFragment", "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
@@ -109,6 +109,16 @@ class HabitItemFragment: Fragment() {
             binding.tietName.addTextChangedListener(nameTextWatcher)
         }
 
+    }
+
+    private fun getHabitAction(fragment: HabitItemFragment): HabitActionEntity {
+        val args = requireArguments()
+        val action = (args.getSerializable(EXTRA_SCREEN_MODE) as? HabitAction)!!
+        val id = args.getInt(HABIT_ITEM_ID, HabitEntity.UNDEFINED_ID)
+        return when (action) {
+            HabitAction.ADD -> HabitActionEntity.Add
+            HabitAction.EDIT -> HabitActionEntity.Edit(id)
+        }
     }
 
     override fun onStart() {
@@ -160,7 +170,7 @@ class HabitItemFragment: Fragment() {
         fun newInstanceAddItem(): HabitItemFragment {
             return HabitItemFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(EXTRA_SCREEN_MODE, HabitItemAction.ADD)
+                    putSerializable(EXTRA_SCREEN_MODE, HabitAction.ADD)
                 }
             }
         }
@@ -168,7 +178,7 @@ class HabitItemFragment: Fragment() {
         fun newInstanceEditItem(habitItemId: Int): HabitItemFragment {
             return HabitItemFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(EXTRA_SCREEN_MODE,HabitItemAction.EDIT)
+                    putSerializable(EXTRA_SCREEN_MODE, HabitAction.EDIT)
                     putInt(HABIT_ITEM_ID, habitItemId)
                 }
             }

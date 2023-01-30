@@ -73,13 +73,13 @@ class MainViewModel(
 
     fun onSwipeHabit(position: Int) {
         habitListState.value?.getOrNull(position)?.let { habit ->
-            habitListState.value = mainUseCase.deleteHabitItem(habit)
+            habitListState.value = mainUseCase.deleteHabitItemState(habit)
         }
     }
 
     fun onChangeEnableState(habit: HabitEntity) {
-        val newItem = habit.copy(enabled = !habit.enabled)
-        habitListState.value = mainUseCase.editHabitItem(newItem)
+        //val newItem = habit.copy(enabled = !habit.enabled)
+        habitListState.value = mainUseCase.editHabitItemState(habit)
     }
 
     fun onPrevMonthButtonClick() {

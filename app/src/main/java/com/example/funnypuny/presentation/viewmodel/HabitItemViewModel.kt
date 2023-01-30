@@ -4,10 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.HabitFrequencyEntity
+import com.example.funnypuny.domain.entity.HabitActionEntity
+import com.example.funnypuny.domain.usecases.MainActionHabitState
 import com.example.funnypuny.domain.usecases.MainUseCase
+import com.example.funnypuny.presentation.common.SingleLiveData
 import com.example.funnypuny.presentation.common.SingleLiveDataEmpty
 
 class HabitItemViewModel(
+    private val action: HabitActionEntity,
     private val mainUseCase: MainUseCase
 ): ViewModel() {
 
@@ -20,14 +24,10 @@ class HabitItemViewModel(
     private val data = ArrayList<HabitFrequencyEntity>()
     val daysOfTheWeekState = MutableLiveData<ArrayList<HabitFrequencyEntity>>()
 
-    val showNewInstanceEditItem = SingleLiveDataEmpty()
+    val showNewInstanceEditItem = SingleLiveData<Int>()
     val showNewInstanceAddItem = SingleLiveDataEmpty()
 
-    var action: HabitItemAction? = null
-    var id: Int? = null
-    var isAlreadyInited = false
-    var inputName: String? = null
-
+    private var inputName: String? = null
 
     init {
         data.add(HabitFrequencyEntity("Sun"))
@@ -38,90 +38,38 @@ class HabitItemViewModel(
         data.add(HabitFrequencyEntity("Fri"))
         data.add(HabitFrequencyEntity("Sat"))
         daysOfTheWeekState.value = data
-    }
-
-    fun init(action: HabitItemAction, id: Int) {
-        if (isAlreadyInited) return
-        this.action = action
-        this.id = id
 
         when(action){
-            HabitItemAction.ADD -> Unit
-            HabitItemAction.EDIT -> onInitHabitItem(id)
+            is HabitActionEntity.Add -> Unit
+            is HabitActionEntity.Edit -> onInitHabitItem(action.id)
         }
 
-        isAlreadyInited = true
-
+        //todo разобраться с типом livedata
         when (action) {
-            HabitItemAction.ADD -> showNewInstanceAddItem.call()
-            HabitItemAction.EDIT -> showNewInstanceEditItem.call()
+            is HabitActionEntity.Add -> showNewInstanceAddItem.call()
+            is HabitActionEntity.Edit -> showNewInstanceEditItem.value = action.id
         }
     }
 
     fun onNameChanged(inputName: String?) {
         this.inputName = inputName
-    }
-
-    fun onSaveClick() {
-        when (action) {
-            HabitItemAction.ADD -> onAddHabitItem(inputName)
-            HabitItemAction.EDIT -> onEditHabitItem(inputName)
-            null -> Unit
-        }
-    }
-
-    fun onResetErrorInputName() {
         errorInputNameState.value = false
     }
 
+    fun onSaveClick() {
+        when ( mainUseCase.actionHabitState(action, inputName) ) {
+            is MainActionHabitState.Success -> shouldCloseScreenState.value = Unit
+            is MainActionHabitState.EmptyNameError -> errorInputNameState.value = true
+            is MainActionHabitState.HabitNotFoundError -> shouldCloseScreenState.value = Unit
+            is MainActionHabitState.Error -> Unit
+        }
+    }
+
+    //todo проверить onFinishWork()
     private fun onInitHabitItem(habitItemId: Int) {
         mainUseCase.getHabitItem(habitItemId)
             ?.let { habit -> habitState.value = habit }
-            ?: onFinishWork()
+            .let { shouldCloseScreenState.value = Unit }
     }
 
-    private fun test(habitEntity: HabitEntity){}
-
-    private fun onAddHabitItem(inputName: String?) {
-        val fieldsValid = validateInput(inputName)
-        if (fieldsValid) {
-            inputName?.let { name ->
-                val habit = HabitEntity(name,true)
-                mainUseCase.addHabitItem(habit)
-                onFinishWork()
-            }
-        }
-    }
-
-    private fun onEditHabitItem(inputName: String?) {
-        val fieldsValid = validateInput(inputName)
-        if (fieldsValid) {
-            inputName?.let { name ->
-                habitState.value?.let { habit ->
-                    val item = habit.copy(name = name)
-                    mainUseCase.editHabitItem(item)
-                    onFinishWork()
-                }
-            }
-        }
-    }
-
-    private fun validateInput(name: String?): Boolean {
-        var result = true
-        if ( name.isNullOrBlank() ) {
-            errorInputNameState.value = true
-            result = false
-        }
-        return result
-    }
-
-    private fun onFinishWork() {
-        shouldCloseScreenState.value = Unit
-    }
-
-}
-
-enum class HabitItemAction() {
-    ADD,
-    EDIT
 }
