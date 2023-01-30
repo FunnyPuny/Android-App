@@ -58,56 +58,18 @@ class HabitItemViewModel(
 
     fun onSaveClick() {
         when ( mainUseCase.actionHabitState(action, inputName) ) {
-            is MainActionHabitState.Success -> onFinishWork()
+            is MainActionHabitState.Success -> shouldCloseScreenState.value = Unit
             is MainActionHabitState.EmptyNameError -> errorInputNameState.value = true
             is MainActionHabitState.HabitNotFoundError -> shouldCloseScreenState.value = Unit
             is MainActionHabitState.Error -> Unit
         }
     }
 
-    /*fun onResetErrorInputName() {
-        errorInputNameState.value = false
-    }*/
-
+    //todo проверить onFinishWork()
     private fun onInitHabitItem(habitItemId: Int) {
         mainUseCase.getHabitItem(habitItemId)
             ?.let { habit -> habitState.value = habit }
-            ?: onFinishWork()
-    }
-
-    /*private fun onAddHabitItem(inputName: String?) {
-        when ( mainUseCase.addHabitItemState(inputName) ) {
-            is MainActionHabitState.Success -> onFinishWork()
-            is MainActionHabitState.EmptyName -> errorInputNameState.value = true
-            is MainActionHabitState.Error -> Unit
-        }
-    }*/
-
-    /*private fun onEditHabitItem(inputName: String?) {
-        val fieldsValid = validateInput(inputName)
-        if (fieldsValid) {
-            inputName?.let { name ->
-                habitState.value?.let { habit ->
-                    val item = habit.copy(name = name)
-                    mainUseCase.editHabitItemState(item)
-                    onFinishWork()
-                }
-            }
-        }
-    }*/
-
-    /*private fun validateInput(name: String?): Boolean {
-        var result = true
-        if ( name.isNullOrBlank() ) {
-            errorInputNameState.value = true
-            result = false
-        }
-        return result
-    }*/
-
-    //todo убрать
-    private fun onFinishWork() {
-        shouldCloseScreenState.value = Unit
+            .let { shouldCloseScreenState.value = Unit }
     }
 
 }
