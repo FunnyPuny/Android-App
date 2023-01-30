@@ -1,19 +1,30 @@
 package com.example.funnypuny.domain.usecases
 
 import com.example.funnypuny.domain.entity.HabitEntity
-import com.example.funnypuny.domain.entity.HabitFrequencyEntity
+import com.example.funnypuny.domain.entity.HabitActionEntity
 
 interface MainUseCase {
     //fun getHabitList(): List<HabitEntity>
 
-    fun addHabitItem(habit: HabitEntity)
+    //fun addHabitItemState(inputName: String?): MainActionHabitState
 
-    fun editHabitItem(habit: HabitEntity): List<HabitEntity>
+    fun editHabitItemState(habit: HabitEntity): List<HabitEntity>
 
-    fun deleteHabitItem(habit: HabitEntity): List<HabitEntity>
+    fun deleteHabitItemState(habit: HabitEntity): List<HabitEntity>
 
     fun getHabitItem(habitItemId: Int): HabitEntity?
 
+    fun actionHabitState(action: HabitActionEntity, inputName: String?): MainActionHabitState
+
     //fun habitsState(): Observable<List<HabitEntity>>
 
+}
+
+sealed class MainActionHabitState{
+    object Success: MainActionHabitState()
+    object EmptyNameError: MainActionHabitState()
+
+    object HabitNotFoundError: MainActionHabitState()
+
+    data class Error(val error: Throwable) : MainActionHabitState()
 }

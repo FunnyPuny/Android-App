@@ -8,7 +8,6 @@ import com.example.funnypuny.R
 import com.example.funnypuny.databinding.ActivityStatisticsBinding
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.presentation.StatisticsFragment
-import com.example.funnypuny.presentation.viewmodel.HabitItemAction
 import com.example.funnypuny.presentation.viewmodel.StatisticViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
