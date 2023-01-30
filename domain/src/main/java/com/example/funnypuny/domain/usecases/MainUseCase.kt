@@ -8,7 +8,7 @@ interface MainUseCase {
 
     //fun addHabitItemState(inputName: String?): MainActionHabitState
 
-    fun editHabitItemState(habit: HabitEntity): List<HabitEntity>
+    fun changeEnableHabitState(habit: HabitEntity): List<HabitEntity>
 
     fun deleteHabitItemState(habit: HabitEntity): List<HabitEntity>
 

@@ -10,19 +10,7 @@ class MainInteractor(
     private val habitRepository: HabitRepository
 ) : MainUseCase {
 
-    /*override fun addHabitItemState(inputName: String?): MainActionHabitState {
-        if (isHabitNameValid(inputName)) {
-            inputName?.let { name ->
-                val habit = HabitEntity(name,true)
-                habitRepository.addHabitItem(habit)
-                return MainActionHabitState.Success
-            }
-        }
-        return MainActionHabitState.EmptyName
-    }*/
-
-    override fun editHabitItemState(habit: HabitEntity): List<HabitEntity> {
-
+    override fun changeEnableHabitState(habit: HabitEntity): List<HabitEntity> {
         val newItem = habit.copy(enabled = !habit.enabled)
         habitRepository.getHabitList().let {
             habitRepository.deleteHabitItem(habit)
