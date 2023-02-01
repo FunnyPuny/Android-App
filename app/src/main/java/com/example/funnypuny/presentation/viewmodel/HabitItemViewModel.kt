@@ -65,7 +65,6 @@ class HabitItemViewModel(
         }
     }
 
-    //todo проверить onFinishWork()
     private fun onInitHabitItem(habitItemId: Int) {
         mainUseCase.getHabitItem(habitItemId)
             ?.let { habit -> habitState.value = habit }

@@ -22,8 +22,6 @@ class HabitRepositoryImpl : HabitRepository {
     }
 
     override fun addHabitItem(habit: HabitEntity) {
-        //при редоктировании элемента надо сохранить его id
-        //если id данного элемента неопределен, то в этом случае мы его установим
         if (habit.id == HabitEntity.UNDEFINED_ID) {
             autoIncrementId++
             habit.id = autoIncrementId

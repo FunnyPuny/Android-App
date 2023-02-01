@@ -8,8 +8,6 @@ class StatisticInteractor(
     private val habitListSharedUseCase: HabitListSharedUseCase
 ) : StatisticUseCase {
 
-    override fun getHabitList(): List<HabitEntity> {
-        return habitListSharedUseCase.getHabitList()
-    }
+
 
 }
