@@ -12,7 +12,7 @@ class HabitRepositoryImpl : HabitRepository {
 
     init {
         for (i in 0 until 3) {
-            addHabitItem(HabitEntity("Name: $i", true, i))
+            addHabitItem(HabitEntity("Name: $i", true, i),null)
             autoIncrementId = i
         }
     }
@@ -21,12 +21,14 @@ class HabitRepositoryImpl : HabitRepository {
         return habitList
     }
 
-    override fun addHabitItem(habit: HabitEntity) {
+    override fun addHabitItem(habit: HabitEntity, indexPosition: Int?) {
         if (habit.id == HabitEntity.UNDEFINED_ID) {
             autoIncrementId++
             habit.id = autoIncrementId
         }
-        habitList.add(habit)
+        indexPosition
+            ?.let { habitList.add(it, habit) }
+            ?: habitList.add(habit)
     }
 
     override fun deleteHabitItem(habit: HabitEntity) {
