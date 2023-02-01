@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.FragmentHabitItemBinding
 import com.example.funnypuny.domain.entity.HabitEntity
@@ -31,7 +32,7 @@ class HabitItemFragment : Fragment() {
     private lateinit var onHabitItemEditingFinishedListener: OnHabitItemEditingFinishedListener
 
     val viewModel: HabitItemViewModel by viewModel(parameters = {
-        parametersOf(getHabitAction(fragment = HabitItemFragment()))
+        parametersOf(getHabitAction(requireArguments()))
     })
 
 
@@ -111,16 +112,6 @@ class HabitItemFragment : Fragment() {
 
     }
 
-    private fun getHabitAction(fragment: HabitItemFragment): HabitActionEntity {
-        val args = requireArguments()
-        val action = (args.getSerializable(EXTRA_SCREEN_MODE) as? HabitAction)!!
-        val id = args.getInt(HABIT_ITEM_ID, HabitEntity.UNDEFINED_ID)
-        return when (action) {
-            HabitAction.ADD -> HabitActionEntity.Add
-            HabitAction.EDIT -> HabitActionEntity.Edit(id)
-        }
-    }
-
     override fun onStart() {
         Log.d("HabitItemFragment", "onStart")
         super.onStart()
@@ -181,6 +172,16 @@ class HabitItemFragment : Fragment() {
                     putSerializable(EXTRA_SCREEN_MODE, HabitAction.EDIT)
                     putInt(HABIT_ITEM_ID, habitItemId)
                 }
+            }
+        }
+
+        fun getHabitAction(bundle: Bundle): HabitActionEntity {
+            //val args = requireArguments()
+            val action = (bundle.getSerializable(EXTRA_SCREEN_MODE) as? HabitAction)!!
+            val id = bundle.getInt(HABIT_ITEM_ID, HabitEntity.UNDEFINED_ID)
+            return when (action) {
+                HabitAction.ADD -> HabitActionEntity.Add
+                HabitAction.EDIT -> HabitActionEntity.Edit(id)
             }
         }
     }

@@ -13,11 +13,11 @@ import com.example.funnypuny.presentation.common.SingleLiveDataEmpty
 class HabitItemViewModel(
     private val action: HabitActionEntity,
     private val mainUseCase: MainUseCase
-): ViewModel() {
+) : ViewModel() {
 
-    val errorInputNameState= MutableLiveData<Boolean>()
+    val errorInputNameState = MutableLiveData<Boolean>()
 
-    val habitState= MutableLiveData<HabitEntity>()
+    val habitState = MutableLiveData<HabitEntity>()
 
     val shouldCloseScreenState = MutableLiveData<Unit>()
 
@@ -39,7 +39,7 @@ class HabitItemViewModel(
         data.add(HabitFrequencyEntity("Sat"))
         daysOfTheWeekState.value = data
 
-        when(action){
+        when (action) {
             is HabitActionEntity.Add -> Unit
             is HabitActionEntity.Edit -> onInitHabitItem(action.id)
         }
@@ -57,7 +57,7 @@ class HabitItemViewModel(
     }
 
     fun onSaveClick() {
-        when ( mainUseCase.actionHabitState(action, inputName) ) {
+        when (mainUseCase.actionHabitState(action, inputName)) {
             is MainActionHabitState.Success -> shouldCloseScreenState.value = Unit
             is MainActionHabitState.EmptyNameError -> errorInputNameState.value = true
             is MainActionHabitState.HabitNotFoundError -> shouldCloseScreenState.value = Unit
@@ -65,11 +65,10 @@ class HabitItemViewModel(
         }
     }
 
-    //todo проверить onFinishWork()
     private fun onInitHabitItem(habitItemId: Int) {
         mainUseCase.getHabitItem(habitItemId)
             ?.let { habit -> habitState.value = habit }
-            .let { shouldCloseScreenState.value = Unit }
+            ?: run { shouldCloseScreenState.value = Unit }
     }
 
 }

@@ -9,7 +9,7 @@ interface HabitRepository {
 
     fun getHabitList(): List<HabitEntity>
 
-    fun addHabitItem(habit: HabitEntity)
+    fun addHabitItem(habit: HabitEntity, indexPosition: Int?)
 
     fun deleteHabitItem(habit: HabitEntity)
 

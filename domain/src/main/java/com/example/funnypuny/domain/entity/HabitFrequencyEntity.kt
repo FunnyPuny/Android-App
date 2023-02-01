@@ -13,7 +13,7 @@ package com.example.funnypuny.domain.entity
 
 data class HabitFrequencyEntity(
     val days: String
-) {}
+)
 
 /*data class FrequencyItem(
     val sun: String = "sun",

@@ -10,23 +10,11 @@ class MainInteractor(
     private val habitRepository: HabitRepository
 ) : MainUseCase {
 
-    /*override fun addHabitItemState(inputName: String?): MainActionHabitState {
-        if (isHabitNameValid(inputName)) {
-            inputName?.let { name ->
-                val habit = HabitEntity(name,true)
-                habitRepository.addHabitItem(habit)
-                return MainActionHabitState.Success
-            }
-        }
-        return MainActionHabitState.EmptyName
-    }*/
-
-    override fun editHabitItemState(habit: HabitEntity): List<HabitEntity> {
-
+    override fun changeEnableHabitState(habit: HabitEntity): List<HabitEntity> {
         val newItem = habit.copy(enabled = !habit.enabled)
         habitRepository.getHabitList().let {
             habitRepository.deleteHabitItem(habit)
-            habitRepository.addHabitItem(newItem)
+            habitRepository.addHabitItem(newItem,null)
         }
         return habitRepository.getHabitList()
     }
@@ -57,7 +45,7 @@ class MainInteractor(
         if (isHabitNameValid(inputName)) {
             inputName?.let { name ->
                 val habit = HabitEntity(name, true)
-                habitRepository.addHabitItem(habit)
+                habitRepository.addHabitItem(habit, null)
                 return MainActionHabitState.Success
             }
         }
@@ -69,8 +57,10 @@ class MainInteractor(
             inputName?.let { name ->
                 habitRepository.getHabitItem(id)
                     ?.let { habit ->
+                        val indexPosition = habitRepository.getHabitList().indexOf(habit)
+                            .takeIf { it != -1 }
                         habitRepository.deleteHabitItem(habit)
-                        habitRepository.addHabitItem(habit.copy(name = name))
+                        habitRepository.addHabitItem(habit.copy(name = name),indexPosition)
                         return MainActionHabitState.Success
                     }
                     ?: return MainActionHabitState.HabitNotFoundError
