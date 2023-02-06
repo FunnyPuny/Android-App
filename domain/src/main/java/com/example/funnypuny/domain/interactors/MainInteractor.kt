@@ -1,5 +1,6 @@
 package com.example.funnypuny.domain.interactors
 
+import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
 import com.example.funnypuny.domain.repository.HabitRepository
@@ -10,23 +11,23 @@ class MainInteractor(
     private val habitRepository: HabitRepository
 ) : MainUseCase {
 
-    override fun changeEnableHabitState(habit: HabitEntity): List<HabitEntity> {
+    override fun changeEnableHabitState(date: DateEntity, habit: HabitEntity): List<HabitEntity> {
         val newItem = habit.copy(enabled = !habit.enabled)
-        habitRepository.getHabitList().let {
-            habitRepository.deleteHabitItem(habit)
-            habitRepository.addHabitItem(newItem,null)
+        habitRepository.getHabitList(date).let {
+            habitRepository.deleteHabitItem(date, habit)
+            habitRepository.addHabitItem(date, newItem, null)
         }
-        return habitRepository.getHabitList()
+        return habitRepository.getHabitList(date)
     }
 
-    override fun deleteHabitItemState(habit: HabitEntity): List<HabitEntity> {
-        habitRepository.deleteHabitItem(habit)
+    override fun deleteHabitItemState(date: DateEntity, habit: HabitEntity): List<HabitEntity> {
+        habitRepository.deleteHabitItem(date, habit)
         // habitRepository.habitsSubject().call()
-        return habitRepository.getHabitList()
+        return habitRepository.getHabitList(date)
     }
 
-    override fun getHabitItem(habitItemId: Int): HabitEntity? {
-        return habitRepository.getHabitItem(habitItemId)
+    override fun getHabitItem(date: DateEntity, habitItemId: Int): HabitEntity? {
+        return habitRepository.getHabitItem(date, habitItemId)
     }
 
     override fun actionHabitState(
@@ -34,33 +35,43 @@ class MainInteractor(
         inputName: String?
     ): MainActionHabitState =
         when (action) {
-            is HabitActionEntity.Add -> addHabitState(inputName)
-            is HabitActionEntity.Edit -> editHabitState(action.id, inputName)
+            is HabitActionEntity.Add -> addHabitState(action, inputName)
+            is HabitActionEntity.Edit -> editHabitState(action, inputName)
         }
 
 
     private fun isHabitNameValid(name: String?): Boolean = !name.isNullOrBlank()
 
-    private fun addHabitState(inputName: String?): MainActionHabitState {
+    private fun addHabitState(
+        action: HabitActionEntity.Add,
+        inputName: String?
+    ): MainActionHabitState {
         if (isHabitNameValid(inputName)) {
             inputName?.let { name ->
                 val habit = HabitEntity(name, true)
-                habitRepository.addHabitItem(habit, null)
+                habitRepository.addHabitItem(action.date, habit, null)
                 return MainActionHabitState.Success
             }
         }
         return MainActionHabitState.EmptyNameError
     }
 
-    private fun editHabitState(id: Int, inputName: String?): MainActionHabitState {
+    private fun editHabitState(
+        action: HabitActionEntity.Edit,
+        inputName: String?
+    ): MainActionHabitState {
         if (isHabitNameValid(inputName)) {
             inputName?.let { name ->
-                habitRepository.getHabitItem(id)
+                habitRepository.getHabitItem(action.date, action.id)
                     ?.let { habit ->
-                        val indexPosition = habitRepository.getHabitList().indexOf(habit)
+                        val indexPosition = habitRepository.getHabitList(action.date).indexOf(habit)
                             .takeIf { it != -1 }
-                        habitRepository.deleteHabitItem(habit)
-                        habitRepository.addHabitItem(habit.copy(name = name),indexPosition)
+                        habitRepository.deleteHabitItem(action.date, habit)
+                        habitRepository.addHabitItem(
+                            date = action.date,
+                            habit = habit.copy(name = name),
+                            indexPosition = indexPosition
+                        )
                         return MainActionHabitState.Success
                     }
                     ?: return MainActionHabitState.HabitNotFoundError

@@ -15,7 +15,7 @@ class StatisticViewModel(
     val habitListState = MutableLiveData<List<HabitEntity>>()
 
     init {
-        habitListState.value = habitListSharedUseCase.getHabitList()
+        //habitListState.value = habitListSharedUseCase.getHabitList()
     }
 
 

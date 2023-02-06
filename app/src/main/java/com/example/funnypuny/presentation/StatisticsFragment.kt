@@ -14,7 +14,6 @@ import com.example.funnypuny.R
 import com.example.funnypuny.databinding.FragmentStatisticsBinding
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.presentation.adapter.HabitListAdapter
-import com.example.funnypuny.presentation.viewmodel.HabitItemAction
 import com.example.funnypuny.presentation.viewmodel.StatisticViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

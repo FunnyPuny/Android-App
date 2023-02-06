@@ -2,6 +2,7 @@ package com.example.funnypuny.presentation.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.HabitFrequencyEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
@@ -24,10 +25,10 @@ class HabitItemViewModel(
     private val data = ArrayList<HabitFrequencyEntity>()
     val daysOfTheWeekState = MutableLiveData<ArrayList<HabitFrequencyEntity>>()
 
-    val showNewInstanceEditItem = SingleLiveData<Int>()
-    val showNewInstanceAddItem = SingleLiveDataEmpty()
+    val showAction = SingleLiveData<HabitActionEntity>()
 
     private var inputName: String? = null
+
 
     init {
         data.add(HabitFrequencyEntity("Sun"))
@@ -45,10 +46,11 @@ class HabitItemViewModel(
         }
 
         //todo разобраться с типом livedata
-        when (action) {
-            is HabitActionEntity.Add -> showNewInstanceAddItem.call()
+        showAction.value = action
+        /*when (action) {
+            is HabitActionEntity.Add -> showNewInstanceAddItem.value = action.date
             is HabitActionEntity.Edit -> showNewInstanceEditItem.value = action.id
-        }
+        }*/
     }
 
     fun onNameChanged(inputName: String?) {
@@ -66,7 +68,7 @@ class HabitItemViewModel(
     }
 
     private fun onInitHabitItem(habitItemId: Int) {
-        mainUseCase.getHabitItem(habitItemId)
+        mainUseCase.getHabitItem(action.date,habitItemId)
             ?.let { habit -> habitState.value = habit }
             ?: run { shouldCloseScreenState.value = Unit }
     }

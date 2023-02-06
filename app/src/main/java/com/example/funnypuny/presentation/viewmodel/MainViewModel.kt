@@ -2,6 +2,8 @@ package com.example.funnypuny.presentation.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.funnypuny.domain.entity.DateEntity
+import com.example.funnypuny.domain.entity.HabitActionEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.usecases.HabitListSharedUseCase
 import com.example.funnypuny.domain.usecases.MainUseCase
@@ -29,10 +31,7 @@ class MainViewModel(
     private val currentMonth = currentDate[Calendar.MONTH]
     private val currentYear = currentDate[Calendar.YEAR]
 
-    // selected date
-    var selectedDay: Int = currentDay
-    var selectedMonth: Int = currentMonth
-    var selectedYear: Int = currentYear
+    var selectedDate = DateEntity(currentDay,currentMonth,currentYear)
 
     // all days in month
     val dates = ArrayList<Date>()
@@ -40,11 +39,10 @@ class MainViewModel(
     val monthTitleState = MutableLiveData<String>()
     val monthWithPositionState = MutableLiveData<Pair<Calendar?, Int>>()
 
-    val showHabitItemActivity = SingleLiveDataEmpty()
-    val showHabitItemFragment = SingleLiveData<Boolean>()
+    val showHabitItemActivity = SingleLiveData<HabitActionEntity>()
+    val showHabitItemFragment = SingleLiveData<Pair<HabitActionEntity, Boolean>>()
 
     val showHabitItemActivityEditItem = SingleLiveData<Int>()
-    val showHabitItemFragmentEditItem = SingleLiveData<Pair<Int,Boolean>>()
 
     val showStatisticActivity = SingleLiveDataEmpty()
 
@@ -52,34 +50,28 @@ class MainViewModel(
 
     val habitListState = MutableLiveData<List<HabitEntity>>()
 
+
     init {
-        habitListState.value = habitListSharedUseCase.getHabitList()
-        /* mainUseCase
-             .habitsState()
-             .subscribeOn()
-             .observeOn()
-             .subscribe{ habits->
-                 habitListState.value = habits
-             }*/
+        habitListState.value = habitListSharedUseCase.getHabitList(selectedDate)
         setUpCalendar(null)
     }
 
     //----------------
 
     fun onViewShown() {
-        habitListState.value = habitListSharedUseCase.getHabitList()
+        habitListState.value = habitListSharedUseCase.getHabitList(selectedDate)
     }
 
 
     fun onSwipeHabit(position: Int) {
         habitListState.value?.getOrNull(position)?.let { habit ->
-            habitListState.value = mainUseCase.deleteHabitItemState(habit)
+            habitListState.value = mainUseCase.deleteHabitItemState(selectedDate,habit)
         }
     }
 
     fun onChangeEnableState(habit: HabitEntity) {
         //val newItem = habit.copy(enabled = !habit.enabled)
-        habitListState.value = mainUseCase.changeEnableHabitState(habit)
+        habitListState.value = mainUseCase.changeEnableHabitState(selectedDate,habit)
     }
 
     fun onPrevMonthButtonClick() {
@@ -99,19 +91,21 @@ class MainViewModel(
         }
     }
 
-    fun onMonthClick(position: Int) {
+    fun onDayClick(position: Int) {
         dates.getOrNull(position)?.let { date ->
             val clickCalendar = Calendar.getInstance()
             clickCalendar.time = date
-            selectedDay = clickCalendar[Calendar.DAY_OF_MONTH]
+            //selectedDay = clickCalendar[Calendar.DAY_OF_MONTH]
+            selectedDate = selectedDate.copy(day = clickCalendar[Calendar.DAY_OF_MONTH])
+            habitListState.value = habitListSharedUseCase.getHabitList(selectedDate)
         }
     }
 
     fun onHabitAddClick(isPaneMode:Boolean){
         if (isPaneMode) {
-            showHabitItemActivity.value = Unit
+            showHabitItemActivity.value = HabitActionEntity.Add(selectedDate)
         } else {
-            showHabitItemFragment.value = true
+            showHabitItemFragment.value = HabitActionEntity.Add(selectedDate) to false
         }
     }
 
@@ -123,7 +117,7 @@ class MainViewModel(
         if (isPaneMode) {
             showHabitItemActivityEditItem.value = id
         } else {
-            showHabitItemFragmentEditItem.value = Pair(id,true)
+            showHabitItemFragment.value = HabitActionEntity.Edit(selectedDate, id) to true
         }
     }
 
@@ -136,21 +130,20 @@ class MainViewModel(
         val monthCalendar = cal.clone() as Calendar
         val maxDaysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH)
 
-        selectedDay =
-            when {
+        selectedDate = selectedDate.copy(
+            day = when {
                 changeMonth != null -> changeMonth.getActualMinimum(Calendar.DAY_OF_MONTH)
                 else -> currentDay
-            }
-        selectedMonth =
-            when {
+            },
+            month = when {
                 changeMonth != null -> changeMonth[Calendar.MONTH]
                 else -> currentMonth
-            }
-        selectedYear =
-            when {
+            },
+            year = when {
                 changeMonth != null -> changeMonth[Calendar.YEAR]
                 else -> currentYear
-            }
+            } )
+        habitListState.value = habitListSharedUseCase.getHabitList(selectedDate)
 
         var currentPosition = 0
         dates.clear()
@@ -158,7 +151,7 @@ class MainViewModel(
 
         while (dates.size < maxDaysInMonth) {
             // get position of selected day
-            if (monthCalendar[Calendar.DAY_OF_MONTH] == selectedDay)
+            if (monthCalendar[Calendar.DAY_OF_MONTH] == selectedDate.day)
                 currentPosition = dates.size
             dates.add(monthCalendar.time)
             monthCalendar.add(Calendar.DAY_OF_MONTH, 1)
