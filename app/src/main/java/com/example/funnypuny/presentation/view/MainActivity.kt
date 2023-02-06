@@ -37,17 +37,10 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         setupHabitList()
         setupBottomNavigation()
 
-        //todo при добавлении элемент не появился
         viewModel.habitListState.observe(this) {
             habitListAdapter?.submitList(it)
             //todo надо убрать
             habitListAdapter?.notifyDataSetChanged()
-            /*val transaction = supportFragmentManager.beginTransaction()
-            val fragment = StatisticsFragment()
-            fragment.arguments?.putString("HABIT_NAME", habitListAdapter.toString())
-            transaction.replace(R.id.statistics_container, fragment)
-            transaction.addToBackStack(null)
-            transaction.commit()*/
         }
         viewModel.monthTitleState.observe(this) { binding.tvMonthTitle.text = it }
         viewModel.monthWithPositionState.observe(this) { (changeMonth, position) ->
@@ -61,7 +54,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             horizontalCalendarAdapter.setOnItemClickListener(object :
                 HorizontalCalendarAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
-                    viewModel.onMonthClick(position)
+                    viewModel.onDayClick(position)
                 }
             })
         }
@@ -69,8 +62,8 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             startActivity(HabitItemActivity.newIntentAddItem(this))
         }
 
-        viewModel.showHabitItemFragment.observe(this) { withPopBackStack ->
-            launchFragment(HabitItemFragment.newInstanceAddItem(), withPopBackStack)
+        viewModel.showHabitItemFragment.observe(this) { (action, withPopBackStack) ->
+            launchFragment(HabitItemFragment.newInstance(action), withPopBackStack)
         }
 
         viewModel.showStatisticActivity.observe(this) {
@@ -81,20 +74,9 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             startActivity(HabitItemActivity.newIntentEditItem(this@MainActivity, id))
         }
 
-        viewModel.showHabitItemFragmentEditItem.observe(this) { (id, withPopBackStack) ->
-            launchFragment(HabitItemFragment.newInstanceEditItem(id), withPopBackStack)
-        }
-
         viewModel.showHabititemEditingFinished.observe(this) {
             supportFragmentManager.popBackStack()
         }
-
-        /*val transaction = supportFragmentManager.beginTransaction()
-        val fragment = StatisticsFragment()
-        fragment.arguments?.putString("HABIT_NAME", habitListAdapter.toString())
-        transaction.replace(R.id.habitItemContainer, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()*/
     }
 
     override fun onHabitItemEditingFinished() {
@@ -124,14 +106,6 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         }
         with(binding.rvHabitList) {
             adapter = habitListAdapter
-            /*recycledViewPool.setMaxRecycledViews(
-                HabitListAdapter.VIEW_TYPE_ENABLED,
-                HabitListAdapter.MAX_POOL_SIZE
-            )
-            recycledViewPool.setMaxRecycledViews(
-                HabitListAdapter.VIEW_TYPE_DISABLED,
-                HabitListAdapter.MAX_POOL_SIZE
-            )*/
         }
         setupSwipeHabitListener()
     }

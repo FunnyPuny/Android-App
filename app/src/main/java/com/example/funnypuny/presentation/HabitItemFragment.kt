@@ -1,7 +1,6 @@
 package com.example.funnypuny.presentation
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,14 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.FragmentHabitItemBinding
+import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
 import com.example.funnypuny.presentation.adapter.HabitFrequencyAdapter
 import com.example.funnypuny.presentation.view.HabitAction
-import com.example.funnypuny.presentation.view.HabitItemActivity
 import com.example.funnypuny.presentation.viewmodel.HabitItemViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -157,31 +155,38 @@ class HabitItemFragment : Fragment() {
 
         private const val EXTRA_SCREEN_MODE = "extra_screen_mode"
         private const val HABIT_ITEM_ID = "habit_item_id"
+        private const val SELECTED_DAY = "selected_day"
+        private const val SELECTED_MONTH = "selected_month"
+        private const val SELECTED_YEAR = "selected_year"
 
-        fun newInstanceAddItem(): HabitItemFragment {
-            return HabitItemFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable(EXTRA_SCREEN_MODE, HabitAction.ADD)
-                }
-            }
-        }
-
-        fun newInstanceEditItem(habitItemId: Int): HabitItemFragment {
+        fun newInstance(action: HabitActionEntity): HabitItemFragment {
             return HabitItemFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(EXTRA_SCREEN_MODE, HabitAction.EDIT)
-                    putInt(HABIT_ITEM_ID, habitItemId)
+                    when (action) {
+                        is HabitActionEntity.Add -> Unit
+                        is HabitActionEntity.Edit -> putInt(HABIT_ITEM_ID, action.id)
+                    }
+                    putInt(SELECTED_DAY, action.date.day)
+                    putInt(SELECTED_MONTH, action.date.month)
+                    putInt(SELECTED_YEAR, action.date.year)
                 }
             }
         }
 
         fun getHabitAction(bundle: Bundle): HabitActionEntity {
-            //val args = requireArguments()
             val action = (bundle.getSerializable(EXTRA_SCREEN_MODE) as? HabitAction)!!
-            val id = bundle.getInt(HABIT_ITEM_ID, HabitEntity.UNDEFINED_ID)
+            val selectedDate = DateEntity(
+                day = bundle.getInt(SELECTED_DAY, 0),
+                month = bundle.getInt(SELECTED_MONTH, 0),
+                year = bundle.getInt(SELECTED_YEAR, 0)
+            )
             return when (action) {
-                HabitAction.ADD -> HabitActionEntity.Add
-                HabitAction.EDIT -> HabitActionEntity.Edit(id)
+                HabitAction.ADD -> HabitActionEntity.Add(selectedDate)
+                HabitAction.EDIT -> HabitActionEntity.Edit(
+                    date = selectedDate,
+                    id = bundle.getInt(HABIT_ITEM_ID, HabitEntity.UNDEFINED_ID)
+                )
             }
         }
     }

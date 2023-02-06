@@ -30,14 +30,9 @@ class HabitItemActivity : AppCompatActivity(),
         _binding = ActivityHabitItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.showNewInstanceAddItem.observe(this) {
+        viewModel.showAction.observe(this) { action ->
             supportFragmentManager.beginTransaction()
-                .replace(R.id.habitItemContainer, HabitItemFragment.newInstanceAddItem()).commit()
-        }
-
-        viewModel.showNewInstanceEditItem.observe(this) { habitId ->
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.habitItemContainer, HabitItemFragment.newInstanceEditItem(habitId))
+                .replace(R.id.habitItemContainer, HabitItemFragment.newInstance(action))
                 .commit()
         }
 
@@ -66,7 +61,7 @@ class HabitItemActivity : AppCompatActivity(),
             return intent
         }
 
-        fun getHabitAction(intent: Intent):HabitActionEntity {
+        fun getHabitAction(intent: Intent): HabitActionEntity {
             val action = intent.getSerializableExtra(EXTRA_SCREEN_MODE) as HabitAction
             val id = intent.getIntExtra(EXTRA_HABIT_ITEM_ID, HabitEntity.UNDEFINED_ID)
             return when (action) {
@@ -77,7 +72,7 @@ class HabitItemActivity : AppCompatActivity(),
     }
 }
 
-enum class HabitAction{
+enum class HabitAction {
     ADD,
     EDIT
 }
