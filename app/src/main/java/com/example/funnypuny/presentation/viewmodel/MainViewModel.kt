@@ -39,7 +39,7 @@ class MainViewModel(
     val monthTitleState = MutableLiveData<String>()
     val monthWithPositionState = MutableLiveData<Pair<Calendar?, Int>>()
 
-    val showHabitItemActivity = SingleLiveDataEmpty()
+    val showHabitItemActivity = SingleLiveData<HabitActionEntity>()
     val showHabitItemFragment = SingleLiveData<Pair<HabitActionEntity, Boolean>>()
 
     val showHabitItemActivityEditItem = SingleLiveData<Int>()
@@ -103,9 +103,9 @@ class MainViewModel(
 
     fun onHabitAddClick(isPaneMode:Boolean){
         if (isPaneMode) {
-            showHabitItemActivity.value = Unit
+            showHabitItemActivity.value = HabitActionEntity.Add(selectedDate)
         } else {
-            showHabitItemFragment.value = HabitActionEntity.Add(selectedDate) to true
+            showHabitItemFragment.value = HabitActionEntity.Add(selectedDate) to false
         }
     }
 

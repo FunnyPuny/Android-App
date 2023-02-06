@@ -58,8 +58,8 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
                 }
             })
         }
-        viewModel.showHabitItemActivity.observe(this) {
-            startActivity(HabitItemActivity.newIntentAddItem(this))
+        viewModel.showHabitItemActivity.observe(this) { action ->
+            startActivity(HabitItemActivity.newIntent(this@MainActivity, action))
         }
 
         viewModel.showHabitItemFragment.observe(this) { (action, withPopBackStack) ->
@@ -70,9 +70,9 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             startActivity(StatisticsActivity.newIntent(this@MainActivity))
         }
 
-        viewModel.showHabitItemActivityEditItem.observe(this) { id ->
+        /*viewModel.showHabitItemActivityEditItem.observe(this) { id ->
             startActivity(HabitItemActivity.newIntentEditItem(this@MainActivity, id))
-        }
+        }*/
 
         viewModel.showHabititemEditingFinished.observe(this) {
             supportFragmentManager.popBackStack()
