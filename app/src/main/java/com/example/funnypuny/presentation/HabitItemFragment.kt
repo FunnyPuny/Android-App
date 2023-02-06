@@ -164,7 +164,7 @@ class HabitItemFragment : Fragment() {
                 arguments = Bundle().apply {
                     putSerializable(EXTRA_SCREEN_MODE, HabitAction.EDIT)
                     when (action) {
-                        is HabitActionEntity.Add -> Unit
+                        is HabitActionEntity.Add -> putSerializable(EXTRA_SCREEN_MODE,HabitAction.ADD)
                         is HabitActionEntity.Edit -> putInt(HABIT_ITEM_ID, action.id)
                     }
                     putInt(SELECTED_DAY, action.date.day)

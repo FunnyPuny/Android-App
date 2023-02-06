@@ -105,7 +105,7 @@ class MainViewModel(
         if (isPaneMode) {
             showHabitItemActivity.value = HabitActionEntity.Add(selectedDate)
         } else {
-            showHabitItemFragment.value = HabitActionEntity.Add(selectedDate) to false
+            showHabitItemFragment.value = HabitActionEntity.Add(selectedDate) to true
         }
     }
 

@@ -57,7 +57,7 @@ class HabitItemActivity : AppCompatActivity(),
             val intent = Intent(context, HabitItemActivity::class.java)
             intent.putExtra(EXTRA_SCREEN_MODE, HabitAction.ADD)
             when (action) {
-                is HabitActionEntity.Add -> Unit
+                is HabitActionEntity.Add -> intent.putExtra(EXTRA_SCREEN_MODE, HabitAction.ADD)
                 is HabitActionEntity.Edit -> intent.putExtra(EXTRA_HABIT_ITEM_ID, action.id)
             }
             intent.putExtra(SELECTED_DAY, action.date.day)
