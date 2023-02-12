@@ -39,8 +39,6 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
 
         viewModel.habitListState.observe(this) {
             habitListAdapter?.submitList(it)
-            //todo надо убрать
-            habitListAdapter?.notifyDataSetChanged()
         }
         viewModel.monthTitleState.observe(this) { binding.tvMonthTitle.text = it }
         viewModel.monthWithPositionState.observe(this) { (changeMonth, position) ->
@@ -71,7 +69,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         }
 
         /*viewModel.showHabitItemActivityEditItem.observe(this) { id ->
-            startActivity(HabitItemActivity.newIntentEditItem(this@MainActivity, id))
+            startActivity(HabitItemActivity.newIntent(this@MainActivity, id))
         }*/
 
         viewModel.showHabititemEditingFinished.observe(this) {
@@ -87,6 +85,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         return binding.habitItemContainer == null
     }
 
+    //todo поддержать сохранение активити из горизонтального в вертикальное
     private fun launchFragment(fragment: Fragment, withPopBackStack: Boolean) {
         if (withPopBackStack) supportFragmentManager.popBackStack()
         supportFragmentManager.beginTransaction()

@@ -16,7 +16,7 @@ import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
 import com.example.funnypuny.presentation.adapter.HabitFrequencyAdapter
 import com.example.funnypuny.presentation.view.HabitAction
-import com.example.funnypuny.presentation.viewmodel.HabitItemViewModel
+import com.example.funnypuny.presentation.viewmodel.HabitItemFragmentViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -29,7 +29,7 @@ class HabitItemFragment : Fragment() {
     private lateinit var habitFrequencyAdapter: HabitFrequencyAdapter
     private lateinit var onHabitItemEditingFinishedListener: OnHabitItemEditingFinishedListener
 
-    val viewModel: HabitItemViewModel by viewModel(parameters = {
+    val viewModel: HabitItemFragmentViewModel by viewModel(parameters = {
         parametersOf(getHabitAction(requireArguments()))
     })
 
@@ -76,8 +76,23 @@ class HabitItemFragment : Fragment() {
         Log.d("HabitItemFragment", "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
 
+        //binding.tietName.removeTextChangedListener(nameTextWatcher)
+        binding.tietName.setText(viewModel.inputName)
+        //binding.tietName.addTextChangedListener(nameTextWatcher)
+
         //слушатель ввода текста
-        binding.tietName.addTextChangedListener(nameTextWatcher)
+        //binding.tietName.addTextChangedListener(nameTextWatcher)
+        binding.tietName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.onNameChanged(s?.toString()?.trim())
+            }
+        })
 
         binding.btnSave.setOnClickListener {
             viewModel.onSaveClick()
@@ -102,11 +117,11 @@ class HabitItemFragment : Fragment() {
             binding.tietName.error = message
         }
 
-        viewModel.habitState.observe(viewLifecycleOwner) { habit ->
+        /*viewModel.habitState.observe(viewLifecycleOwner) { habit ->
             binding.tietName.removeTextChangedListener(nameTextWatcher)
             binding.tietName.setText(habit.name)
             binding.tietName.addTextChangedListener(nameTextWatcher)
-        }
+        }*/
 
     }
 
@@ -164,7 +179,10 @@ class HabitItemFragment : Fragment() {
                 arguments = Bundle().apply {
                     putSerializable(EXTRA_SCREEN_MODE, HabitAction.EDIT)
                     when (action) {
-                        is HabitActionEntity.Add -> putSerializable(EXTRA_SCREEN_MODE,HabitAction.ADD)
+                        is HabitActionEntity.Add -> putSerializable(
+                            EXTRA_SCREEN_MODE,
+                            HabitAction.ADD
+                        )
                         is HabitActionEntity.Edit -> putInt(HABIT_ITEM_ID, action.id)
                     }
                     putInt(SELECTED_DAY, action.date.day)

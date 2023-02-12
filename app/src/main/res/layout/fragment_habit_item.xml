@@ -1,201 +1,204 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-    
-    <data>
-        <variable
-            name="viewModel"
-            type="com.example.funnypuny.presentation.viewmodel.HabitItemViewModel" />
-    </data>
-    
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        style="@style/AppBottomSheetDialogTheme"
-        tools:context="com.example.funnypuny.presentation.HabitItemFragment">
-    
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add habit"
-            android:layout_marginTop="34dp"
-            android:textSize="17sp"
-            android:textColor="@color/black"
-            android:layout_gravity="center"
-            android:fontFamily="@font/roboto"
-            android:lineHeight="20sp"/>
-    
-        <TextView
-            android:id="@+id/tvName"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            style="@style/AppBottomSheetDialogTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Name"
-            android:fontFamily="@font/roboto"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:lineHeight="24sp"
-            tools:targetApi="p"
-            android:layout_marginTop="28dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"/>
-    
-    
-    
+            android:orientation="vertical"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            tools:context="com.example.funnypuny.presentation.HabitItemFragment">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto"
+                android:lineHeight="20sp"
+                android:text="Add habit"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/roboto"
+                android:lineHeight="24sp"
+                android:text="Name"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                tools:targetApi="p" />
+
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tietName"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:hint="Habit's name"
-                android:fontFamily="@font/roboto"
-                android:textColor="@color/grey"
-                android:textSize="17sp"
-                android:lineHeight="20sp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:inputType="textCapWords"
                 android:background="@drawable/ic_edit_text_corner"
-                tools:targetApi="p"
-                android:paddingStart="16dp"/>
-    
-    
-        <TextView
-            android:id="@+id/tvReminderNote"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Reminder note"
-            android:fontFamily="@font/roboto"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:lineHeight="24sp"
-            tools:targetApi="p"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"/>
-    
-    
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tietReminderNote"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:hint="Note"
-            android:fontFamily="@font/roboto"
-            android:textColor="@color/grey"
-            android:textSize="17sp"
-            android:lineHeight="20sp"
-            android:letterSpacing="-0.02"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:inputType="textCapWords"
-            android:background="@drawable/ic_edit_text_corner"
-            tools:targetApi="p"
-            android:paddingStart="16dp"/>
-    
-    
-        <TextView
-            android:id="@+id/tvFrequencyOfTheDay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Frequence"
-            android:fontFamily="@font/roboto"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:lineHeight="24sp"
-            tools:targetApi="p"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"/>
-    
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvFrequencyOfTheDay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="horizontal"
-            tools:listitem="@layout/item_frequency"
-            android:layout_marginStart="16dp"/>
-    
-        <TextView
-            android:id="@+id/tvReminderTimer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Reminder timer"
-            android:fontFamily="@font/roboto"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:lineHeight="24sp"
-            tools:targetApi="p"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"/>
-    
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-    
-            <EditText
-                android:id="@+id/etHH"
-                android:layout_width="48dp"
-                android:layout_height="40dp"
-                android:inputType="time"
-                android:hint="hh"
-                android:gravity="center"
-                android:background="@drawable/ic_edit_text_corner"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
                 android:fontFamily="@font/roboto"
-                android:textColor="@color/grey"/>
-    
+                android:hint="Habit's name"
+                android:inputType="textCapWords"
+                android:lineHeight="20sp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColor="@color/grey"
+                android:textSize="17sp"
+                tools:targetApi="p" />
+
+
+            <TextView
+                android:id="@+id/tvReminderNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/roboto"
+                android:lineHeight="24sp"
+                android:text="Reminder note"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                tools:targetApi="p" />
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tietReminderNote"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/ic_edit_text_corner"
+                android:fontFamily="@font/roboto"
+                android:hint="Note"
+                android:inputType="textCapWords"
+                android:letterSpacing="-0.02"
+                android:lineHeight="20sp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColor="@color/grey"
+                android:textSize="17sp"
+                tools:targetApi="p" />
+
+
+            <TextView
+                android:id="@+id/tvFrequencyOfTheDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/roboto"
+                android:lineHeight="24sp"
+                android:text="Frequence"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                tools:targetApi="p" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFrequencyOfTheDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_frequency" />
+
+            <TextView
+                android:id="@+id/tvReminderTimer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/roboto"
+                android:lineHeight="24sp"
+                android:text="Reminder timer"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                tools:targetApi="p" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="8dp">
-    
-                <View
-                    android:layout_width="4dp"
-                    android:layout_height="4dp"
-                    android:background="@color/grey"
-                    android:layout_marginBottom="12dp"/>
-    
-                <View
-                    android:layout_width="4dp"
-                    android:layout_height="4dp"
-                    android:background="@color/grey"/>
-    
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/etHH"
+                    android:layout_width="48dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/ic_edit_text_corner"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center"
+                    android:hint="hh"
+                    android:inputType="time"
+                    android:textColor="@color/grey" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="4dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@color/grey" />
+
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="4dp"
+                        android:background="@color/grey" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/etMM"
+                    android:layout_width="48dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_edit_text_corner"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center"
+                    android:hint="mm"
+                    android:inputType="time"
+                    android:textColor="@color/grey" />
+
             </LinearLayout>
-    
-            <EditText
-                android:id="@+id/etMM"
-                android:layout_width="48dp"
-                android:layout_height="40dp"
-                android:inputType="time"
-                android:fontFamily="@font/roboto"
-                android:hint="mm"
-                android:gravity="center"
-                android:background="@drawable/ic_edit_text_corner"
-                android:textColor="@color/grey"/>
-    
+
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="@color/grey_light"
+                android:text="Add"
+                android:textColor="@color/grey_dark" />
+
+
         </LinearLayout>
-    
-        <Button
-            android:id="@+id/btnSave"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/grey_light"
-            android:text="Add"
-            android:textColor="@color/grey_dark"/>
-    
-    
-    </LinearLayout>
+
+    </ScrollView>
 </layout>

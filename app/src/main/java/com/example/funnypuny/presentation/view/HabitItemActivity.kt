@@ -10,14 +10,15 @@ import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
 import com.example.funnypuny.presentation.HabitItemFragment
-import com.example.funnypuny.presentation.viewmodel.HabitItemViewModel
+import com.example.funnypuny.presentation.viewmodel.HabitItemActivityViewModel
+import com.example.funnypuny.presentation.viewmodel.HabitItemFragmentViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class HabitItemActivity : AppCompatActivity(),
     HabitItemFragment.OnHabitItemEditingFinishedListener {
 
-    private val viewModel: HabitItemViewModel by viewModel(
+    private val viewModel: HabitItemActivityViewModel by viewModel(
         parameters = { parametersOf(getHabitAction(intent)) }
     )
 
@@ -55,7 +56,7 @@ class HabitItemActivity : AppCompatActivity(),
 
         fun newIntent(context: Context, action: HabitActionEntity): Intent {
             val intent = Intent(context, HabitItemActivity::class.java)
-            intent.putExtra(EXTRA_SCREEN_MODE, HabitAction.ADD)
+            intent.putExtra(EXTRA_SCREEN_MODE, HabitAction.EDIT)
             when (action) {
                 is HabitActionEntity.Add -> intent.putExtra(EXTRA_SCREEN_MODE, HabitAction.ADD)
                 is HabitActionEntity.Edit -> intent.putExtra(EXTRA_HABIT_ITEM_ID, action.id)
@@ -74,7 +75,7 @@ class HabitItemActivity : AppCompatActivity(),
         }*/
 
         fun getHabitAction(intent: Intent): HabitActionEntity {
-            val action = intent.getSerializableExtra(EXTRA_SCREEN_MODE) as HabitAction
+            val action = (intent.getSerializableExtra(EXTRA_SCREEN_MODE) as? HabitAction)!!
             val selectedDate = DateEntity(
                 day = intent.getIntExtra(SELECTED_DAY, 0),
                 month = intent.getIntExtra(SELECTED_MONTH, 0),

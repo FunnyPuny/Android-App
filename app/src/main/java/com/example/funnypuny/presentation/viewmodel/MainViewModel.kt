@@ -42,7 +42,7 @@ class MainViewModel(
     val showHabitItemActivity = SingleLiveData<HabitActionEntity>()
     val showHabitItemFragment = SingleLiveData<Pair<HabitActionEntity, Boolean>>()
 
-    val showHabitItemActivityEditItem = SingleLiveData<Int>()
+    //val showHabitItemActivityEditItem = SingleLiveData<HabitActionEntity>()
 
     val showStatisticActivity = SingleLiveDataEmpty()
 
@@ -115,7 +115,7 @@ class MainViewModel(
 
     fun onEditHabitItem(isPaneMode: Boolean, id: Int) {
         if (isPaneMode) {
-            showHabitItemActivityEditItem.value = id
+            showHabitItemActivity.value = HabitActionEntity.Edit(selectedDate,id)
         } else {
             showHabitItemFragment.value = HabitActionEntity.Edit(selectedDate, id) to true
         }

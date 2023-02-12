@@ -1,24 +1,24 @@
 package com.example.funnypuny.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.funnypuny.domain.entity.DateEntity
-import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.HabitFrequencyEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
 import com.example.funnypuny.domain.usecases.MainActionHabitState
 import com.example.funnypuny.domain.usecases.MainUseCase
 import com.example.funnypuny.presentation.common.SingleLiveData
-import com.example.funnypuny.presentation.common.SingleLiveDataEmpty
 
-class HabitItemViewModel(
+class HabitItemFragmentViewModel(
     private val action: HabitActionEntity,
     private val mainUseCase: MainUseCase
 ) : ViewModel() {
 
     val errorInputNameState = MutableLiveData<Boolean>()
 
-    val habitState = MutableLiveData<HabitEntity>()
+    //val habitState = MutableLiveData<HabitEntity>()
+
+    val habitNameState = MutableLiveData<String>()
 
     val shouldCloseScreenState = MutableLiveData<Unit>()
 
@@ -27,7 +27,7 @@ class HabitItemViewModel(
 
     val showAction = SingleLiveData<HabitActionEntity>()
 
-    private var inputName: String? = null
+    public var inputName: String? = null
 
 
     init {
@@ -47,6 +47,7 @@ class HabitItemViewModel(
 
         //todo разобраться с типом livedata
         showAction.value = action
+        Log.d("MyTag","init ${hashCode()}")
         /*when (action) {
             is HabitActionEntity.Add -> showNewInstanceAddItem.value = action.date
             is HabitActionEntity.Edit -> showNewInstanceEditItem.value = action.id
@@ -69,7 +70,10 @@ class HabitItemViewModel(
 
     private fun onInitHabitItem(habitItemId: Int) {
         mainUseCase.getHabitItem(action.date,habitItemId)
-            ?.let { habit -> habitState.value = habit }
+            ?.let { habit ->
+                this.inputName = habit.name
+                //habitNameState.value = habit.name
+            }
             ?: run { shouldCloseScreenState.value = Unit }
     }
 
