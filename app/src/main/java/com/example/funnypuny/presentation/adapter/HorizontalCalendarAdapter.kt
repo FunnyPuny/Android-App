@@ -138,9 +138,11 @@ class HorizontalCalendarAdapter(
         fun bind(item: HorizontalCalendarItem) {
             binding.tvDate.text = item.date.toString()
 
-            val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss", Locale.ENGLISH)
+            //val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss", Locale.ENGLISH)
+            val sdf = SimpleDateFormat("EEE", Locale.ENGLISH)
             val cal = Calendar.getInstance()
             cal.time = item.date
+            binding.tvDay.text = sdf.parse(cal.time.toString())?.let { sdf.format(it).toString() }
             binding.tvDate.text = cal[Calendar.DAY_OF_MONTH].toString()
 
             //todo перенести if/else внутрь setTextColor or "background ="
@@ -148,11 +150,15 @@ class HorizontalCalendarAdapter(
                 binding.tvDate.setTextColor(Color.parseColor("#272937"))
                 binding.tvDate.background =
                     ContextCompat.getDrawable(itemView.context, R.drawable.ic_ellipse_enable)
+                binding.tvDay.setTextColor(Color.parseColor("#272937"))
             }
             else {
-                binding.tvDate.setTextColor(ContextCompat.getColor(itemView.context, R.color.grey_dark))
+                binding.tvDate.setTextColor(
+                    ContextCompat.getColor(itemView.context, R.color.grey_dark)
+                )
                 binding.tvDate.background =
                     ContextCompat.getDrawable(itemView.context, R.drawable.ic_ellipse_disable)
+                binding.tvDay.setTextColor(Color.BLACK)
             }
         }
     }
