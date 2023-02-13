@@ -11,6 +11,6 @@ import org.koin.dsl.module
 val viewModelModule = module {
     viewModel { MainViewModel(get(), get()) }
     viewModel { (action: HabitActionEntity) -> HabitItemFragmentViewModel(action, get()) }
-    viewModel { (action: HabitActionEntity) -> HabitItemActivityViewModel(action, get()) }
+    viewModel { (action: HabitActionEntity) -> HabitItemActivityViewModel(action) }
     viewModel { StatisticViewModel(get(),get()) }
 }

@@ -7,6 +7,7 @@ import com.example.funnypuny.domain.entity.HabitActionEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.usecases.HabitListSharedUseCase
 import com.example.funnypuny.domain.usecases.MainUseCase
+import com.example.funnypuny.presentation.adapter.HorizontalCalendarItem
 import com.example.funnypuny.presentation.common.SingleLiveData
 import com.example.funnypuny.presentation.common.SingleLiveDataEmpty
 import java.text.SimpleDateFormat
@@ -34,7 +35,7 @@ class MainViewModel(
     var selectedDate = DateEntity(currentDay,currentMonth,currentYear)
 
     // all days in month
-    val dates = ArrayList<Date>()
+    val dates = mutableListOf<HorizontalCalendarItem>()
 
     val monthTitleState = MutableLiveData<String>()
     val monthWithPositionState = MutableLiveData<Pair<Calendar?, Int>>()
@@ -94,7 +95,7 @@ class MainViewModel(
     fun onDayClick(position: Int) {
         dates.getOrNull(position)?.let { date ->
             val clickCalendar = Calendar.getInstance()
-            clickCalendar.time = date
+            clickCalendar.time = date.date
             //selectedDay = clickCalendar[Calendar.DAY_OF_MONTH]
             selectedDate = selectedDate.copy(day = clickCalendar[Calendar.DAY_OF_MONTH])
             habitListState.value = habitListSharedUseCase.getHabitList(selectedDate)
@@ -150,10 +151,11 @@ class MainViewModel(
         monthCalendar.set(Calendar.DAY_OF_MONTH, 1)
 
         while (dates.size < maxDaysInMonth) {
-            // get position of selected day
+                // get position of selected day
             if (monthCalendar[Calendar.DAY_OF_MONTH] == selectedDate.day)
                 currentPosition = dates.size
-            dates.add(monthCalendar.time)
+            //dates.add(monthCalendar.time)
+            dates.add(HorizontalCalendarItem(monthCalendar.time, true))
             monthCalendar.add(Calendar.DAY_OF_MONTH, 1)
         }
 

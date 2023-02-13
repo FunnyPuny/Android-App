@@ -45,16 +45,22 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             //todo сделать инициализацию адаптера один раз, а здесь просто уведомляь его о изменениях
             val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
             binding.rvWeeklyCalendar.layoutManager = layoutManager
-            val horizontalCalendarAdapter =
-                HorizontalCalendarAdapter(this, viewModel.dates, viewModel.currentDate, changeMonth)
+            val horizontalCalendarAdapter = HorizontalCalendarAdapter(
+                viewModel.dates,
+                object : HorizontalCalendarAdapter.OnItemClickListener {
+                    override fun onItemClick(position: Int) {
+                        viewModel.onDayClick(position)
+                    }
+                }
+            )
             binding.rvWeeklyCalendar.adapter = horizontalCalendarAdapter
             binding.rvWeeklyCalendar.scrollToPosition(position)
-            horizontalCalendarAdapter.setOnItemClickListener(object :
+            /*horizontalCalendarAdapter.setOnItemClickListener(object :
                 HorizontalCalendarAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
                     viewModel.onDayClick(position)
                 }
-            })
+            })*/
         }
         viewModel.showHabitItemActivity.observe(this) { action ->
             startActivity(HabitItemActivity.newIntent(this@MainActivity, action))
@@ -98,10 +104,11 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
     private fun setupHabitList() {
         habitListAdapter = HabitListAdapter().apply {
             onHabitItemLongClickListener = { habit ->
-                viewModel.onEditHabitItem(isOnePaneMode(),habit.id)
+                viewModel.onEditHabitItem(isOnePaneMode(), habit.id)
             }
             onHabitItemClickListener = { habit ->
-                viewModel.onChangeEnableState(habit) }
+                viewModel.onChangeEnableState(habit)
+            }
         }
         with(binding.rvHabitList) {
             adapter = habitListAdapter

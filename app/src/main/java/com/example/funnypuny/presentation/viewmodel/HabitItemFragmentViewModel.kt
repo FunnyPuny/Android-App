@@ -25,7 +25,7 @@ class HabitItemFragmentViewModel(
     private val data = ArrayList<HabitFrequencyEntity>()
     val daysOfTheWeekState = MutableLiveData<ArrayList<HabitFrequencyEntity>>()
 
-    val showAction = SingleLiveData<HabitActionEntity>()
+    //val showAction = SingleLiveData<HabitActionEntity>()
 
     public var inputName: String? = null
 
@@ -46,7 +46,7 @@ class HabitItemFragmentViewModel(
         }
 
         //todo разобраться с типом livedata
-        showAction.value = action
+        //showAction.value = action
         Log.d("MyTag","init ${hashCode()}")
         /*when (action) {
             is HabitActionEntity.Add -> showNewInstanceAddItem.value = action.date

@@ -11,7 +11,6 @@ import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
 import com.example.funnypuny.presentation.HabitItemFragment
 import com.example.funnypuny.presentation.viewmodel.HabitItemActivityViewModel
-import com.example.funnypuny.presentation.viewmodel.HabitItemFragmentViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -32,7 +31,7 @@ class HabitItemActivity : AppCompatActivity(),
         _binding = ActivityHabitItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.showAction.observe(this) { action ->
+        viewModel.actionState.observe(this) { action ->
             supportFragmentManager.beginTransaction()
                 .replace(R.id.habitItemContainer, HabitItemFragment.newInstance(action))
                 .commit()
