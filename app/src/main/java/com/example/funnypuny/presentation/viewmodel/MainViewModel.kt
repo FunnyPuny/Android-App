@@ -155,7 +155,7 @@ class MainViewModel(
             if (monthCalendar[Calendar.DAY_OF_MONTH] == selectedDate.day)
                 currentPosition = dates.size
             //dates.add(monthCalendar.time)
-            dates.add(HorizontalCalendarItem(monthCalendar.time, true))
+            dates.add(HorizontalCalendarItem(monthCalendar.time, false))
             monthCalendar.add(Calendar.DAY_OF_MONTH, 1)
         }
 

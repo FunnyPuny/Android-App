@@ -22,8 +22,6 @@ class HorizontalCalendarAdapter(
         fun onItemClick(position: Int)
     }
 
-    //todo несоответсвует день недели
-
     //private var mListener: OnItemClickListener? = null
     //private var index = -1
 
@@ -49,9 +47,6 @@ class HorizontalCalendarAdapter(
         }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
-        //val inflater = LayoutInflater.from(parent.context).inflate(R.layout.item_day, parent, false)
-        //return ViewHolder(inflater)
-
         val binding = ItemDayBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(binding)
     }
@@ -82,14 +77,6 @@ class HorizontalCalendarAdapter(
         }
         holder.txtDay!!.text = cal[Calendar.DAY_OF_MONTH].toString()
 
-        *//**
-         * I think you can use "cal.after (currentDate)" and "cal == currentDate",
-         * but it didn't work properly for me, so I used this longer version. Here I just ask
-         * if the displayed date is after the current date or if it is current date, if so,
-         * then you enable the item and it is possible to click on it, otherwise deactivate it.
-         * The selectCurrentDate value is valid only at the beginning, it will be the current
-         * day or the first day, for example when starting the application or changing the month.
-         *//*
         *//*if (displayYear >= currentYear)
             if (displayMonth >= currentMonth || displayYear > currentYear)
                 if (displayDay >= currentDay || displayMonth > currentMonth || displayYear > currentYear) {
@@ -147,74 +134,27 @@ class HorizontalCalendarAdapter(
 
             //todo перенести if/else внутрь setTextColor or "background ="
             if (item.isSelected) {
+                //This make the item selected.
                 binding.tvDate.setTextColor(Color.parseColor("#272937"))
                 binding.tvDate.background =
                     ContextCompat.getDrawable(itemView.context, R.drawable.ic_ellipse_enable)
                 binding.tvDay.setTextColor(Color.parseColor("#272937"))
+                binding.calendarLinearLayout.background =
+                    ContextCompat.getDrawable(itemView.context, R.drawable.ic_white_ellipse)
+                binding.calendarLinearLayout.isEnabled = false
             }
             else {
+                //This make the item default.
                 binding.tvDate.setTextColor(
                     ContextCompat.getColor(itemView.context, R.color.grey_dark)
                 )
                 binding.tvDate.background =
                     ContextCompat.getDrawable(itemView.context, R.drawable.ic_ellipse_disable)
                 binding.tvDay.setTextColor(Color.BLACK)
+                binding.calendarLinearLayout.setBackgroundColor(Color.WHITE)
+                binding.calendarLinearLayout.isEnabled = true
             }
         }
     }
 
-    /**
-     * OnClickListener.
-     */
-
-    /*fun setOnItemClickListener(listener: OnItemClickListener) {
-        mListener = listener
-    }*/
-
-    /**
-     * This make the item disabled.
-     */
-    /*private fun makeItemDisabled(holder: ViewHolder) {
-        holder.txtDay!!.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.grey))
-        holder.txtDayInWeek!!.setTextColor(
-            ContextCompat.getColor(
-                holder.itemView.context,
-                R.color.grey_dark
-            )
-        )
-        holder.txtDay!!.background =
-            ContextCompat.getDrawable(holder.itemView.context, R.drawable.ic_ellipse_disable)
-        holder.linearLayout!!.setBackgroundColor(Color.WHITE)
-        holder.linearLayout!!.isEnabled = false
-    }
-
-    *//**
-     * This make the item selected.
-     *//*
-    private fun makeItemSelected(holder: ViewHolder) {
-        holder.txtDay!!.setTextColor(Color.parseColor("#272937"))
-        holder.txtDay!!.background =
-            ContextCompat.getDrawable(holder.itemView.context, R.drawable.ic_ellipse_enable)
-        holder.txtDayInWeek!!.setTextColor(Color.parseColor("#272937"))
-        holder.linearLayout!!.background =
-            ContextCompat.getDrawable(holder.itemView.context, R.drawable.ic_white_ellipse)
-        holder.linearLayout!!.isEnabled = false
-    }
-
-    *//**
-     * This make the item default.
-     *//*
-    private fun makeItemDefault(holder: ViewHolder) {
-        holder.txtDay!!.setTextColor(
-            ContextCompat.getColor(
-                holder.itemView.context,
-                R.color.grey_dark
-            )
-        )
-        holder.txtDay!!.background =
-            ContextCompat.getDrawable(holder.itemView.context, R.drawable.ic_ellipse_disable)
-        holder.txtDayInWeek!!.setTextColor(Color.BLACK)
-        holder.linearLayout!!.setBackgroundColor(Color.WHITE)
-        holder.linearLayout!!.isEnabled = true
-    }*/
 }
