@@ -4,5 +4,5 @@ import java.util.Date
 
 data class HorizontalCalendarItem(
     val date: Date,
-    val isSelected: Boolean
+    var isSelected: Boolean
 )

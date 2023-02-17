@@ -1,5 +1,6 @@
 package com.example.funnypuny.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.funnypuny.domain.entity.DateEntity
@@ -10,18 +11,18 @@ import com.example.funnypuny.domain.usecases.MainUseCase
 import com.example.funnypuny.presentation.adapter.HorizontalCalendarItem
 import com.example.funnypuny.presentation.common.SingleLiveData
 import com.example.funnypuny.presentation.common.SingleLiveDataEmpty
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
 class MainViewModel(
-    private val mainUseCase: MainUseCase,
-    private val habitListSharedUseCase: HabitListSharedUseCase
+    private val mainUseCase: MainUseCase, private val habitListSharedUseCase: HabitListSharedUseCase
 ) : ViewModel() {
 
     private val lastDayInCalendar = Calendar.getInstance(Locale.ENGLISH).apply {
-        add(Calendar.MONTH,6)
+        add(Calendar.MONTH, 6)
     }
     private val sdf = SimpleDateFormat("MMMM yyyy", Locale.ENGLISH)
     private val cal = Calendar.getInstance(Locale.ENGLISH)
@@ -31,8 +32,10 @@ class MainViewModel(
     private val currentDay = currentDate[Calendar.DAY_OF_MONTH]
     private val currentMonth = currentDate[Calendar.MONTH]
     private val currentYear = currentDate[Calendar.YEAR]
+    private var index = -1
+    private var selectCurrentDate = true
 
-    var selectedDate = DateEntity(currentDay,currentMonth,currentYear)
+    var selectedDate = DateEntity(currentDay, currentMonth, currentYear)
 
     // all days in month
     val dates = mutableListOf<HorizontalCalendarItem>()
@@ -48,6 +51,8 @@ class MainViewModel(
     val showStatisticActivity = SingleLiveDataEmpty()
 
     val showHabititemEditingFinished = SingleLiveDataEmpty()
+
+    val updateDatesAction = SingleLiveDataEmpty()
 
     val habitListState = MutableLiveData<List<HabitEntity>>()
 
@@ -66,22 +71,20 @@ class MainViewModel(
 
     fun onSwipeHabit(position: Int) {
         habitListState.value?.getOrNull(position)?.let { habit ->
-            habitListState.value = mainUseCase.deleteHabitItemState(selectedDate,habit)
+            habitListState.value = mainUseCase.deleteHabitItemState(selectedDate, habit)
         }
     }
 
     fun onChangeEnableState(habit: HabitEntity) {
         //val newItem = habit.copy(enabled = !habit.enabled)
-        habitListState.value = mainUseCase.changeEnableHabitState(selectedDate,habit)
+        habitListState.value = mainUseCase.changeEnableHabitState(selectedDate, habit)
     }
 
     fun onPrevMonthButtonClick() {
         if (cal.after(currentDate)) {
             cal.add(Calendar.MONTH, -1)
-            if (cal == currentDate)
-                setUpCalendar(null)
-            else
-                setUpCalendar(changeMonth = cal)
+            if (cal == currentDate) setUpCalendar(null)
+            else setUpCalendar(changeMonth = cal)
         }
     }
 
@@ -93,16 +96,20 @@ class MainViewModel(
     }
 
     fun onDayClick(position: Int) {
+        dates.find { it.isSelected }?.let { it.isSelected = false }
         dates.getOrNull(position)?.let { date ->
+            index = position
+            selectCurrentDate = false
             val clickCalendar = Calendar.getInstance()
             clickCalendar.time = date.date
-            //selectedDay = clickCalendar[Calendar.DAY_OF_MONTH]
             selectedDate = selectedDate.copy(day = clickCalendar[Calendar.DAY_OF_MONTH])
             habitListState.value = habitListSharedUseCase.getHabitList(selectedDate)
+            date.isSelected = true
+            updateDatesAction.call()
         }
     }
 
-    fun onHabitAddClick(isPaneMode:Boolean){
+    fun onHabitAddClick(isPaneMode: Boolean) {
         if (isPaneMode) {
             showHabitItemActivity.value = HabitActionEntity.Add(selectedDate)
         } else {
@@ -116,7 +123,7 @@ class MainViewModel(
 
     fun onEditHabitItem(isPaneMode: Boolean, id: Int) {
         if (isPaneMode) {
-            showHabitItemActivity.value = HabitActionEntity.Edit(selectedDate,id)
+            showHabitItemActivity.value = HabitActionEntity.Edit(selectedDate, id)
         } else {
             showHabitItemFragment.value = HabitActionEntity.Edit(selectedDate, id) to true
         }
@@ -135,39 +142,63 @@ class MainViewModel(
             day = when {
                 changeMonth != null -> changeMonth.getActualMinimum(Calendar.DAY_OF_MONTH)
                 else -> currentDay
-            },
-            month = when {
+            }, month = when {
                 changeMonth != null -> changeMonth[Calendar.MONTH]
                 else -> currentMonth
-            },
-            year = when {
+            }, year = when {
                 changeMonth != null -> changeMonth[Calendar.YEAR]
                 else -> currentYear
-            } )
+            }
+        )
         habitListState.value = habitListSharedUseCase.getHabitList(selectedDate)
 
         var currentPosition = 0
         dates.clear()
         monthCalendar.set(Calendar.DAY_OF_MONTH, 1)
+        var i = 0
 
         while (dates.size < maxDaysInMonth) {
-                // get position of selected day
-            if (monthCalendar[Calendar.DAY_OF_MONTH] == selectedDate.day)
-                currentPosition = dates.size
-            //dates.add(monthCalendar.time)
-            dates.add(HorizontalCalendarItem(monthCalendar.time, false))
+            // get position of selected day
+            if (monthCalendar[Calendar.DAY_OF_MONTH] == selectedDate.day) currentPosition =
+                dates.size
+            dates.add(HorizontalCalendarItem(monthCalendar.time, isDateSelected(monthCalendar.time, i)))
             monthCalendar.add(Calendar.DAY_OF_MONTH, 1)
+            i++
         }
 
         val position = when {
             currentPosition > 2 -> currentPosition - 3
-            maxDaysInMonth - currentPosition < 2 ->
-                currentPosition
+            maxDaysInMonth - currentPosition < 2 -> currentPosition
             else -> currentPosition
         }
 
         monthWithPositionState.value = Pair(changeMonth, position)
-
     }
 
+    private fun isDateSelected(date: Date, position: Int): Boolean {
+        val cal = Calendar.getInstance()
+        cal.time = date
+
+        val displayMonth = cal[Calendar.MONTH]
+        val displayYear = cal[Calendar.YEAR]
+        val displayDay = cal[Calendar.DAY_OF_MONTH]
+
+        if (displayYear >= currentYear) {
+            return if (displayMonth >= currentMonth || displayYear > currentYear) {
+                if (displayDay >= currentDay || displayMonth > currentMonth || displayYear > currentYear) {
+                    if (index == position) {
+                        true
+                    } else {
+                        displayDay == selectedDate.day && displayMonth == selectedDate.month && displayYear == selectedDate.year && selectCurrentDate
+                    }
+                } else {
+                    false
+                }
+            } else {
+                false
+            }
+        } else {
+            return false
+        }
+    }
 }

@@ -13,7 +13,7 @@ import java.util.*
 
 class HorizontalCalendarAdapter(
     private val dates: List<HorizontalCalendarItem>,
-    private var listener: OnItemClickListener
+    private val listener: OnItemClickListener
     /*private val currentDate: Calendar,
     private val changeMonth: Calendar?*/
 ) : RecyclerView.Adapter<HorizontalCalendarAdapter.ViewHolder>() {
@@ -47,7 +47,7 @@ class HorizontalCalendarAdapter(
         }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
-        val binding = ItemDayBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding = ItemDayBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -58,16 +58,18 @@ class HorizontalCalendarAdapter(
         val cal = Calendar.getInstance()
         //cal.time = data[position]
 
-        *//**
-         * Set the year, month and day that is gonna be displayed
-         *//*
+        */
+    /**
+     * Set the year, month and day that is gonna be displayed
+     *//*
         val displayMonth = cal[Calendar.MONTH]
         val displayYear = cal[Calendar.YEAR]
         val displayDay = cal[Calendar.DAY_OF_MONTH]
 
-        *//**
-         * Set text to txtDayInWeek and txtDay.
-         *//*
+        */
+    /**
+     * Set text to txtDayInWeek and txtDay.
+     *//*
         try {
             val dayInWeek = sdf.parse(cal.time.toString())!!
             sdf.applyPattern("EEE")
@@ -80,9 +82,10 @@ class HorizontalCalendarAdapter(
         *//*if (displayYear >= currentYear)
             if (displayMonth >= currentMonth || displayYear > currentYear)
                 if (displayDay >= currentDay || displayMonth > currentMonth || displayYear > currentYear) {
-                    *//**//**
-                     * Invoke OnClickListener and make the item selected.
-                     *//**//*
+                    *//**/
+    /**
+     * Invoke OnClickListener and make the item selected.
+     *//**//*
                     holder.linearLayout!!.setOnClickListener {
                         index = position
                         selectCurrentDate = false
@@ -110,7 +113,6 @@ class HorizontalCalendarAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = dates[position]
         holder.bind(item)
-
     }
 
     /*inner class ViewHolder(itemView: View, val listener: OnItemClickListener) :
@@ -121,19 +123,58 @@ class HorizontalCalendarAdapter(
         var linearLayout = itemView.findViewById<LinearLayout>(R.id.calendar_linear_layout)*//*
 
     }*/
-    class ViewHolder(private val binding: ItemDayBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemDayBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.calendarLinearLayout.setOnClickListener {
+                listener.onItemClick(adapterPosition)
+            }
+        }
         fun bind(item: HorizontalCalendarItem) {
             binding.tvDate.text = item.date.toString()
 
             //val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss", Locale.ENGLISH)
             val sdf = SimpleDateFormat("EEE", Locale.ENGLISH)
+            //todo перенести создание календаря на vm
+            //todo заменить Date на наш класс
             val cal = Calendar.getInstance()
             cal.time = item.date
             binding.tvDay.text = sdf.parse(cal.time.toString())?.let { sdf.format(it).toString() }
             binding.tvDate.text = cal[Calendar.DAY_OF_MONTH].toString()
 
-            //todo перенести if/else внутрь setTextColor or "background ="
-            if (item.isSelected) {
+            with(binding.tvDate) {
+                if (item.isSelected) {
+                    setTextColor(ContextCompat.getColor(itemView.context, R.color.black))
+                    background =
+                        ContextCompat.getDrawable(itemView.context, R.drawable.ic_ellipse_enable)
+                } else {
+                    setTextColor(ContextCompat.getColor(itemView.context, R.color.grey_dark))
+                    background =
+                        ContextCompat.getDrawable(itemView.context, R.drawable.ic_ellipse_disable)
+                }
+            }
+
+            binding.tvDay.setTextColor(
+                if (item.isSelected) {
+                    Color.parseColor("#272937")
+                } else {
+                    Color.BLACK
+                }
+            )
+
+            with(binding.calendarLinearLayout) {
+                if (item.isSelected) {
+                    background =
+                        ContextCompat.getDrawable(itemView.context, R.drawable.ic_white_ellipse)
+                    isEnabled = false
+                } else {
+                    setBackgroundColor(Color.WHITE)
+                    isEnabled = true
+                }
+            }
+
+
+            /*if (item.isSelected) {
                 //This make the item selected.
                 binding.tvDate.setTextColor(Color.parseColor("#272937"))
                 binding.tvDate.background =
@@ -142,8 +183,7 @@ class HorizontalCalendarAdapter(
                 binding.calendarLinearLayout.background =
                     ContextCompat.getDrawable(itemView.context, R.drawable.ic_white_ellipse)
                 binding.calendarLinearLayout.isEnabled = false
-            }
-            else {
+            } else {
                 //This make the item default.
                 binding.tvDate.setTextColor(
                     ContextCompat.getColor(itemView.context, R.color.grey_dark)
@@ -153,7 +193,7 @@ class HorizontalCalendarAdapter(
                 binding.tvDay.setTextColor(Color.BLACK)
                 binding.calendarLinearLayout.setBackgroundColor(Color.WHITE)
                 binding.calendarLinearLayout.isEnabled = true
-            }
+            }*/
         }
     }
 

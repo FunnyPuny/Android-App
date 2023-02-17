@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
     val viewModel: MainViewModel by viewModel()
 
     private var habitListAdapter: HabitListAdapter? = null
+    private var horizontalCalendarAdapter: HorizontalCalendarAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,11 +42,14 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             habitListAdapter?.submitList(it)
         }
         viewModel.monthTitleState.observe(this) { binding.tvMonthTitle.text = it }
+        viewModel.updateDatesAction.observe(this) {
+            horizontalCalendarAdapter?.notifyDataSetChanged()
+        }
         viewModel.monthWithPositionState.observe(this) { (changeMonth, position) ->
             //todo сделать инициализацию адаптера один раз, а здесь просто уведомляь его о изменениях
             val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
             binding.rvWeeklyCalendar.layoutManager = layoutManager
-            val horizontalCalendarAdapter = HorizontalCalendarAdapter(
+            horizontalCalendarAdapter = HorizontalCalendarAdapter(
                 viewModel.dates,
                 object : HorizontalCalendarAdapter.OnItemClickListener {
                     override fun onItemClick(position: Int) {
