@@ -25,7 +25,7 @@ class HabitItemFragmentViewModel(
     private val data = ArrayList<HabitFrequencyEntity>()
     val daysOfTheWeekState = MutableLiveData<ArrayList<HabitFrequencyEntity>>()
 
-    //val showAction = SingleLiveData<HabitActionEntity>()
+    // val showAction = SingleLiveData<HabitActionEntity>()
 
     public var inputName: String? = null
 

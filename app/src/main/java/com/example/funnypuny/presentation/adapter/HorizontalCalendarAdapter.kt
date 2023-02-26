@@ -131,18 +131,11 @@ class HorizontalCalendarAdapter(
             }
         }
         fun bind(item: HorizontalCalendarItem) {
-            binding.tvDate.text = item.date.toString()
 
-            //val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss", Locale.ENGLISH)
-            val sdf = SimpleDateFormat("EEE", Locale.ENGLISH)
-            //todo перенести создание календаря на vm
-            //todo заменить Date на наш класс
-            val cal = Calendar.getInstance()
-            cal.time = item.date
-            binding.tvDay.text = sdf.parse(cal.time.toString())?.let { sdf.format(it).toString() }
-            binding.tvDate.text = cal[Calendar.DAY_OF_MONTH].toString()
+            binding.tvDayOfTheWeek.text = item.dayOfTheWeek
+            binding.tvDayOfTheMonth.text = item.dayOfTheMonth.toString()
 
-            with(binding.tvDate) {
+            with(binding.tvDayOfTheMonth) {
                 if (item.isSelected) {
                     setTextColor(ContextCompat.getColor(itemView.context, R.color.black))
                     background =
@@ -154,7 +147,7 @@ class HorizontalCalendarAdapter(
                 }
             }
 
-            binding.tvDay.setTextColor(
+            binding.tvDayOfTheWeek.setTextColor(
                 if (item.isSelected) {
                     Color.parseColor("#272937")
                 } else {
@@ -172,28 +165,6 @@ class HorizontalCalendarAdapter(
                     isEnabled = true
                 }
             }
-
-
-            /*if (item.isSelected) {
-                //This make the item selected.
-                binding.tvDate.setTextColor(Color.parseColor("#272937"))
-                binding.tvDate.background =
-                    ContextCompat.getDrawable(itemView.context, R.drawable.ic_ellipse_enable)
-                binding.tvDay.setTextColor(Color.parseColor("#272937"))
-                binding.calendarLinearLayout.background =
-                    ContextCompat.getDrawable(itemView.context, R.drawable.ic_white_ellipse)
-                binding.calendarLinearLayout.isEnabled = false
-            } else {
-                //This make the item default.
-                binding.tvDate.setTextColor(
-                    ContextCompat.getColor(itemView.context, R.color.grey_dark)
-                )
-                binding.tvDate.background =
-                    ContextCompat.getDrawable(itemView.context, R.drawable.ic_ellipse_disable)
-                binding.tvDay.setTextColor(Color.BLACK)
-                binding.calendarLinearLayout.setBackgroundColor(Color.WHITE)
-                binding.calendarLinearLayout.isEnabled = true
-            }*/
         }
     }
 

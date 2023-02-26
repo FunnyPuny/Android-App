@@ -3,6 +3,7 @@ package com.example.funnypuny.presentation.adapter
 import java.util.Date
 
 data class HorizontalCalendarItem(
-    val date: Date,
-    var isSelected: Boolean
+    var isSelected: Boolean,
+    val dayOfTheWeek: String,
+    val dayOfTheMonth: Int
 )
