@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         //Переход к следуюющему месяцу
         binding.ivNextMonthButton.setOnClickListener { viewModel.onNextMonthButtonClick() }
 
+        setUpHorizontalCalendar()
         setupHabitList()
         setupBottomNavigation()
 
@@ -45,26 +46,8 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         viewModel.updateDatesAction.observe(this) {
             horizontalCalendarAdapter?.notifyDataSetChanged()
         }
-        viewModel.monthWithPositionState.observe(this) { (changeMonth, position) ->
-            //todo сделать инициализацию адаптера один раз, а здесь просто уведомляь его о изменениях
-            val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-            binding.rvWeeklyCalendar.layoutManager = layoutManager
-            horizontalCalendarAdapter = HorizontalCalendarAdapter(
-                viewModel.dates,
-                object : HorizontalCalendarAdapter.OnItemClickListener {
-                    override fun onItemClick(position: Int) {
-                        viewModel.onDayClick(position)
-                    }
-                }
-            )
-            binding.rvWeeklyCalendar.adapter = horizontalCalendarAdapter
+        viewModel.scrollDatesToPositionAction.observe(this) { position ->
             binding.rvWeeklyCalendar.scrollToPosition(position)
-            /*horizontalCalendarAdapter.setOnItemClickListener(object :
-                HorizontalCalendarAdapter.OnItemClickListener {
-                override fun onItemClick(position: Int) {
-                    viewModel.onDayClick(position)
-                }
-            })*/
         }
         viewModel.showHabitItemActivity.observe(this) { action ->
             startActivity(HabitItemActivity.newIntent(this@MainActivity, action))
@@ -82,7 +65,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             startActivity(HabitItemActivity.newIntent(this@MainActivity, id))
         }*/
 
-        viewModel.showHabititemEditingFinished.observe(this) {
+        viewModel.showHabitItemEditingFinished.observe(this) {
             supportFragmentManager.popBackStack()
         }
     }
@@ -104,6 +87,21 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             .commit()
     }
 
+
+    private fun setUpHorizontalCalendar() {
+        binding.rvWeeklyCalendar.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        horizontalCalendarAdapter = HorizontalCalendarAdapter(
+            viewModel.dates,
+            object : HorizontalCalendarAdapter.OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    viewModel.onDayClick(position)
+                }
+            }
+        )
+        binding.rvWeeklyCalendar.adapter = horizontalCalendarAdapter
+        //viewModel.scrollDayPosition?.let { binding.rvWeeklyCalendar.scrollToPosition(it) }
+    }
 
     private fun setupHabitList() {
         habitListAdapter = HabitListAdapter().apply {
