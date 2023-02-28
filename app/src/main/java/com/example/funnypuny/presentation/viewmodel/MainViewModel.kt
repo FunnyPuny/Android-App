@@ -26,36 +26,23 @@ class MainViewModel(
         )
     }
 
-    // all days in month
     val dates = mutableListOf<HorizontalCalendarItem>()
     var scrollDayPosition: Int? = null
 
+    val habitListState = MutableLiveData<List<HabitEntity>>()
     val monthTitleState = MutableLiveData<String>()
-    //val monthTitleState = SingleLiveData<String>()
-    //val monthWithPositionState = MutableLiveData<Pair<Calendar?, Int>>()
-    //val monthWithPositionState = MutableLiveData<Int>()
-
-    val updateDatesAction = SingleLiveDataEmpty()
     val scrollDatesToPositionAction = SingleLiveData<Int>()
-
     val showHabitItemActivity = SingleLiveData<HabitActionEntity>()
     val showHabitItemFragment = SingleLiveData<Pair<HabitActionEntity, Boolean>>()
-
     val showStatisticActivity = SingleLiveDataEmpty()
-
+    val updateDatesAction = SingleLiveDataEmpty()
     val showHabitItemEditingFinished = SingleLiveDataEmpty()
-
-    //val updateDatesAction = SingleLiveDataEmpty()
-
-    val habitListState = MutableLiveData<List<HabitEntity>>()
 
 
     init {
         habitListState.value = habitListSharedUseCase.getHabitList(selectedDate)
         setUpCalendar(0)
     }
-
-    //----------------
 
     fun onViewShown() {
         habitListState.value = habitListSharedUseCase.getHabitList(selectedDate)
@@ -83,10 +70,6 @@ class MainViewModel(
     fun onDayClick(position: Int) {
         dates.find { it.isSelected }?.let { it.isSelected = false }
         dates.getOrNull(position)?.let { date ->
-            //index = position
-            //selectCurrentDate = false
-            /*val clickCalendar = Calendar.getInstance()
-            clickCalendar.time = date.dayOfTheMonth*/
             selectedDate = selectedDate.copy(day = date.dayOfTheMonth)
             date.isSelected = true
             updateDatesAction.call()
@@ -158,7 +141,4 @@ class MainViewModel(
         scrollDatesToPositionAction.value = scrollDayPosition
         habitListState.value = habitListSharedUseCase.getHabitList(selectedDate)
     }
-
-
-
 }

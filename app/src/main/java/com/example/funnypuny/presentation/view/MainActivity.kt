@@ -30,9 +30,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //Переход к предедущему месяцу
         binding.ivPrevMonthButton.setOnClickListener { viewModel.onPrevMonthButtonClick() }
-        //Переход к следуюющему месяцу
         binding.ivNextMonthButton.setOnClickListener { viewModel.onNextMonthButtonClick() }
 
         setUpHorizontalCalendar()
@@ -42,13 +40,17 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         viewModel.habitListState.observe(this) {
             habitListAdapter?.submitList(it)
         }
+
         viewModel.monthTitleState.observe(this) { binding.tvMonthTitle.text = it }
+
         viewModel.updateDatesAction.observe(this) {
             horizontalCalendarAdapter?.notifyDataSetChanged()
         }
+
         viewModel.scrollDatesToPositionAction.observe(this) { position ->
             binding.rvWeeklyCalendar.scrollToPosition(position)
         }
+
         viewModel.showHabitItemActivity.observe(this) { action ->
             startActivity(HabitItemActivity.newIntent(this@MainActivity, action))
         }
@@ -60,10 +62,6 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         viewModel.showStatisticActivity.observe(this) {
             startActivity(StatisticsActivity.newIntent(this@MainActivity))
         }
-
-        /*viewModel.showHabitItemActivityEditItem.observe(this) { id ->
-            startActivity(HabitItemActivity.newIntent(this@MainActivity, id))
-        }*/
 
         viewModel.showHabitItemEditingFinished.observe(this) {
             supportFragmentManager.popBackStack()
@@ -100,7 +98,6 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             }
         )
         binding.rvWeeklyCalendar.adapter = horizontalCalendarAdapter
-        //viewModel.scrollDayPosition?.let { binding.rvWeeklyCalendar.scrollToPosition(it) }
     }
 
     private fun setupHabitList() {
