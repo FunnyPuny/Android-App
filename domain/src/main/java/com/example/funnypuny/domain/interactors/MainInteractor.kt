@@ -11,19 +11,18 @@ class MainInteractor(
     private val habitRepository: HabitRepository
 ) : MainUseCase {
 
-    override fun changeEnableHabitState(date: DateEntity, habit: HabitEntity): List<HabitEntity> {
+    override fun changeEnableHabitState(date: DateEntity, habit: HabitEntity) {
         val newItem = habit.copy(enabled = !habit.enabled)
-        habitRepository.getHabitList(date).let {
+        getHabitList(date).let {
             habitRepository.deleteHabitItem(date, habit)
             habitRepository.addHabitItem(date, newItem, null)
         }
-        return habitRepository.getHabitList(date)
+        habitRepository.updateHabitsSubject().onNext(Unit)
     }
 
-    override fun deleteHabitItemState(date: DateEntity, habit: HabitEntity): List<HabitEntity> {
+    override fun deleteHabitItemState(date: DateEntity, habit: HabitEntity) {
         habitRepository.deleteHabitItem(date, habit)
-        // habitRepository.habitsSubject().call()
-        return habitRepository.getHabitList(date)
+        habitRepository.updateHabitsSubject().onNext(Unit)
     }
 
     override fun getHabitItem(date: DateEntity, habitItemId: Int): HabitEntity? {
@@ -37,6 +36,16 @@ class MainInteractor(
         when (action) {
             is HabitActionEntity.Add -> addHabitState(action, inputName)
             is HabitActionEntity.Edit -> editHabitState(action, inputName)
+        }.also { state ->
+            /*if (state is MainActionHabitState.Success){
+                habitRepository.updateHabitsSubject().onNext(Unit)
+            }*/
+            when (state) {
+                is MainActionHabitState.EmptyNameError -> Unit
+                is MainActionHabitState.Error -> Unit
+                is MainActionHabitState.HabitNotFoundError -> Unit
+                is MainActionHabitState.Success -> habitRepository.updateHabitsSubject().onNext(Unit)
+            }
         }
 
 
@@ -64,7 +73,7 @@ class MainInteractor(
             inputName?.let { name ->
                 habitRepository.getHabitItem(action.date, action.id)
                     ?.let { habit ->
-                        val indexPosition = habitRepository.getHabitList(action.date).indexOf(habit)
+                        val indexPosition = getHabitList(action.date).indexOf(habit)
                             .takeIf { it != -1 }
                         habitRepository.deleteHabitItem(action.date, habit)
                         habitRepository.addHabitItem(
@@ -79,5 +88,7 @@ class MainInteractor(
         }
         return MainActionHabitState.EmptyNameError
     }
+
+    private fun getHabitList(date: DateEntity): List<HabitEntity> = habitRepository.getHabitMap()[date]?: emptyList()
 
 }

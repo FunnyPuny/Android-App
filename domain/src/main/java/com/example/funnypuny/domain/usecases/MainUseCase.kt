@@ -6,9 +6,9 @@ import com.example.funnypuny.domain.entity.HabitActionEntity
 
 interface MainUseCase {
 
-    fun changeEnableHabitState(date: DateEntity, habit: HabitEntity): List<HabitEntity>
+    fun changeEnableHabitState(date: DateEntity, habit: HabitEntity)
 
-    fun deleteHabitItemState(date: DateEntity, habit: HabitEntity): List<HabitEntity>
+    fun deleteHabitItemState(date: DateEntity, habit: HabitEntity)
 
     fun getHabitItem(date: DateEntity, habitItemId: Int): HabitEntity?
 

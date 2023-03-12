@@ -115,10 +115,10 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         setupSwipeHabitListener()
     }
 
-    override fun onResume() {
+    /*override fun onResume() {
         super.onResume()
         viewModel.onViewShown()
-    }
+    }*/
 
     private fun setupBottomNavigation() {
         with(binding.bnvMain) {

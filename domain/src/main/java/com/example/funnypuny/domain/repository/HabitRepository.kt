@@ -3,12 +3,15 @@ package com.example.funnypuny.domain.repository
 import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.DayOfWeek
+import io.reactivex.rxjava3.subjects.Subject
 
 interface HabitRepository {
 
-    //fun habitsSubject():Subject<List<HabitEntity>>
+    fun updateHabitsSubject(): Subject<Unit>
 
-    fun getHabitList(date: DateEntity): List<HabitEntity>
+    fun getHabitMap(): Map<DateEntity,List<HabitEntity>>
+
+    //fun getHabitList(date: DateEntity): List<HabitEntity>
 
     fun addHabitItem(date: DateEntity, habit: HabitEntity, indexPosition: Int?)
 
