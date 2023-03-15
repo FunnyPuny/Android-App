@@ -19,7 +19,7 @@ import java.util.Locale
 
 class MainViewModel(
     private val mainUseCase: MainUseCase, private val habitListSharedUseCase: HabitListSharedUseCase
-) : ViewModel() {
+) : BaseViewModel() {
 
     private var selectedDate = Calendar.getInstance(Locale.ENGLISH).let { currentDateCalendar ->
         DateEntity(
@@ -41,7 +41,7 @@ class MainViewModel(
     val updateDatesAction = SingleLiveDataEmpty()
     val showHabitItemEditingFinished = SingleLiveDataEmpty()
 
-    private val disposables = CompositeDisposable()
+    //private val disposables = CompositeDisposable()
 
 
     init {
@@ -53,20 +53,13 @@ class MainViewModel(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe{ habitMap ->
                     habitListState.value = habitMap[selectedDate]
-                    //updateHabitList()
                 }
         )
-        //habitListState.value = habitListSharedUseCase.getHabitList(selectedDate)
     }
 
-    /*fun onViewShown() {
-        habitListState.value = habitListSharedUseCase.getHabitList(selectedDate)
-    }*/
-
-
-    override fun onCleared() {
+    /*override fun onCleared() {
         disposables.dispose()
-    }
+    }*/
 
     fun onSwipeHabit(position: Int) {
         habitListState.value?.getOrNull(position)?.let { habit ->

@@ -16,19 +16,11 @@ class HabitItemFragmentViewModel(
 ) : ViewModel() {
 
     val errorInputNameState = MutableLiveData<Boolean>()
-
-    //val habitState = MutableLiveData<HabitEntity>()
-
-    val habitNameState = MutableLiveData<String>()
-
     val shouldCloseScreenState = MutableLiveData<Unit>()
-
-    private val data = ArrayList<HabitFrequencyEntity>()
     val daysOfTheWeekState = MutableLiveData<ArrayList<HabitFrequencyEntity>>()
 
-    // val showAction = SingleLiveData<HabitActionEntity>()
-
-    public var inputName: String? = null
+    var inputName: String? = null
+    private val data = ArrayList<HabitFrequencyEntity>()
 
 
     init {
@@ -47,12 +39,7 @@ class HabitItemFragmentViewModel(
         }
 
         //todo разобраться с типом livedata
-        //showAction.value = action
         Log.d("MyTag","init ${hashCode()}")
-        /*when (action) {
-            is HabitActionEntity.Add -> showNewInstanceAddItem.value = action.date
-            is HabitActionEntity.Edit -> showNewInstanceEditItem.value = action.id
-        }*/
     }
 
     fun onNameChanged(inputName: String?) {
@@ -73,7 +60,6 @@ class HabitItemFragmentViewModel(
         mainUseCase.getHabitItem(action.date,habitItemId)
             ?.let { habit ->
                 this.inputName = habit.name
-                //habitNameState.value = habit.name
             }
             ?: run { shouldCloseScreenState.value = Unit }
     }
