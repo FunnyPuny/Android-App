@@ -4,6 +4,7 @@ import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.DayOfWeek
 import com.example.funnypuny.domain.repository.HabitRepository
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 import io.reactivex.rxjava3.subjects.Subject
 
@@ -13,7 +14,7 @@ class HabitRepositoryImpl : HabitRepository {
 
     private val habitMap = mutableMapOf<DateEntity,List<HabitEntity>>()
 
-    private val updateHabitsSubject = PublishSubject.create<Unit>()
+    private val updateHabitsSubject = BehaviorSubject.createDefault(Unit)
 
     init {
 

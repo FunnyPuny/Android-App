@@ -9,9 +9,9 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.Subject
 
 class HabitListSharedInteractor(private val habitRepository: HabitRepository):HabitListSharedUseCase {
-    override fun habitsMapSubject(): Observable<Map<DateEntity,List<HabitEntity>>> =
-        habitRepository.updateHabitsSubject().map { habitRepository.getHabitMap() }
-
-    override fun getHabitsMap(): Map<DateEntity, List<HabitEntity>> = habitRepository.getHabitMap()
+    override fun habitsSubject(date:DateEntity): Observable<List<HabitEntity>> =
+        habitRepository
+            .updateHabitsSubject()
+            .map { habitRepository.getHabitMap()[date]?: emptyList() }
 
 }

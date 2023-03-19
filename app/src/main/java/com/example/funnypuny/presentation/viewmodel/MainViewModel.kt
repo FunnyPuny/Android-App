@@ -1,7 +1,7 @@
 package com.example.funnypuny.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
 import com.example.funnypuny.domain.entity.HabitEntity
@@ -11,7 +11,7 @@ import com.example.funnypuny.presentation.adapter.HorizontalCalendarItem
 import com.example.funnypuny.presentation.common.SingleLiveData
 import com.example.funnypuny.presentation.common.SingleLiveDataEmpty
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -43,18 +43,11 @@ class MainViewModel(
 
     //private val disposables = CompositeDisposable()
 
+    private var habitsSubjectDisposable: Disposable? = null
+
 
     init {
         setUpCalendar(0)
-        disposables.add(
-            habitListSharedUseCase
-                .habitsMapSubject()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{ habitMap ->
-                    habitListState.value = habitMap[selectedDate]
-                }
-        )
     }
 
     /*override fun onCleared() {
@@ -155,6 +148,18 @@ class MainViewModel(
     }
 
     private fun updateHabitList() {
-        habitListState.value = habitListSharedUseCase.getHabitsMap()[selectedDate]?: emptyList()
+        //habitListState.value = habitListSharedUseCase.getHabitsMap()[selectedDate]?: emptyList()
+        habitsSubjectDisposable?.dispose()
+
+        habitsSubjectDisposable =
+            habitListSharedUseCase
+                .habitsSubject(selectedDate)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    habitListState.value = it
+                    Log.d("MyTag", "subscribe $it")
+                }
+                .also { disposables.add(it) }
     }
 }

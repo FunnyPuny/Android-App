@@ -6,9 +6,6 @@ import io.reactivex.rxjava3.core.Observable
 
 interface HabitListSharedUseCase {
 
-    fun habitsMapSubject(): Observable<Map<DateEntity, List<HabitEntity>>>
-    fun getHabitsMap(): Map<DateEntity, List<HabitEntity>>
-
-
+    fun habitsSubject(date: DateEntity): Observable<List<HabitEntity>>
 
 }
