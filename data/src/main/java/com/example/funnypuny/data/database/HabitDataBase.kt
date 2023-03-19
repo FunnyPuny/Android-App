@@ -1,40 +1,11 @@
 
 package com.example.funnypuny.data.database
 
-/*
+
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.funnypuny.domain.entity.Habit
 
-@Database(entities = [ Habit::class ], version = 1)
-abstract class HabitDataBase: RoomDatabase() {
-
-
-*/
-/*companion object {
-
-        private var db: HabitDataBase? = null
-        private const val DB_NAME = "habit-database"
-        private val LOCK = Any()
-
-        fun getInstance(context: Context): HabitDataBase {
-            synchronized(LOCK) {
-                db?.let { return it }
-                val instance =
-                    Room.databaseBuilder(
-                        context,
-                        HabitDataBase::class.java,
-                        DB_NAME
-                    ).build()
-                db = instance
-                return instance
-            }
-        }
-    }*//*
-
-
-
+@Database(entities = [Habit::class], version = 1)
+abstract class AppDatabase : RoomDatabase() {
     abstract fun habitDao(): HabitDao
-
 }
-*/

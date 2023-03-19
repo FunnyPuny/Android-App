@@ -12,12 +12,12 @@ class MainInteractor(
 ) : MainUseCase {
 
     override fun changeEnableHabitState(date: DateEntity, habit: HabitEntity) {
-        val newItem = habit.copy(enabled = !habit.enabled)
+        /*val newItem = habit.copy(enabled = !habit.enabled)
         getHabitList(date).let {
             habitRepository.deleteHabitItem(date, habit)
             habitRepository.addHabitItem(date, newItem, null)
         }
-        habitRepository.updateHabitsSubject().onNext(Unit)
+        habitRepository.updateHabitsSubject().onNext(Unit)*/
     }
 
     override fun deleteHabitItemState(date: DateEntity, habit: HabitEntity) {
@@ -69,7 +69,7 @@ class MainInteractor(
         action: HabitActionEntity.Edit,
         inputName: String?
     ): MainActionHabitState {
-        if (isHabitNameValid(inputName)) {
+        /*if (isHabitNameValid(inputName)) {
             inputName?.let { name ->
                 habitRepository.getHabitItem(action.date, action.id)
                     ?.let { habit ->
@@ -85,10 +85,10 @@ class MainInteractor(
                     }
                     ?: return MainActionHabitState.HabitNotFoundError
             }
-        }
+        }*/
         return MainActionHabitState.EmptyNameError
     }
 
-    private fun getHabitList(date: DateEntity): List<HabitEntity> = habitRepository.getHabitMap()[date]?: emptyList()
+    //private fun getHabitList(date: DateEntity): List<HabitEntity> = habitRepository.getHabitMap()[date]?: emptyList()
 
 }

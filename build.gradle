@@ -6,6 +6,7 @@ buildscript {
         rxandroid_version = "3.0.2"
         rxjava_version = "3.1.5"
         rxkotlin_version = "3.0.1"
+        room_version = "2.5.0"
     }
 
     repositories {

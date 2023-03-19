@@ -1,27 +1,30 @@
 package com.example.funnypuny.data.database
 
-/*
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.funnypuny.domain.entity.Habit
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface HabitDao {
     @Query("SELECT * FROM habit")
-    open fun getAll(): LiveData<Habit?>?
-
-    @Query("SELECT * FROM habit WHERE id = :id")
-    fun getById(id: Long): Habit?
+    fun getAll(): Single<List<Habit>>
 
     @Insert
-    fun insert(habit: Habit?)
+    fun insertAll(habit: Habit): Completable
 
-    @Update
-    fun update(habit: Habit?)
+    @Query("DELETE FROM habit WHERE habit.id = :id")
+    fun delete(id: Int): Completable
 
-    @Delete
-    fun delete(habit: Habit?)
+    /*@Query("SELECT * FROM user WHERE uid IN (:userIds)")
+    fun loadAllByIds(userIds: IntArray): List<User>*/
+
+    /*@Query(
+        "SELECT * FROM user WHERE first_name LIKE :first AND " +
+                "last_name LIKE :last LIMIT 1"
+    )
+    fun findByName(first: String, last: String): User*/
+
 }
-*/
+
 
 

@@ -1,6 +1,7 @@
 package com.example.funnypuny.presentation
 
 import android.app.Application
+import com.example.funnypuny.presentation.di.daoModule
 import com.example.funnypuny.presentation.di.repositoryModule
 import com.example.funnypuny.presentation.di.useCasesModule
 import com.example.funnypuny.presentation.di.viewModelModule
@@ -19,7 +20,7 @@ class App : Application() {
             // Reference Android context
             androidContext(this@App)
             // Load modules
-            modules(repositoryModule, useCasesModule, viewModelModule)
+            modules(repositoryModule, useCasesModule, viewModelModule, daoModule)
         }
     }
 }

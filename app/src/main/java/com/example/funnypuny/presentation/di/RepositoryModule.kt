@@ -5,5 +5,5 @@ import com.example.funnypuny.domain.repository.HabitRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single <HabitRepository> { HabitRepositoryImpl() }
+    single <HabitRepository> { HabitRepositoryImpl(get()) }
 }
