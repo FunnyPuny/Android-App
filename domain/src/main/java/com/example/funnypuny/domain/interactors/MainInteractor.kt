@@ -5,19 +5,35 @@ import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
 import com.example.funnypuny.domain.repository.HabitRepository
 import com.example.funnypuny.domain.usecases.MainActionHabitState
+import com.example.funnypuny.domain.usecases.MainChangeHabitState
 import com.example.funnypuny.domain.usecases.MainUseCase
+import io.reactivex.rxjava3.core.Observable
 
 class MainInteractor(
     private val habitRepository: HabitRepository
 ) : MainUseCase {
 
-    override fun changeEnableHabitState(date: DateEntity, habit: HabitEntity) {
+    override fun changeEnableHabitState(
+        date: DateEntity,
+        habit: HabitEntity
+    ): Observable<MainChangeHabitState> {
         /*val newItem = habit.copy(enabled = !habit.enabled)
         getHabitList(date).let {
             habitRepository.deleteHabitItem(date, habit)
             habitRepository.addHabitItem(date, newItem, null)
         }
         habitRepository.updateHabitsSubject().onNext(Unit)*/
+        return habitRepository
+            .editHabit(date, habit.copy(enabled = !habit.enabled))
+            .doOnComplete{ habitRepository.updateHabitsSubject().onNext(Unit) }
+            .toSingleDefault<MainChangeHabitState>(MainChangeHabitState.Success)
+            .toObservable()
+            .onErrorReturn { MainChangeHabitState.Error(it) }
+            .startWithItem(MainChangeHabitState.Start)
+            .doOnNext {
+
+            }
+
     }
 
     override fun deleteHabitItemState(date: DateEntity, habit: HabitEntity) {
@@ -44,7 +60,8 @@ class MainInteractor(
                 is MainActionHabitState.EmptyNameError -> Unit
                 is MainActionHabitState.Error -> Unit
                 is MainActionHabitState.HabitNotFoundError -> Unit
-                is MainActionHabitState.Success -> habitRepository.updateHabitsSubject().onNext(Unit)
+                is MainActionHabitState.Success -> habitRepository.updateHabitsSubject()
+                    .onNext(Unit)
             }
         }
 

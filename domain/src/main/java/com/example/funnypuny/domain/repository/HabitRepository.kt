@@ -17,8 +17,10 @@ interface HabitRepository {
 
     fun addHabitItem(date: DateEntity, habit: HabitEntity, indexPosition: Int?): Completable
 
-    fun deleteHabitItem(date: DateEntity, habit: HabitEntity): Completable
+    fun deleteHabitItem(habitId: Int): Completable
 
     fun getHabitItem(date: DateEntity, habitItemId: Int): HabitEntity?
+
+    fun editHabit(date: DateEntity, habit: HabitEntity): Completable
 
 }

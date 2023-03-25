@@ -1,7 +1,6 @@
 package com.example.funnypuny.data
 
-import com.example.funnypuny.data.database.Habit
-import com.example.funnypuny.data.database.HabitDao
+import com.example.funnypuny.data.database.*
 import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.repository.HabitRepository
@@ -18,6 +17,10 @@ class HabitRepositoryImpl(private val habitDao: HabitDao) : HabitRepository {
 
     private val updateHabitsSubject = BehaviorSubject.createDefault(Unit)
 
+    private val habitsEntityMapper by lazy { HabitsEntityMapper() }
+    private val habitMapper by lazy { HabitMapper() }
+
+
     init {
 
         /*for (i in 0 until 3) {
@@ -33,7 +36,7 @@ class HabitRepositoryImpl(private val habitDao: HabitDao) : HabitRepository {
                 habits
                     .groupBy { DateEntity(it.day, it.month, it.year) }
                     .map { (dateEntity, habits) ->
-                        val habitsEntity = habits.map { HabitEntity(it.name, it.enabled, it.id) }
+                        val habitsEntity = habitsEntityMapper.apply(habits)
                         Pair(dateEntity, habitsEntity)
                     }
                     .toMap()
@@ -57,19 +60,21 @@ class HabitRepositoryImpl(private val habitDao: HabitDao) : HabitRepository {
 
         habitMap[date] = habitList*/
 
-        val habitDB = Habit(habit.id, habit.name, habit.enabled, date.day, date.month, date.year)
-        return habitDao.insertAll(habitDB)
+        return habitDao.insertAll(habitMapper.apply(date to habit))
     }
 
-    override fun deleteHabitItem(date: DateEntity, habit: HabitEntity): Completable =
-        habitDao.delete(habit.id)
+    override fun deleteHabitItem(habitId: Int): Completable =
+        habitDao.delete(habitId)
 
     override fun getHabitItem(date: DateEntity, habitItemId: Int): HabitEntity? =
         habitMap[date]?.find { it.id == habitItemId }
 
+    override fun editHabit(date: DateEntity, habit: HabitEntity): Completable =
+        habitDao.edit(habitMapper.apply(Pair(date,habit)))
 
-    private fun getHabitList(date: DateEntity): List<HabitEntity> {
+
+    /*private fun getHabitList(date: DateEntity): List<HabitEntity> {
         return habitMap[date] ?: emptyList()
-    }
+    }*/
 
 }

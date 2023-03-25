@@ -15,6 +15,9 @@ interface HabitDao {
     @Query("DELETE FROM habit WHERE habit.id = :id")
     fun delete(id: Int): Completable
 
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun edit(habit: Habit): Completable
+
     /*@Query("SELECT * FROM user WHERE uid IN (:userIds)")
     fun loadAllByIds(userIds: IntArray): List<User>*/
 

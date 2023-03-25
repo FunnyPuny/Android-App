@@ -6,6 +6,7 @@ import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.usecases.HabitListSharedUseCase
+import com.example.funnypuny.domain.usecases.MainChangeHabitState
 import com.example.funnypuny.domain.usecases.MainUseCase
 import com.example.funnypuny.presentation.adapter.HorizontalCalendarItem
 import com.example.funnypuny.presentation.common.SingleLiveData
@@ -61,7 +62,21 @@ class MainViewModel(
     }
 
     fun onChangeEnableState(habit: HabitEntity) {
-        mainUseCase.changeEnableHabitState(selectedDate, habit)
+        mainUseCase
+            .changeEnableHabitState(selectedDate, habit)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { handleChangeEnableState(it) }
+            .also { disposables.add(it) }
+
+    }
+
+    private fun handleChangeEnableState(state: MainChangeHabitState) {
+        when (state) {
+            is MainChangeHabitState.Error -> Log.d("MainViewModel", "MainChangeHabitState.Error")
+            is MainChangeHabitState.Start -> Log.d("MainViewModel", "MainChangeHabitState.Start")
+            is MainChangeHabitState.Success -> Log.d("MainViewModel", "MainChangeHabitState.Success")
+        }
     }
 
     fun onPrevMonthButtonClick() {
