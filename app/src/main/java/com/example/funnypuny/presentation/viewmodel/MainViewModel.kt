@@ -57,7 +57,12 @@ class MainViewModel(
 
     fun onSwipeHabit(position: Int) {
         habitListState.value?.getOrNull(position)?.let { habit ->
-            mainUseCase.deleteHabitItemState(selectedDate, habit)
+            mainUseCase
+                .deleteHabitItemState(selectedDate, habit)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { handleChangeEnableState(it) }
+                .also { disposables.add(it) }
         }
     }
 

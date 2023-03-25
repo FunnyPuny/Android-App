@@ -30,22 +30,26 @@ class MainInteractor(
             .toObservable()
             .onErrorReturn { MainChangeHabitState.Error(it) }
             .startWithItem(MainChangeHabitState.Start)
-            .doOnNext {
-
-            }
 
     }
 
-    override fun deleteHabitItemState(date: DateEntity, habit: HabitEntity) {
-        habitRepository.deleteHabitItem(date, habit)
-        habitRepository.updateHabitsSubject().onNext(Unit)
+    override fun deleteHabitItemState(date: DateEntity, habit: HabitEntity): Observable<MainChangeHabitState> {
+        /*habitRepository.deleteHabitItem(date, habit)
+        habitRepository.updateHabitsSubject().onNext(Unit)*/
+        return habitRepository
+            .deleteHabitItem(habit.id)
+            .doOnComplete { habitRepository.updateHabitsSubject().onNext(Unit) }
+            .toSingleDefault<MainChangeHabitState>(MainChangeHabitState.Success)
+            .toObservable()
+            .onErrorReturn { MainChangeHabitState.Error(it) }
+            .startWithItem(MainChangeHabitState.Start)
     }
 
     override fun getHabitItem(date: DateEntity, habitItemId: Int): HabitEntity? {
         return habitRepository.getHabitItem(date, habitItemId)
     }
 
-    override fun actionHabitState(
+    /*override fun actionHabitState(
         action: HabitActionEntity,
         inputName: String?
     ): MainActionHabitState =
@@ -53,9 +57,9 @@ class MainInteractor(
             is HabitActionEntity.Add -> addHabitState(action, inputName)
             is HabitActionEntity.Edit -> editHabitState(action, inputName)
         }.also { state ->
-            /*if (state is MainActionHabitState.Success){
+            *//*if (state is MainActionHabitState.Success){
                 habitRepository.updateHabitsSubject().onNext(Unit)
-            }*/
+            }*//*
             when (state) {
                 is MainActionHabitState.EmptyNameError -> Unit
                 is MainActionHabitState.Error -> Unit
@@ -63,7 +67,7 @@ class MainInteractor(
                 is MainActionHabitState.Success -> habitRepository.updateHabitsSubject()
                     .onNext(Unit)
             }
-        }
+        }*/
 
 
     private fun isHabitNameValid(name: String?): Boolean = !name.isNullOrBlank()

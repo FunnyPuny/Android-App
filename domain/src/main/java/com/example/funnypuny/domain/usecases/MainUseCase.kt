@@ -14,7 +14,7 @@ interface MainUseCase {
 
     fun getHabitItem(date: DateEntity, habitItemId: Int): HabitEntity?
 
-    fun actionHabitState(action: HabitActionEntity, inputName: String?): Observable<MainActionHabitState>
+    //fun actionHabitState(action: HabitActionEntity, inputName: String?): Observable<MainActionHabitState>
 
     //fun habitsState(): Observable<List<HabitEntity>>
 
