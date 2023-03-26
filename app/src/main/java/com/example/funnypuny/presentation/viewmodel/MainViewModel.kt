@@ -41,6 +41,7 @@ class MainViewModel(
     val showStatisticActivity = SingleLiveDataEmpty()
     val updateDatesAction = SingleLiveDataEmpty()
     val showHabitItemEditingFinished = SingleLiveDataEmpty()
+    val showToast = SingleLiveData<String>()
 
     //private val disposables = CompositeDisposable()
 
