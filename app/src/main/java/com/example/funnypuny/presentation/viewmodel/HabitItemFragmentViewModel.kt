@@ -5,20 +5,25 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.funnypuny.domain.entity.HabitFrequencyEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
+import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.usecases.HabitListSharedUseCase
 import com.example.funnypuny.domain.usecases.MainActionHabitState
+import com.example.funnypuny.domain.usecases.MainChangeHabitState
 import com.example.funnypuny.domain.usecases.MainUseCase
 import com.example.funnypuny.presentation.common.SingleLiveData
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class HabitItemFragmentViewModel(
     private val action: HabitActionEntity,
     private val mainUseCase: MainUseCase
-) : ViewModel() {
+) : BaseViewModel() {
 
     val errorInputNameState = MutableLiveData<Boolean>()
     val shouldCloseScreenState = MutableLiveData<Unit>()
     val daysOfTheWeekState = MutableLiveData<ArrayList<HabitFrequencyEntity>>()
 
+    //todo переписать на livedata
     var inputName: String? = null
     private val data = ArrayList<HabitFrequencyEntity>()
 
@@ -39,7 +44,7 @@ class HabitItemFragmentViewModel(
         }
 
         //todo разобраться с типом livedata
-        Log.d("MyTag","init ${hashCode()}")
+        Log.d("MyTag", "init ${hashCode()}")
     }
 
     fun onNameChanged(inputName: String?) {
@@ -48,20 +53,45 @@ class HabitItemFragmentViewModel(
     }
 
     fun onSaveClick() {
-        when (mainUseCase.actionHabitState(action, inputName)) {
+        mainUseCase
+            .actionHabitState(action, inputName)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { handleActionHabitState(it) }
+            .also { disposables.add(it) }
+
+    }
+
+    private fun handleActionHabitState(state: MainActionHabitState) {
+        when (state) {
             is MainActionHabitState.Success -> shouldCloseScreenState.value = Unit
             is MainActionHabitState.EmptyNameError -> errorInputNameState.value = true
             is MainActionHabitState.HabitNotFoundError -> shouldCloseScreenState.value = Unit
+            //todo показать toast
             is MainActionHabitState.Error -> Unit
+            is MainActionHabitState.Start -> Log.d("HabitItemViewModel", "MainActionHabitState.Start")
         }
     }
 
     private fun onInitHabitItem(habitItemId: Int) {
-        mainUseCase.getHabitItem(action.date,habitItemId)
-            ?.let { habit ->
-                this.inputName = habit.name
-            }
-            ?: run { shouldCloseScreenState.value = Unit }
+        mainUseCase
+            .getHabitItem(action.date, habitItemId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe{ Log.d("HabitItemViewModel", "GetHabitItem = Start") }
+            .subscribe(
+                { habit ->
+                    this.inputName = habit.name
+                },
+                {error ->
+                    //shouldCloseScreenState.value = Unit
+                    when (error) {
+                        is java.lang.NullPointerException -> shouldCloseScreenState.value = Unit
+                        //todo показать toast
+                        else -> Unit
+                    }
+                })
+            .also { disposables.add(it) }
     }
 
 }

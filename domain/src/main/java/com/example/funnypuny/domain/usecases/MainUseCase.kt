@@ -5,6 +5,7 @@ import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 
 interface MainUseCase {
 
@@ -12,9 +13,9 @@ interface MainUseCase {
 
     fun deleteHabitItemState(date: DateEntity, habit: HabitEntity): Observable<MainChangeHabitState>
 
-    fun getHabitItem(date: DateEntity, habitItemId: Int): HabitEntity?
+    fun getHabitItem(date: DateEntity, habitItemId: Int): Single<HabitEntity>
 
-    //fun actionHabitState(action: HabitActionEntity, inputName: String?): Observable<MainActionHabitState>
+    fun actionHabitState(action: HabitActionEntity, inputName: String?): Observable<MainActionHabitState>
 
     //fun habitsState(): Observable<List<HabitEntity>>
 

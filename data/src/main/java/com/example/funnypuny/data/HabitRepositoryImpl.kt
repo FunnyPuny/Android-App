@@ -3,6 +3,7 @@ package com.example.funnypuny.data
 import com.example.funnypuny.data.database.*
 import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitEntity
+import com.example.funnypuny.domain.entity.Optional
 import com.example.funnypuny.domain.repository.HabitRepository
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
@@ -13,11 +14,12 @@ class HabitRepositoryImpl(private val habitDao: HabitDao) : HabitRepository {
 
     private var autoIncrementId = 0
 
-    private val habitMap = mutableMapOf<DateEntity, List<HabitEntity>>()
+    //private val habitMap = mutableMapOf<DateEntity, List<HabitEntity>>()
 
     private val updateHabitsSubject = BehaviorSubject.createDefault(Unit)
 
     private val habitsEntityMapper by lazy { HabitsEntityMapper() }
+    private val habitEntityMapper by lazy { HabitEntityMapper() }
     private val habitMapper by lazy { HabitMapper() }
 
 
@@ -66,11 +68,12 @@ class HabitRepositoryImpl(private val habitDao: HabitDao) : HabitRepository {
     override fun deleteHabitItem(habitId: Int): Completable =
         habitDao.delete(habitId)
 
-    override fun getHabitItem(date: DateEntity, habitItemId: Int): HabitEntity? =
-        habitMap[date]?.find { it.id == habitItemId }
+    override fun getHabitItem(habitItemId: Int): Single<HabitEntity> =
+        habitDao.get(habitItemId)
+            .map { habitEntityMapper.apply(it) }
 
     override fun editHabit(date: DateEntity, habit: HabitEntity): Completable =
-        habitDao.edit(habitMapper.apply(Pair(date,habit)))
+        habitDao.edit(habitMapper.apply(Pair(date, habit)))
 
 
     /*private fun getHabitList(date: DateEntity): List<HabitEntity> {

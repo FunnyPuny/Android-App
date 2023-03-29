@@ -18,8 +18,8 @@ interface HabitDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun edit(habit: Habit): Completable
 
-    /*@Query("SELECT * FROM user WHERE uid IN (:userIds)")
-    fun loadAllByIds(userIds: IntArray): List<User>*/
+    @Query("SELECT * FROM habit WHERE habit.id = :id")
+    fun get(id: Int): Single<Habit>
 
     /*@Query(
         "SELECT * FROM user WHERE first_name LIKE :first AND " +

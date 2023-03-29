@@ -3,6 +3,7 @@ package com.example.funnypuny.domain.repository
 import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.DayOfWeek
+import com.example.funnypuny.domain.entity.Optional
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.subjects.Subject
@@ -19,7 +20,7 @@ interface HabitRepository {
 
     fun deleteHabitItem(habitId: Int): Completable
 
-    fun getHabitItem(date: DateEntity, habitItemId: Int): HabitEntity?
+    fun getHabitItem(habitItemId: Int): Single<HabitEntity>
 
     fun editHabit(date: DateEntity, habit: HabitEntity): Completable
 

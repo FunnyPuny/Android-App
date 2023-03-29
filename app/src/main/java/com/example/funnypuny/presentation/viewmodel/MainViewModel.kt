@@ -41,11 +41,13 @@ class MainViewModel(
     val showStatisticActivity = SingleLiveDataEmpty()
     val updateDatesAction = SingleLiveDataEmpty()
     val showHabitItemEditingFinished = SingleLiveDataEmpty()
-    val showToast = SingleLiveData<String>()
+    //todo перенести в баз.вьюмодель
+    val showErrorToast = SingleLiveDataEmpty()
 
     //private val disposables = CompositeDisposable()
 
     private var habitsSubjectDisposable: Disposable? = null
+
 
 
     init {
@@ -62,7 +64,7 @@ class MainViewModel(
                 .deleteHabitItemState(selectedDate, habit)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { handleChangeEnableState(it) }
+                .subscribe { handleDeleteState(it) }
                 .also { disposables.add(it) }
         }
     }
@@ -79,7 +81,15 @@ class MainViewModel(
 
     private fun handleChangeEnableState(state: MainChangeHabitState) {
         when (state) {
-            is MainChangeHabitState.Error -> Log.d("MainViewModel", "MainChangeHabitState.Error")
+            is MainChangeHabitState.Error -> showErrorToast.call()
+            is MainChangeHabitState.Start -> Log.d("MainViewModel", "MainChangeHabitState.Start")
+            is MainChangeHabitState.Success -> Log.d("MainViewModel", "MainChangeHabitState.Success")
+        }
+    }
+
+    private fun handleDeleteState(state: MainChangeHabitState) {
+        when (state) {
+            is MainChangeHabitState.Error -> showErrorToast.call()
             is MainChangeHabitState.Start -> Log.d("MainViewModel", "MainChangeHabitState.Start")
             is MainChangeHabitState.Success -> Log.d("MainViewModel", "MainChangeHabitState.Success")
         }
