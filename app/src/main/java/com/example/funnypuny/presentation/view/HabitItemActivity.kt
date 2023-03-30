@@ -9,7 +9,6 @@ import com.example.funnypuny.databinding.ActivityHabitItemBinding
 import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
-import com.example.funnypuny.presentation.HabitItemFragment
 import com.example.funnypuny.presentation.viewmodel.HabitItemActivityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf

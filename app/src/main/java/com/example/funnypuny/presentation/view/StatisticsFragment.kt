@@ -1,4 +1,4 @@
-package com.example.funnypuny.presentation
+package com.example.funnypuny.presentation.view
 
 import android.os.Bundle
 import android.os.Handler
@@ -9,10 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.SpinnerAdapter
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.FragmentStatisticsBinding
-import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.presentation.adapter.HabitListAdapter
 import com.example.funnypuny.presentation.viewmodel.StatisticViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel

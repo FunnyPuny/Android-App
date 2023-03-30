@@ -14,7 +14,7 @@
             android:orientation="vertical"
             android:paddingBottom="16dp"
             android:paddingTop="16dp"
-            tools:context="com.example.funnypuny.presentation.HabitItemFragment">
+            tools:context="com.example.funnypuny.presentation.view.HabitItemFragment">
 
             <TextView
                 android:layout_width="wrap_content"

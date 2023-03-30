@@ -1,4 +1,4 @@
-package com.example.funnypuny.presentation
+package com.example.funnypuny.presentation.view
 
 import android.content.Context
 import android.os.Bundle
@@ -16,7 +16,6 @@ import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
 import com.example.funnypuny.presentation.adapter.HabitFrequencyAdapter
-import com.example.funnypuny.presentation.view.HabitAction
 import com.example.funnypuny.presentation.viewmodel.HabitItemFragmentViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
