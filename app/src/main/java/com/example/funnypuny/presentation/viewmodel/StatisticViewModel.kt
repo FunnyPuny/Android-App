@@ -10,7 +10,7 @@ import com.example.funnypuny.presentation.common.SingleLiveData
 class StatisticViewModel(
     private val statisticUseCase: StatisticUseCase,
     private val habitListSharedUseCase: HabitListSharedUseCase
-): ViewModel() {
+): BaseViewModel() {
 
     val habitListState = MutableLiveData<List<HabitEntity>>()
 

@@ -7,7 +7,7 @@ import com.example.funnypuny.presentation.common.SingleLiveData
 
 class HabitItemActivityViewModel(
     private val action: HabitActionEntity
-) : ViewModel() {
+) : BaseViewModel() {
 
     val actionState = SingleLiveData<HabitActionEntity>()
 
