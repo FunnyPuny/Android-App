@@ -41,22 +41,12 @@ class MainViewModel(
     val showStatisticActivity = SingleLiveDataEmpty()
     val updateDatesAction = SingleLiveDataEmpty()
     val showHabitItemEditingFinished = SingleLiveDataEmpty()
-    //todo перенести в баз.вьюмодель
-    val showErrorToast = SingleLiveDataEmpty()
-
-    //private val disposables = CompositeDisposable()
 
     private var habitsSubjectDisposable: Disposable? = null
-
-
 
     init {
         setUpCalendar(0)
     }
-
-    /*override fun onCleared() {
-        disposables.dispose()
-    }*/
 
     fun onSwipeHabit(position: Int) {
         habitListState.value?.getOrNull(position)?.let { habit ->

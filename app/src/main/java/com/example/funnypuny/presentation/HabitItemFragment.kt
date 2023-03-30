@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.FragmentHabitItemBinding
@@ -115,6 +116,10 @@ class HabitItemFragment : Fragment() {
                 null
             }
             binding.tietName.error = message
+        }
+
+        viewModel.showErrorToast.observe(viewLifecycleOwner) {
+            Toast.makeText(context,"Error", Toast.LENGTH_SHORT).show()
         }
 
         /*viewModel.habitState.observe(viewLifecycleOwner) { habit ->

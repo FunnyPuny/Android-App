@@ -67,8 +67,7 @@ class HabitItemFragmentViewModel(
             is MainActionHabitState.Success -> shouldCloseScreenState.value = Unit
             is MainActionHabitState.EmptyNameError -> errorInputNameState.value = true
             is MainActionHabitState.HabitNotFoundError -> shouldCloseScreenState.value = Unit
-            //todo показать toast
-            is MainActionHabitState.Error -> Unit
+            is MainActionHabitState.Error -> showErrorToast.call()
             is MainActionHabitState.Start -> Log.d("HabitItemViewModel", "MainActionHabitState.Start")
         }
     }
