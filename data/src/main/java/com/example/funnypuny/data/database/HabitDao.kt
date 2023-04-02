@@ -1,6 +1,7 @@
 package com.example.funnypuny.data.database
 
 import androidx.room.*
+import com.example.funnypuny.domain.entity.HabitEntity
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 

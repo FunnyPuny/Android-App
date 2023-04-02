@@ -7,7 +7,9 @@ import com.example.funnypuny.domain.entity.HabitEntity
 
 @Entity
 data class Habit(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    val id: Int,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "enabled") val enabled: Boolean,
     @ColumnInfo(name = "day") val day: Int,

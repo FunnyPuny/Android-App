@@ -3,9 +3,7 @@ package com.example.funnypuny.domain.usecases
 import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
-import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
 
 interface MainUseCase {
 
@@ -13,7 +11,7 @@ interface MainUseCase {
 
     fun deleteHabitItemState(date: DateEntity, habit: HabitEntity): Observable<MainChangeHabitState>
 
-    fun getHabitItem(date: DateEntity, habitItemId: Int): Single<HabitEntity>
+    fun getHabitItem(date: DateEntity, habitItemId: Int):  Observable<MainGetHabitItemState>
 
     fun actionHabitState(action: HabitActionEntity, inputName: String?): Observable<MainActionHabitState>
 
@@ -35,4 +33,13 @@ sealed class MainChangeHabitState {
     object Success: MainChangeHabitState()
 
     data class Error(val error: Throwable) : MainChangeHabitState()
+}
+
+
+sealed class MainGetHabitItemState {
+    object Start: MainGetHabitItemState()
+    data class Success(val habit: HabitEntity): MainGetHabitItemState()
+    object HabitNotFoundError: MainGetHabitItemState()
+
+    data class Error(val error: Throwable) : MainGetHabitItemState()
 }

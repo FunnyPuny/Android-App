@@ -76,12 +76,9 @@ class HabitItemFragment : Fragment() {
         Log.d("HabitItemFragment", "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
 
-        //binding.tietName.removeTextChangedListener(nameTextWatcher)
-        binding.tietName.setText(viewModel.inputName)
-        //binding.tietName.addTextChangedListener(nameTextWatcher)
+        binding.tietName.addTextChangedListener(nameTextWatcher)
 
-        //слушатель ввода текста
-        //binding.tietName.addTextChangedListener(nameTextWatcher)
+        /*binding.tietName.setText(viewModel.inputName)
         binding.tietName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -92,7 +89,7 @@ class HabitItemFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 viewModel.onNameChanged(s?.toString()?.trim())
             }
-        })
+        })*/
 
         binding.btnSave.setOnClickListener {
             viewModel.onSaveClick()
@@ -121,11 +118,11 @@ class HabitItemFragment : Fragment() {
             Toast.makeText(context,"Error", Toast.LENGTH_SHORT).show()
         }
 
-        /*viewModel.habitState.observe(viewLifecycleOwner) { habit ->
+        viewModel.initInputName.observe(viewLifecycleOwner) { habit ->
             binding.tietName.removeTextChangedListener(nameTextWatcher)
-            binding.tietName.setText(habit.name)
+            binding.tietName.setText(habit)
             binding.tietName.addTextChangedListener(nameTextWatcher)
-        }*/
+        }
 
     }
 

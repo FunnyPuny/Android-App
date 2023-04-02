@@ -5,9 +5,7 @@ import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
 import com.example.funnypuny.domain.entity.Optional
 import com.example.funnypuny.domain.repository.HabitRepository
-import com.example.funnypuny.domain.usecases.MainActionHabitState
-import com.example.funnypuny.domain.usecases.MainChangeHabitState
-import com.example.funnypuny.domain.usecases.MainUseCase
+import com.example.funnypuny.domain.usecases.*
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
@@ -50,8 +48,18 @@ class MainInteractor(
             .startWithItem(MainChangeHabitState.Start)
     }
 
-    override fun getHabitItem(date: DateEntity, habitItemId: Int): Single<HabitEntity> {
-        return habitRepository.getHabitItem(habitItemId)
+    override fun getHabitItem(date: DateEntity, habitItemId: Int): Observable<MainGetHabitItemState> {
+        return habitRepository
+            .getHabitItem(habitItemId)
+            .map<MainGetHabitItemState>{ MainGetHabitItemState.Success(it) }
+            .toObservable()
+            .onErrorReturn { error ->
+                when (error) {
+                    is java.lang.NullPointerException -> MainGetHabitItemState.HabitNotFoundError
+                    else -> MainGetHabitItemState.Error(error)
+                }
+            }
+            .startWithItem(MainGetHabitItemState.Start)
     }
 
     override fun actionHabitState(
@@ -116,26 +124,5 @@ class MainInteractor(
                     }
                     ?: Observable.just(MainActionHabitState.EmptyNameError)
             }
-    /*if (isHabitNameValid(inputName)) {
-        inputName?.let { name ->
-            habitRepository.getHabitItem(action.date, action.id)
-                ?.let { habit ->
-                    val indexPosition = getHabitList(action.date).indexOf(habit)
-                        .takeIf { it != -1 }
-                    habitRepository.deleteHabitItem(action.date, habit)
-                    habitRepository.addHabitItem(
-                        date = action.date,
-                        habit = habit.copy(name = name),
-                        indexPosition = indexPosition
-                    )
-                    return MainActionHabitState.Success
-                }
-                ?: return MainActionHabitState.HabitNotFoundError
-        }
-    }*/
-    //return MainActionHabitState.EmptyNameError
-
-
-    //private fun getHabitList(date: DateEntity): List<HabitEntity> = habitRepository.getHabitMap()[date]?: emptyList()
 
 }

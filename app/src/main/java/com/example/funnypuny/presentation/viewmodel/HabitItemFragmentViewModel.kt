@@ -2,14 +2,9 @@ package com.example.funnypuny.presentation.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.funnypuny.domain.entity.HabitFrequencyEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
-import com.example.funnypuny.domain.entity.HabitEntity
-import com.example.funnypuny.domain.usecases.HabitListSharedUseCase
-import com.example.funnypuny.domain.usecases.MainActionHabitState
-import com.example.funnypuny.domain.usecases.MainChangeHabitState
-import com.example.funnypuny.domain.usecases.MainUseCase
+import com.example.funnypuny.domain.usecases.*
 import com.example.funnypuny.presentation.common.SingleLiveData
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -25,6 +20,7 @@ class HabitItemFragmentViewModel(
 
     //todo переписать на livedata
     var inputName: String? = null
+    val initInputName = SingleLiveData<String>()
     private val data = ArrayList<HabitFrequencyEntity>()
 
 
@@ -72,24 +68,27 @@ class HabitItemFragmentViewModel(
         }
     }
 
+    private fun handleActionHabitItemState(state: MainGetHabitItemState) {
+        when (state) {
+            is MainGetHabitItemState.Error -> showErrorToast.call()
+            is MainGetHabitItemState.HabitNotFoundError -> shouldCloseScreenState.value = Unit
+            is MainGetHabitItemState.Start -> Log.d("HabitItemViewModel", "GetHabitItem = Start")
+            is MainGetHabitItemState.Success -> {
+                this.inputName = state.habit.name
+                initInputName.value = state.habit.name
+            }
+        }
+    }
+
+
+
     private fun onInitHabitItem(habitItemId: Int) {
         mainUseCase
-            .getHabitItem(action.date, habitItemId)
+            .getHabitItem(action.date, 1000000)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe{ Log.d("HabitItemViewModel", "GetHabitItem = Start") }
-            .subscribe(
-                { habit ->
-                    this.inputName = habit.name
-                },
-                {error ->
-                    //shouldCloseScreenState.value = Unit
-                    when (error) {
-                        is java.lang.NullPointerException -> shouldCloseScreenState.value = Unit
-                        //todo показать toast
-                        else -> Unit
-                    }
-                })
+            .subscribe{handleActionHabitItemState(it)}
             .also { disposables.add(it) }
     }
 
