@@ -51,8 +51,8 @@ class MainInteractor(
     override fun getHabitItem(date: DateEntity, habitItemId: Int): Observable<MainGetHabitItemState> {
         return habitRepository
             .getHabitItem(habitItemId)
-            .map<MainGetHabitItemState>{ MainGetHabitItemState.Success(it) }
-            .toObservable()
+            .map<MainGetHabitItemState>{
+                MainGetHabitItemState.Success(it) }
             .onErrorReturn { error ->
                 when (error) {
                     is java.lang.NullPointerException -> MainGetHabitItemState.HabitNotFoundError

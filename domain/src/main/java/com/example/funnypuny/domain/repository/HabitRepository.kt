@@ -4,7 +4,9 @@ import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.DayOfWeek
 import com.example.funnypuny.domain.entity.Optional
+import com.example.funnypuny.domain.usecases.MainGetHabitItemState
 import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.subjects.Subject
 
@@ -20,8 +22,15 @@ interface HabitRepository {
 
     fun deleteHabitItem(habitId: Int): Completable
 
-    fun getHabitItem(habitItemId: Int): Single<HabitEntity>
+    fun getHabitItem(habitItemId: Int): Observable<RepositoryGetHabitState>
 
     fun editHabit(date: DateEntity, habit: HabitEntity): Completable
 
+}
+
+sealed class RepositoryGetHabitState {
+    data class Success(val habit: HabitEntity): RepositoryGetHabitState()
+    object HabitNotFoundError: RepositoryGetHabitState()
+
+    data class Error(val error: Throwable) : RepositoryGetHabitState()
 }

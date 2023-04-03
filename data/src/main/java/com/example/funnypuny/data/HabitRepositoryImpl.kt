@@ -1,11 +1,16 @@
 package com.example.funnypuny.data
 
+import androidx.room.rxjava3.EmptyResultSetException
 import com.example.funnypuny.data.database.*
 import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.Optional
 import com.example.funnypuny.domain.repository.HabitRepository
+import com.example.funnypuny.domain.repository.RepositoryGetHabitState
+import com.example.funnypuny.domain.usecases.MainActionHabitState
+import com.example.funnypuny.domain.usecases.MainGetHabitItemState
 import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.Subject
@@ -68,9 +73,18 @@ class HabitRepositoryImpl(private val habitDao: HabitDao) : HabitRepository {
     override fun deleteHabitItem(habitId: Int): Completable =
         habitDao.delete(habitId)
 
-    override fun getHabitItem(habitItemId: Int): Single<HabitEntity> =
-        habitDao.get(habitItemId)
-            .map { habitEntityMapper.apply(it) }
+    override fun getHabitItem(habitItemId: Int): Observable<RepositoryGetHabitState> =
+        habitDao
+            .get(habitItemId)
+            //.map { habitEntityMapper.apply(it) }
+            .map<RepositoryGetHabitState>{ RepositoryGetHabitState.Success(habitEntityMapper.apply(it)) }
+            .toObservable()
+            .onErrorReturn { error ->
+                when (error) {
+                    is EmptyResultSetException -> RepositoryGetHabitState.HabitNotFoundError
+                    else -> RepositoryGetHabitState.Error(error)
+                }
+            }
 
     override fun editHabit(date: DateEntity, habit: HabitEntity): Completable =
         habitDao.edit(habitMapper.apply(Pair(date, habit)))

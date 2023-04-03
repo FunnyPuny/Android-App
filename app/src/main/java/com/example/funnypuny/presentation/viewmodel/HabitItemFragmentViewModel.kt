@@ -84,7 +84,7 @@ class HabitItemFragmentViewModel(
 
     private fun onInitHabitItem(habitItemId: Int) {
         mainUseCase
-            .getHabitItem(action.date, 1000000)
+            .getHabitItem(action.date, habitItemId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe{ Log.d("HabitItemViewModel", "GetHabitItem = Start") }
