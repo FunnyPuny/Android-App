@@ -1,6 +1,9 @@
 package com.example.funnypuny.presentation.view
 
+import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Context
+import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,8 +16,8 @@ import androidx.fragment.app.Fragment
 import com.example.funnypuny.R
 import com.example.funnypuny.databinding.FragmentHabitItemBinding
 import com.example.funnypuny.domain.entity.DateEntity
-import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
+import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.presentation.adapter.HabitFrequencyAdapter
 import com.example.funnypuny.presentation.viewmodel.HabitItemFragmentViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -115,13 +118,46 @@ class HabitItemFragment : Fragment() {
         }
 
         viewModel.showErrorToast.observe(viewLifecycleOwner) {
-            Toast.makeText(context,"Error", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
         }
 
         viewModel.initInputName.observe(viewLifecycleOwner) { habit ->
             binding.tietName.removeTextChangedListener(nameTextWatcher)
             binding.tietName.setText(habit)
             binding.tietName.addTextChangedListener(nameTextWatcher)
+        }
+
+        viewModel.showProgress.observe(viewLifecycleOwner) {
+            NetworkTask(this).execute()
+        }
+
+    }
+
+    /*private fun showProgress() {
+        val progressDialog = ProgressDialog(requireContext(), android.R.style.Theme_Translucent_NoTitleBar)
+        //progressDialog.setTitle("Kotlin Progress Bar")
+        progressDialog.setMessage("Please wait...")
+        progressDialog.show()
+    }*/
+
+    class NetworkTask(var fragment: HabitItemFragment): AsyncTask<Void,Void,Void>() {
+        var dialog = Dialog(fragment.requireContext(),android.R.style.Theme_Translucent_NoTitleBar)
+
+        override fun onPreExecute() {
+            val view = fragment.layoutInflater.inflate(R.layout.fullscreen_progressbar_dialog_fragment,null)
+            dialog.setContentView(view)
+            dialog.setCancelable(false)
+            dialog.show()
+            super.onPreExecute()
+        }
+        override fun doInBackground(vararg p0: Void?): Void? {
+            Thread.sleep(5000)
+            return null
+        }
+
+        override fun onPostExecute(result: Void?) {
+            super.onPostExecute(result)
+            dialog.dismiss()
         }
 
     }

@@ -74,6 +74,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_habit_enabled"/>
 
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bnvMain"
             android:layout_width="match_parent"

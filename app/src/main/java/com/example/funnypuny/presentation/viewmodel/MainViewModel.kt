@@ -1,6 +1,7 @@
 package com.example.funnypuny.presentation.viewmodel
 
 import android.util.Log
+import android.widget.ProgressBar
 import androidx.lifecycle.MutableLiveData
 import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
@@ -41,6 +42,7 @@ class MainViewModel(
     val showStatisticActivity = SingleLiveDataEmpty()
     val updateDatesAction = SingleLiveDataEmpty()
     val showHabitItemEditingFinished = SingleLiveDataEmpty()
+    val showProgress = MutableLiveData<ProgressBar>()
 
     private var habitsSubjectDisposable: Disposable? = null
 

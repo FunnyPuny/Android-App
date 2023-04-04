@@ -17,6 +17,7 @@ class HabitItemFragmentViewModel(
     val errorInputNameState = MutableLiveData<Boolean>()
     val shouldCloseScreenState = MutableLiveData<Unit>()
     val daysOfTheWeekState = MutableLiveData<ArrayList<HabitFrequencyEntity>>()
+    val showProgress = MutableLiveData<Unit>()
 
     //todo переписать на livedata
     var inputName: String? = null
@@ -68,11 +69,11 @@ class HabitItemFragmentViewModel(
         }
     }
 
-    private fun handleActionHabitItemState(state: MainGetHabitItemState) {
+    private fun handleGetHabitItemState(state: MainGetHabitItemState) {
         when (state) {
             is MainGetHabitItemState.Error -> showErrorToast.call()
             is MainGetHabitItemState.HabitNotFoundError -> shouldCloseScreenState.value = Unit
-            is MainGetHabitItemState.Start -> Log.d("HabitItemViewModel", "GetHabitItem = Start")
+            is MainGetHabitItemState.Start -> showProgress.value = Unit
             is MainGetHabitItemState.Success -> {
                 this.inputName = state.habit.name
                 initInputName.value = state.habit.name
@@ -84,11 +85,11 @@ class HabitItemFragmentViewModel(
 
     private fun onInitHabitItem(habitItemId: Int) {
         mainUseCase
-            .getHabitItem(action.date, 1000000)
+            .getHabitItem(action.date, habitItemId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe{ Log.d("HabitItemViewModel", "GetHabitItem = Start") }
-            .subscribe{handleActionHabitItemState(it)}
+            .subscribe{handleGetHabitItemState(it)}
             .also { disposables.add(it) }
     }
 

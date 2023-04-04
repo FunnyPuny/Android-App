@@ -1,6 +1,7 @@
 package com.example.funnypuny.presentation.view
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -70,11 +71,29 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         viewModel.showErrorToast.observe(this) {
             Toast.makeText(applicationContext,"Error", Toast.LENGTH_SHORT).show()
         }
+
+        /*viewModel.showProgress.observe(this) {
+            hideLoading()
+        }*/
     }
 
     override fun onHabitItemEditingFinished() {
         viewModel.onHabitItemEditingFinished()
     }
+
+    /*private fun showLoading() {
+        *//*Call this function when you want progress dialog to appear*//*
+        if (binding.loadingLayout != null) {
+            binding.loadingLayout!!.llLoading.visibility = View.VISIBLE
+        }
+    }
+
+    private fun hideLoading() {
+        *//*Call this function when you want progress dialog to disappear*//*
+        if (binding.loadingLayout != null) {
+            binding.loadingLayout!!.llLoading.visibility = View.GONE
+        }
+    }*/
 
     private fun isOnePaneMode(): Boolean {
         return binding.habitItemContainer == null
