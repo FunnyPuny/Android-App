@@ -17,5 +17,5 @@
     <color name="grey_light">#EFEFEF</color>
     <color name="shadow" tools:ignore="MissingDefaultResource">#88D5D4D4</color>
     <color name="grey_dark">#808080</color>
-    <color name="progress_background">#72BABABA</color>
+    <color name="progress_background">#CBFFFFFF</color>
 </resources>

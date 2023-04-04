@@ -3,6 +3,7 @@ package com.example.funnypuny.presentation.view
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
+import android.graphics.drawable.AnimationDrawable
 import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
@@ -11,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.funnypuny.R
@@ -148,10 +150,10 @@ class HabitItemFragment : Fragment() {
             dialog.setContentView(view)
             dialog.setCancelable(false)
             dialog.show()
+
             super.onPreExecute()
         }
         override fun doInBackground(vararg p0: Void?): Void? {
-            Thread.sleep(5000)
             return null
         }
 
