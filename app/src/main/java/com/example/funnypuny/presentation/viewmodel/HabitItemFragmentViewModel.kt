@@ -17,9 +17,7 @@ class HabitItemFragmentViewModel(
     val errorInputNameState = MutableLiveData<Boolean>()
     val shouldCloseScreenState = MutableLiveData<Unit>()
     val daysOfTheWeekState = MutableLiveData<ArrayList<HabitFrequencyEntity>>()
-    val showProgress = MutableLiveData<Unit>()
 
-    //todo переписать на livedata
     var inputName: String? = null
     val initInputName = SingleLiveData<String>()
     private val data = ArrayList<HabitFrequencyEntity>()
@@ -61,22 +59,38 @@ class HabitItemFragmentViewModel(
 
     private fun handleActionHabitState(state: MainActionHabitState) {
         when (state) {
-            is MainActionHabitState.Success -> shouldCloseScreenState.value = Unit
+            is MainActionHabitState.Success -> {
+                progressVisibilityState.value = false
+                shouldCloseScreenState.value = Unit
+            }
             is MainActionHabitState.EmptyNameError -> errorInputNameState.value = true
-            is MainActionHabitState.HabitNotFoundError -> shouldCloseScreenState.value = Unit
-            is MainActionHabitState.Error -> showErrorToast.call()
-            is MainActionHabitState.Start -> Log.d("HabitItemViewModel", "MainActionHabitState.Start")
+            is MainActionHabitState.HabitNotFoundError -> {
+                showErrorToast.call()
+                shouldCloseScreenState.value = Unit
+            }
+            is MainActionHabitState.Error -> {
+                progressVisibilityState.value = false
+                showErrorToast.call()
+            }
+            is MainActionHabitState.Start -> progressVisibilityState.value = true
         }
     }
 
     private fun handleGetHabitItemState(state: MainGetHabitItemState) {
         when (state) {
-            is MainGetHabitItemState.Error -> showErrorToast.call()
-            is MainGetHabitItemState.HabitNotFoundError -> shouldCloseScreenState.value = Unit
-            is MainGetHabitItemState.Start -> showProgress.value = Unit
+            is MainGetHabitItemState.Start -> progressVisibilityState.value = true
             is MainGetHabitItemState.Success -> {
+                progressVisibilityState.value = false
                 this.inputName = state.habit.name
                 initInputName.value = state.habit.name
+            }
+            is MainGetHabitItemState.Error -> {
+                progressVisibilityState.value = false
+                showErrorToast.call()
+            }
+            is MainGetHabitItemState.HabitNotFoundError -> {
+                showErrorToast.call()
+                shouldCloseScreenState.value = Unit
             }
         }
     }
@@ -85,7 +99,7 @@ class HabitItemFragmentViewModel(
 
     private fun onInitHabitItem(habitItemId: Int) {
         mainUseCase
-            .getHabitItem(action.date, habitItemId)
+            .getHabitItem(action.date, 100000)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe{ Log.d("HabitItemViewModel", "GetHabitItem = Start") }

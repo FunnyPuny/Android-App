@@ -74,16 +74,16 @@ class MainViewModel(
     private fun handleChangeEnableState(state: MainChangeHabitState) {
         when (state) {
             is MainChangeHabitState.Error -> showErrorToast.call()
-            is MainChangeHabitState.Start -> Log.d("MainViewModel", "MainChangeHabitState.Start")
-            is MainChangeHabitState.Success -> Log.d("MainViewModel", "MainChangeHabitState.Success")
+            is MainChangeHabitState.Start -> progressVisibilityState.value = true
+            is MainChangeHabitState.Success -> progressVisibilityState.value = false
         }
     }
 
     private fun handleDeleteState(state: MainChangeHabitState) {
         when (state) {
             is MainChangeHabitState.Error -> showErrorToast.call()
-            is MainChangeHabitState.Start -> Log.d("MainViewModel", "MainChangeHabitState.Start")
-            is MainChangeHabitState.Success -> Log.d("MainViewModel", "MainChangeHabitState.Success")
+            is MainChangeHabitState.Start -> progressVisibilityState.value = true
+            is MainChangeHabitState.Success -> progressVisibilityState.value = false
         }
     }
 

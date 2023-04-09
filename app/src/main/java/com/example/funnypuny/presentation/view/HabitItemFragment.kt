@@ -1,9 +1,7 @@
 package com.example.funnypuny.presentation.view
 
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.Context
-import android.graphics.drawable.AnimationDrawable
 import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
@@ -12,7 +10,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.funnypuny.R
@@ -62,6 +59,8 @@ class HabitItemFragment : Fragment() {
         _binding = FragmentHabitItemBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+    var dialog: Dialog? = null
 
     private val nameTextWatcher by lazy {
         object : TextWatcher {
@@ -129,37 +128,21 @@ class HabitItemFragment : Fragment() {
             binding.tietName.addTextChangedListener(nameTextWatcher)
         }
 
-        viewModel.showProgress.observe(viewLifecycleOwner) {
-            NetworkTask(this).execute()
-        }
-
-    }
-
-    /*private fun showProgress() {
-        val progressDialog = ProgressDialog(requireContext(), android.R.style.Theme_Translucent_NoTitleBar)
-        //progressDialog.setTitle("Kotlin Progress Bar")
-        progressDialog.setMessage("Please wait...")
-        progressDialog.show()
-    }*/
-
-    class NetworkTask(var fragment: HabitItemFragment): AsyncTask<Void,Void,Void>() {
-        var dialog = Dialog(fragment.requireContext(),android.R.style.Theme_Translucent_NoTitleBar)
-
-        override fun onPreExecute() {
-            val view = fragment.layoutInflater.inflate(R.layout.fullscreen_progressbar_dialog_fragment,null)
-            dialog.setContentView(view)
-            dialog.setCancelable(false)
-            dialog.show()
-
-            super.onPreExecute()
-        }
-        override fun doInBackground(vararg p0: Void?): Void? {
-            return null
-        }
-
-        override fun onPostExecute(result: Void?) {
-            super.onPostExecute(result)
-            dialog.dismiss()
+        viewModel.progressVisibilityState.observe(viewLifecycleOwner) { isVisible ->
+            dialog?.dismiss()
+            if (isVisible) {
+                dialog = Dialog(requireContext(), android.R.style.Theme_Translucent_NoTitleBar)
+                    .apply {
+                        setContentView(
+                            layoutInflater.inflate(
+                                R.layout.fullscreen_progressbar_dialog_fragment,
+                                null
+                            )
+                        )
+                        setCancelable(false)
+                        show()
+                    }
+            }
         }
 
     }

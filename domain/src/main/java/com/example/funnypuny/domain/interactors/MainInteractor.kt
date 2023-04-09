@@ -4,10 +4,12 @@ import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
 import com.example.funnypuny.domain.entity.Optional
+import com.example.funnypuny.domain.repository.HabitGetHabitItemState
 import com.example.funnypuny.domain.repository.HabitRepository
 import com.example.funnypuny.domain.usecases.*
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
+import java.util.concurrent.TimeUnit
 
 class MainInteractor(
     private val habitRepository: HabitRepository
@@ -48,17 +50,20 @@ class MainInteractor(
             .startWithItem(MainChangeHabitState.Start)
     }
 
-    override fun getHabitItem(date: DateEntity, habitItemId: Int): Observable<MainGetHabitItemState> {
+    override fun getHabitItem(
+        date: DateEntity,
+        habitItemId: Int
+    ): Observable<MainGetHabitItemState> {
         return habitRepository
             .getHabitItem(habitItemId)
-            .map<MainGetHabitItemState>{ MainGetHabitItemState.Success(it) }
-            .toObservable()
-            .onErrorReturn { error ->
-                when (error) {
-                    is java.lang.NullPointerException -> MainGetHabitItemState.HabitNotFoundError
-                    else -> MainGetHabitItemState.Error(error)
+            .map { state ->
+                when (state) {
+                    is HabitGetHabitItemState.Error -> MainGetHabitItemState.Error(state.error)
+                    is HabitGetHabitItemState.HabitNotFoundError -> MainGetHabitItemState.HabitNotFoundError
+                    is HabitGetHabitItemState.Success -> MainGetHabitItemState.Success(state.habit)
                 }
             }
+            .toObservable()
             .startWithItem(MainGetHabitItemState.Start)
     }
 
@@ -108,16 +113,23 @@ class MainInteractor(
                     ?.let { name ->
                         habitRepository
                             .getHabitItem(action.id)
-                            .flatMapCompletable { habit ->
-                                habitRepository.editHabit(action.date, habit.copy(name = name))
-                            }
-                            .doOnComplete { habitRepository.updateHabitsSubject().onNext(Unit) }
-                            .toSingleDefault<MainActionHabitState>(MainActionHabitState.Success)
-                            .toObservable()
-                            .onErrorReturn { error ->
-                                when (error) {
-                                    is java.lang.NullPointerException -> MainActionHabitState.HabitNotFoundError
-                                    else -> MainActionHabitState.Error(error)
+                            .flatMapObservable { state ->
+                                when (state) {
+                                    is HabitGetHabitItemState.Error ->
+                                        Observable.just(MainActionHabitState.Error(state.error))
+                                    is HabitGetHabitItemState.HabitNotFoundError ->
+                                        Observable.just(MainActionHabitState.HabitNotFoundError)
+                                    is HabitGetHabitItemState.Success ->
+                                        habitRepository
+                                            .editHabit(action.date, state.habit.copy(name = name))
+                                            .doOnComplete {
+                                                habitRepository.updateHabitsSubject().onNext(Unit)
+                                            }
+                                            .toSingleDefault<MainActionHabitState>(
+                                                MainActionHabitState.Success
+                                            )
+                                            .toObservable()
+                                            .onErrorReturn { MainActionHabitState.Error(it) }
                                 }
                             }
                             .startWithItem(MainActionHabitState.Start)
