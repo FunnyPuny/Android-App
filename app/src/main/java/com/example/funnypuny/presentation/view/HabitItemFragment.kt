@@ -2,7 +2,6 @@ package com.example.funnypuny.presentation.view
 
 import android.app.Dialog
 import android.content.Context
-import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -60,7 +59,7 @@ class HabitItemFragment : Fragment() {
         return binding.root
     }
 
-    var dialog: Dialog? = null
+    private var progressDialog: Dialog? = null
 
     private val nameTextWatcher by lazy {
         object : TextWatcher {
@@ -129,9 +128,9 @@ class HabitItemFragment : Fragment() {
         }
 
         viewModel.progressVisibilityState.observe(viewLifecycleOwner) { isVisible ->
-            dialog?.dismiss()
+            progressDialog?.dismiss()
             if (isVisible) {
-                dialog = Dialog(requireContext(), android.R.style.Theme_Translucent_NoTitleBar)
+                progressDialog = Dialog(requireContext(), android.R.style.Theme_Translucent_NoTitleBar)
                     .apply {
                         setContentView(
                             layoutInflater.inflate(

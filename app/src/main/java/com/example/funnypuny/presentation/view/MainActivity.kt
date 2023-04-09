@@ -1,7 +1,7 @@
 package com.example.funnypuny.presentation.view
 
+import android.app.Dialog
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -20,7 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFinishedListener {
 
     private lateinit var binding: ActivityMainBinding
-
+    var progressDialog: Dialog? = null
     val viewModel: MainViewModel by viewModel()
 
     private var habitListAdapter: HabitListAdapter? = null
@@ -69,7 +69,24 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
         }
 
         viewModel.showErrorToast.observe(this) {
-            Toast.makeText(applicationContext,"Error", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
+        }
+
+        viewModel.progressVisibilityState.observe(this) { isVisible ->
+            progressDialog?.dismiss()
+            if (isVisible) {
+                progressDialog = Dialog(applicationContext, android.R.style.Theme_Translucent_NoTitleBar)
+                    .apply {
+                        setContentView(
+                            layoutInflater.inflate(
+                                R.layout.fullscreen_progressbar_dialog_fragment,
+                                null
+                            )
+                        )
+                        setCancelable(false)
+                        show()
+                    }
+            }
         }
     }
 
