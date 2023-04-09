@@ -93,7 +93,7 @@ class MainInteractor(
                     ?.let { name ->
                         val habit = HabitEntity(name, true)
                         habitRepository
-                            .addHabitItem(action.date, habit, null)
+                            .addHabitItem(action.date, habit)
                             .doOnComplete { habitRepository.updateHabitsSubject().onNext(Unit) }
                             .toSingleDefault<MainActionHabitState>(MainActionHabitState.Success)
                             .toObservable()

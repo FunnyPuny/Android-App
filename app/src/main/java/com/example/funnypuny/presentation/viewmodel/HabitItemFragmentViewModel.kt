@@ -15,7 +15,7 @@ class HabitItemFragmentViewModel(
 ) : BaseViewModel() {
 
     val errorInputNameState = MutableLiveData<Boolean>()
-    val shouldCloseScreenState = MutableLiveData<Unit>()
+    val closeScreen = SingleLiveData<Unit>()
     val daysOfTheWeekState = MutableLiveData<ArrayList<HabitFrequencyEntity>>()
 
     var inputName: String? = null
@@ -37,9 +37,6 @@ class HabitItemFragmentViewModel(
             is HabitActionEntity.Add -> Unit
             is HabitActionEntity.Edit -> onInitHabitItem(action.id)
         }
-
-        //todo разобраться с типом livedata
-        Log.d("MyTag", "init ${hashCode()}")
     }
 
     fun onNameChanged(inputName: String?) {
@@ -61,12 +58,12 @@ class HabitItemFragmentViewModel(
         when (state) {
             is MainActionHabitState.Success -> {
                 progressVisibilityState.value = false
-                shouldCloseScreenState.value = Unit
+                closeScreen.value = Unit
             }
             is MainActionHabitState.EmptyNameError -> errorInputNameState.value = true
             is MainActionHabitState.HabitNotFoundError -> {
                 showErrorToast.call()
-                shouldCloseScreenState.value = Unit
+                closeScreen.value = Unit
             }
             is MainActionHabitState.Error -> {
                 progressVisibilityState.value = false
@@ -90,7 +87,7 @@ class HabitItemFragmentViewModel(
             }
             is MainGetHabitItemState.HabitNotFoundError -> {
                 showErrorToast.call()
-                shouldCloseScreenState.value = Unit
+                closeScreen.value = Unit
             }
         }
     }
@@ -99,10 +96,9 @@ class HabitItemFragmentViewModel(
 
     private fun onInitHabitItem(habitItemId: Int) {
         mainUseCase
-            .getHabitItem(action.date, 100000)
+            .getHabitItem(action.date, habitItemId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe{ Log.d("HabitItemViewModel", "GetHabitItem = Start") }
             .subscribe{handleGetHabitItemState(it)}
             .also { disposables.add(it) }
     }

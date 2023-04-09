@@ -13,7 +13,6 @@ class HabitItemActivityViewModel(
 
     init {
         actionState.value = action
-        Log.d("MyTag","init ${hashCode()}")
     }
 
 }

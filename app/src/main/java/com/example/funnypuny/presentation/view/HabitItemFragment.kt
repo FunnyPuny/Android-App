@@ -34,6 +34,9 @@ class HabitItemFragment : Fragment() {
         parametersOf(getHabitAction(requireArguments()))
     })
 
+    interface OnHabitItemEditingFinishedListener {
+        fun onHabitItemEditingFinished()
+    }
 
     override fun onAttach(context: Context) {
         Log.d("HabitItemFragment", "onAttach")
@@ -43,12 +46,6 @@ class HabitItemFragment : Fragment() {
         } else {
             throw RuntimeException("Activity must implement OnHabitItemEditingFinishedListener")
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("HabitItemFragment", "onCreate")
-        super.onCreate(savedInstanceState)
-        //parseParams()
     }
 
     override fun onCreateView(
@@ -81,19 +78,6 @@ class HabitItemFragment : Fragment() {
 
         binding.tietName.addTextChangedListener(nameTextWatcher)
 
-        /*binding.tietName.setText(viewModel.inputName)
-        binding.tietName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.onNameChanged(s?.toString()?.trim())
-            }
-        })*/
-
         binding.btnSave.setOnClickListener {
             viewModel.onSaveClick()
         }
@@ -103,7 +87,7 @@ class HabitItemFragment : Fragment() {
             binding.rvFrequencyOfTheDay.adapter = habitFrequencyAdapter
         }
 
-        viewModel.shouldCloseScreenState.observe(viewLifecycleOwner) {
+        viewModel.closeScreen.observe(viewLifecycleOwner) {
             onHabitItemEditingFinishedListener.onHabitItemEditingFinished()
             //activity?.onBackPressed()
         }
@@ -144,7 +128,7 @@ class HabitItemFragment : Fragment() {
             }
         }
 
-    }
+    }/*
 
     override fun onStart() {
         Log.d("HabitItemFragment", "onStart")
@@ -164,15 +148,15 @@ class HabitItemFragment : Fragment() {
     override fun onStop() {
         Log.d("HabitItemFragment", "onStop")
         super.onStop()
-    }
+    }*/
 
-    override fun onDestroyView() {
+    /*override fun onDestroyView() {
         Log.d("HabitItemFragment", "onDestroyView")
         super.onDestroyView()
         _binding = null
-    }
+    }*/
 
-    override fun onDestroy() {
+    /*override fun onDestroy() {
         Log.d("HabitItemFragment", "onDestroy")
         super.onDestroy()
     }
@@ -180,12 +164,7 @@ class HabitItemFragment : Fragment() {
     override fun onDetach() {
         Log.d("HabitItemFragment", "onDetach")
         super.onDetach()
-    }
-
-    interface OnHabitItemEditingFinishedListener {
-
-        fun onHabitItemEditingFinished()
-    }
+    }*/
 
     companion object {
 

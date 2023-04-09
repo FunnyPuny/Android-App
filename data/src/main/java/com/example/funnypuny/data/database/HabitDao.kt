@@ -1,7 +1,6 @@
 package com.example.funnypuny.data.database
 
 import androidx.room.*
-import com.example.funnypuny.domain.entity.HabitEntity
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
@@ -11,7 +10,7 @@ interface HabitDao {
     fun getAll(): Single<List<Habit>>
 
     @Insert
-    fun insertAll(habit: Habit): Completable
+    fun insert(habit: Habit): Completable
 
     @Query("DELETE FROM habit WHERE habit.id = :id")
     fun delete(id: Int): Completable

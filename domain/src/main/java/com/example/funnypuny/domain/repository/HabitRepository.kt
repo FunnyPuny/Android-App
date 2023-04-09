@@ -16,9 +16,7 @@ interface HabitRepository {
 
     fun getHabitMap(): Single<Map<DateEntity, List<HabitEntity>>>
 
-    //fun getHabitList(date: DateEntity): List<HabitEntity>
-
-    fun addHabitItem(date: DateEntity, habit: HabitEntity, indexPosition: Int?): Completable
+    fun addHabitItem(date: DateEntity, habit: HabitEntity): Completable
 
     fun deleteHabitItem(habitId: Int): Completable
 

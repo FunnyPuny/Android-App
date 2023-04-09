@@ -4,19 +4,16 @@ import androidx.room.rxjava3.EmptyResultSetException
 import com.example.funnypuny.data.database.*
 import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitEntity
-import com.example.funnypuny.domain.entity.Optional
 import com.example.funnypuny.domain.repository.HabitGetHabitItemState
 import com.example.funnypuny.domain.repository.HabitRepository
-import com.example.funnypuny.domain.usecases.MainGetHabitItemState
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.Subject
 
 class HabitRepositoryImpl(private val habitDao: HabitDao) : HabitRepository {
 
-    private var autoIncrementId = 0
+    //private var autoIncrementId = 0
 
     //private val habitMap = mutableMapOf<DateEntity, List<HabitEntity>>()
 
@@ -27,13 +24,13 @@ class HabitRepositoryImpl(private val habitDao: HabitDao) : HabitRepository {
     private val habitMapper by lazy { HabitMapper() }
 
 
-    init {
+    /*init {
 
-        /*for (i in 0 until 3) {
+        *//*for (i in 0 until 3) {
             addHabitItem(HabitEntity("Name: $i", true, i), null)
             autoIncrementId = i
-        }*/
-    }
+        }*//*
+    }*/
 
     override fun updateHabitsSubject(): Subject<Unit> = updateHabitsSubject
     override fun getHabitMap(): Single<Map<DateEntity, List<HabitEntity>>> =
@@ -51,8 +48,7 @@ class HabitRepositoryImpl(private val habitDao: HabitDao) : HabitRepository {
 
     override fun addHabitItem(
         date: DateEntity,
-        habit: HabitEntity,
-        indexPosition: Int?
+        habit: HabitEntity
     ): Completable {
         /*if (habit.id == HabitEntity.UNDEFINED_ID) {
             autoIncrementId++
@@ -66,7 +62,7 @@ class HabitRepositoryImpl(private val habitDao: HabitDao) : HabitRepository {
 
         habitMap[date] = habitList*/
 
-        return habitDao.insertAll(habitMapper.apply(date to habit))
+        return habitDao.insert(habitMapper.apply(date to habit))
     }
 
     override fun deleteHabitItem(habitId: Int): Completable =

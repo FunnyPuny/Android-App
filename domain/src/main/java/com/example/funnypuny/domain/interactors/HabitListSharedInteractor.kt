@@ -15,7 +15,6 @@ class HabitListSharedInteractor(private val habitRepository: HabitRepository) :
     override fun habitsSubject(date: DateEntity): Observable<List<HabitEntity>> =
         habitRepository
             .updateHabitsSubject()
-            //.map { habitRepository.getHabitMap()[date]?: emptyList() }
             .observeOn(Schedulers.io())
             .flatMap {
                 habitRepository

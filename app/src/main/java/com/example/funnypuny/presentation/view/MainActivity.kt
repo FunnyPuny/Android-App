@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
             startActivity(StatisticsActivity.newIntent(this@MainActivity))
         }
 
-        viewModel.showHabitItemEditingFinished.observe(this) {
+        viewModel.closeEditing.observe(this) {
             supportFragmentManager.popBackStack()
         }
 
@@ -131,16 +131,9 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
                 viewModel.onChangeEnableState(habit)
             }
         }
-        with(binding.rvHabitList) {
-            adapter = habitListAdapter
-        }
+        binding.rvHabitList.adapter = habitListAdapter
         setupSwipeHabitListener()
     }
-
-    /*override fun onResume() {
-        super.onResume()
-        viewModel.onViewShown()
-    }*/
 
     private fun setupBottomNavigation() {
         with(binding.bnvMain) {
@@ -185,8 +178,7 @@ class MainActivity : AppCompatActivity(), HabitItemFragment.OnHabitItemEditingFi
                 viewModel.onSwipeHabit(viewHolder.adapterPosition)
             }
         }
-        val itemTouchHelper = ItemTouchHelper(callback)
-        itemTouchHelper.attachToRecyclerView(binding.rvHabitList)
+        ItemTouchHelper(callback).attachToRecyclerView(binding.rvHabitList)
     }
 
 }

@@ -1,7 +1,6 @@
 package com.example.funnypuny.presentation.viewmodel
 
 import android.util.Log
-import android.widget.ProgressBar
 import androidx.lifecycle.MutableLiveData
 import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitActionEntity
@@ -41,8 +40,7 @@ class MainViewModel(
     val showHabitItemFragment = SingleLiveData<Pair<HabitActionEntity, Boolean>>()
     val showStatisticActivity = SingleLiveDataEmpty()
     val updateDatesAction = SingleLiveDataEmpty()
-    val showHabitItemEditingFinished = SingleLiveDataEmpty()
-    val showProgress = MutableLiveData<ProgressBar>()
+    val closeEditing = SingleLiveDataEmpty()
 
     private var habitsSubjectDisposable: Disposable? = null
 
@@ -126,7 +124,7 @@ class MainViewModel(
     }
 
     fun onHabitItemEditingFinished() {
-        showHabitItemEditingFinished.call()
+        closeEditing.call()
     }
 
     private fun setUpCalendar(deltaMonth: Int) {
@@ -171,7 +169,6 @@ class MainViewModel(
     }
 
     private fun updateHabitList() {
-        //habitListState.value = habitListSharedUseCase.getHabitsMap()[selectedDate]?: emptyList()
         habitsSubjectDisposable?.dispose()
 
         habitsSubjectDisposable =
@@ -179,10 +176,7 @@ class MainViewModel(
                 .habitsSubject(selectedDate)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    habitListState.value = it
-                    Log.d("MyTag", "subscribe $it")
-                }
+                .subscribe { habitListState.value = it }
                 .also { disposables.add(it) }
     }
 }
