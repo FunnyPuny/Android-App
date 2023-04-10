@@ -1,6 +1,8 @@
 package com.example.funnypuny.data.database
 
 import androidx.room.*
+import com.example.funnypuny.domain.entity.DateEntity
+import com.example.funnypuny.domain.entity.WeekEntity
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
@@ -8,6 +10,12 @@ import io.reactivex.rxjava3.core.Single
 interface HabitDao {
     @Query("SELECT * FROM habit")
     fun getAll(): Single<List<Habit>>
+    @Query("SELECT * FROM habit")
+    fun getAll(date: DateEntity): Single<List<Habit>>
+    @Query("SELECT * FROM habit")
+    fun getAll(week: WeekEntity): Single<List<Habit>>
+    @Query("SELECT * FROM habit")
+    fun getAll1(): Single<List<Habit>>
 
     @Insert
     fun insert(habit: Habit): Completable

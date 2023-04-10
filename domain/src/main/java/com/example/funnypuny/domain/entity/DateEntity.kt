@@ -5,3 +5,11 @@ data class DateEntity(
     val month: Int,
     val year: Int
 )
+
+enum class WeekEntity(
+    val day: Int
+) {
+    MON(1),
+    TUE(2),
+    WED(3)
+}

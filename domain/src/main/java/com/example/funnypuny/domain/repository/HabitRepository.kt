@@ -1,9 +1,6 @@
 package com.example.funnypuny.domain.repository
 
-import com.example.funnypuny.domain.entity.DateEntity
-import com.example.funnypuny.domain.entity.HabitEntity
-import com.example.funnypuny.domain.entity.DayOfWeek
-import com.example.funnypuny.domain.entity.Optional
+import com.example.funnypuny.domain.entity.*
 import com.example.funnypuny.domain.usecases.MainGetHabitItemState
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
@@ -23,6 +20,10 @@ interface HabitRepository {
     fun getHabitItem(habitItemId: Int): Single<HabitGetHabitItemState>
 
     fun editHabit(date: DateEntity, habit: HabitEntity): Completable
+
+    fun getHabitList(date: DateEntity): Single<List<HabitEntity>>
+    fun getHabitList(): Single<List<HabitEntity>>
+    fun getHabitList(week: WeekEntity): Single<List<HabitEntity>>
 
 }
 
