@@ -1,9 +1,7 @@
 package com.example.funnypuny.domain.repository
 
 import com.example.funnypuny.domain.entity.*
-import com.example.funnypuny.domain.usecases.MainGetHabitItemState
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.subjects.Subject
 
@@ -13,17 +11,22 @@ interface HabitRepository {
 
     fun getHabitMap(): Single<Map<DateEntity, List<HabitEntity>>>
 
-    fun addHabitItem(date: DateEntity, habit: HabitEntity): Completable
+    fun addHabitItem(date: DateEntity, week: WeekEntity, habit: HabitEntity): Completable
 
     fun deleteHabitItem(habitId: Int): Completable
 
     fun getHabitItem(habitItemId: Int): Single<HabitGetHabitItemState>
 
-    fun editHabit(date: DateEntity, habit: HabitEntity): Completable
+    fun editHabit(date: DateEntity, week: WeekEntity, habit: HabitEntity): Completable
 
-    fun getHabitList(date: DateEntity): Single<List<HabitEntity>>
-    fun getHabitList(): Single<List<HabitEntity>>
-    fun getHabitList(week: WeekEntity): Single<List<HabitEntity>>
+    //habit по конкретной какой-то дате
+    //fun getHabitList(date: DateEntity): Single<List<HabitEntity>>
+
+    //привычки каждый день
+    fun getEverydayHabitList(): Single<List<HabitEntity>>
+
+    //привычки по дням недели
+    fun getDayOfWeekHabitList(week: WeekEntity): Single<List<HabitEntity>>
 
 }
 

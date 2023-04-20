@@ -12,10 +12,10 @@ interface HabitDao {
     fun getAll(): Single<List<Habit>>
     @Query("SELECT * FROM habit")
     fun getAll(date: DateEntity): Single<List<Habit>>
-    @Query("SELECT * FROM habit")
-    fun getAll(week: WeekEntity): Single<List<Habit>>
-    @Query("SELECT * FROM habit")
-    fun getAll1(): Single<List<Habit>>
+    @Query("SELECT * FROM habit WHERE habit.day_of_week = :week")
+    fun getAllDayOfWeek  (week: WeekEntity): Single<List<Habit>>
+    @Query("SELECT * FROM habit WHERE habit.day = :-1 AND habit.month = :-1 AND habit.year = :-1")
+    fun getAllEveryday(): Single<List<Habit>>
 
     @Insert
     fun insert(habit: Habit): Completable

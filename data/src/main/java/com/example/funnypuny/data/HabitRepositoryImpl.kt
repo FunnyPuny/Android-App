@@ -4,6 +4,7 @@ import androidx.room.rxjava3.EmptyResultSetException
 import com.example.funnypuny.data.database.*
 import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitEntity
+import com.example.funnypuny.domain.entity.WeekEntity
 import com.example.funnypuny.domain.repository.HabitGetHabitItemState
 import com.example.funnypuny.domain.repository.HabitRepository
 import io.reactivex.rxjava3.core.Completable
@@ -48,6 +49,7 @@ class HabitRepositoryImpl(private val habitDao: HabitDao) : HabitRepository {
 
     override fun addHabitItem(
         date: DateEntity,
+        week: WeekEntity,
         habit: HabitEntity
     ): Completable {
         /*if (habit.id == HabitEntity.UNDEFINED_ID) {
@@ -62,7 +64,7 @@ class HabitRepositoryImpl(private val habitDao: HabitDao) : HabitRepository {
 
         habitMap[date] = habitList*/
 
-        return habitDao.insert(habitMapper.apply(date to habit))
+        return habitDao.insert(habitMapper.apply(Triple(date,week,habit)))
     }
 
     override fun deleteHabitItem(habitId: Int): Completable =
@@ -79,12 +81,17 @@ class HabitRepositoryImpl(private val habitDao: HabitDao) : HabitRepository {
                 }
             }
 
-    override fun editHabit(date: DateEntity, habit: HabitEntity): Completable =
-        habitDao.edit(habitMapper.apply(Pair(date, habit)))
+    override fun editHabit(date: DateEntity, week: WeekEntity, habit: HabitEntity): Completable =
+        habitDao.edit(habitMapper.apply(Triple(date, week, habit)))
 
 
-    /*private fun getHabitList(date: DateEntity): List<HabitEntity> {
-        return habitMap[date] ?: emptyList()
-    }*/
+    override fun getEverydayHabitList(): Single<List<HabitEntity>> =
+        habitDao.getAllEveryday()
+            .map { habitsEntityMapper.apply(it) }
+
+
+    override fun getDayOfWeekHabitList(week: WeekEntity): Single<List<HabitEntity>> =
+        habitDao.getAllDayOfWeek(week)
+            .map { habitsEntityMapper.apply(it) }
 
 }

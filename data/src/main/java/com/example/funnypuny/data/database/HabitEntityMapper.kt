@@ -3,6 +3,7 @@ package com.example.funnypuny.data.database
 import android.annotation.SuppressLint
 import com.example.funnypuny.domain.entity.DateEntity
 import com.example.funnypuny.domain.entity.HabitEntity
+import com.example.funnypuny.domain.entity.WeekEntity
 import io.reactivex.rxjava3.functions.Function
 
 /*class DeviceModelMapper : Function<BluetoothDevice, DeviceModel> {
@@ -27,16 +28,17 @@ class HabitEntityMapper : Function<Habit, HabitEntity> {
         )
 }
 
-class HabitMapper : Function<Pair<DateEntity,HabitEntity>, Habit> {
-    override fun apply(info: Pair<DateEntity,HabitEntity>): Habit =
-        info.let {(date, habit) ->
+class HabitMapper : Function<Triple<DateEntity,WeekEntity,HabitEntity>, Habit> {
+    override fun apply(info: Triple<DateEntity,WeekEntity,HabitEntity>): Habit =
+        info.let {(date, week, habit) ->
             Habit(
                 id = habit.id,
                 name = habit.name,
                 enabled = habit.enabled,
                 day = date.day,
                 month = date.month,
-                year = date.year
+                year = date.year,
+                dayOfWeek = week.day
             )
         }
 }
